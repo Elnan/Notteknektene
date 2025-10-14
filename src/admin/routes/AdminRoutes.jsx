@@ -27,9 +27,7 @@ const DatabaseMigration = lazy(
 const GameResultsViewer = lazy(
   () => import("../components/GameResultsViewer/GameResultsViewer")
 );
-const GameIdMismatchFixer = lazy(
-  () => import("../components/GameIdMismatchFixer/GameIdMismatchFixer")
-);
+// GameIdMismatchFixer removed for production
 const SeasonIntegrityChecker = lazy(
   () => import("../components/SeasonIntegrityChecker/SeasonIntegrityChecker")
 );
@@ -86,7 +84,7 @@ const AdminRoutes = () => {
           {/* Debug routes - only available in development */}
           {import.meta.env.DEV && (
             <>
-              <Route path="fix-game-ids" element={<GameIdMismatchFixer />} />
+              {/* GameIdMismatchFixer route removed for production */}
               <Route
                 path="season-integrity"
                 element={<SeasonIntegrityChecker />}
