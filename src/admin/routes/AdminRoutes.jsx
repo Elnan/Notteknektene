@@ -28,12 +28,7 @@ const GameResultsViewer = lazy(
   () => import("../components/GameResultsViewer/GameResultsViewer")
 );
 // GameIdMismatchFixer removed for production
-const SeasonIntegrityChecker = lazy(
-  () => import("../components/SeasonIntegrityChecker/SeasonIntegrityChecker")
-);
-const SaveStateExample = lazy(
-  () => import("../../components/SaveStateExample/SaveStateExample")
-);
+// SeasonIntegrityChecker and SaveStateExample removed for production
 
 // Loading component for admin routes
 const AdminLoadingSpinner = () => (
@@ -81,17 +76,7 @@ const AdminRoutes = () => {
           <Route path="schedule" element={<LiveSchedule />} />
           <Route path="migration" element={<DatabaseMigration />} />
           {/* TestDashboard route removed for production */}
-          {/* Debug routes - only available in development */}
-          {import.meta.env.DEV && (
-            <>
-              {/* GameIdMismatchFixer route removed for production */}
-              <Route
-                path="season-integrity"
-                element={<SeasonIntegrityChecker />}
-              />
-              <Route path="save-state-test" element={<SaveStateExample />} />
-            </>
-          )}
+          {/* Debug routes removed for production */}
 
           <Route path="*" element={<Navigate to="dashboard" replace />} />
         </Routes>
