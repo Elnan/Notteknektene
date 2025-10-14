@@ -1,0 +1,796 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: "Arial", sans-serif;
+  background: var(--color-white);
+  min-height: 100vh;
+}
+
+.title {
+  text-align: center;
+  color: var(--color-gold);
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.description {
+  text-align: center;
+  color: var(--color-gold);
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+}
+
+/* Score Display - Dark Green Header */
+.scoreDisplay {
+  background: linear-gradient(
+    135deg,
+    var(--color-green-bg),
+    var(--color-green)
+  );
+  border-radius: 15px;
+  border: 2px solid var(--color-gold);
+  padding: 20px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  color: var(--color-gold);
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.playerInfo,
+.objective {
+  font-family: "Yanone Kaffeesatz", sans-serif;
+  font-weight: bold;
+  text-decoration: underline;
+  font-size: 2rem;
+  color: var(--color-gold);
+}
+
+.scoreCenter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.roundInfo {
+  font-size: 2.3rem;
+  color: var(--color-gold);
+  font-weight: bold;
+}
+
+.totalScore {
+  font-size: 2rem;
+  color: var(--color-white);
+}
+
+.modalButtons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Game Area */
+.gameArea {
+  background: linear-gradient(
+    135deg,
+    var(--color-green-bg),
+    var(--color-green)
+  );
+  border-radius: 20px;
+  border: 2px solid var(--color-gold);
+  padding: 40px;
+  margin-bottom: 30px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  min-width: 800px;
+}
+
+/* Symbol Selector Container */
+.symbolSelectorContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 0 20px;
+}
+
+/* Symbol Selector */
+.symbolSelector {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.symbolButton {
+  width: 80px;
+  height: 80px;
+  border: 3px solid var(--color-gold);
+  border-radius: 15px;
+  background: white;
+  color: var(--color-green-bg);
+  font-size: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.symbolButton.selected {
+  background: var(--color-gold);
+  color: var(--color-white);
+  border: 3px solid var(--color-green-bg);
+  transform: scale(1.05);
+}
+
+.symbolButton:hover:not(.selected) {
+  background: #f8f9fa;
+  transform: scale(1.02);
+}
+
+/* Game Board */
+.board {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  gap: 4px;
+  width: 650px;
+  height: 536px;
+  margin: 20px auto;
+  border-radius: 15px;
+  background: transparent;
+}
+
+.cell {
+  width: 50px;
+  height: 50px;
+  border: 2px solid var(--color-gold);
+  border-radius: 8px;
+  background: white;
+  color: var(--color-green-bg);
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.cell:hover:not(:disabled) {
+  background: var(--color-gold-light);
+  box-shadow: 0 0 10px rgba(191, 161, 74, 0.4);
+}
+
+.cell:disabled {
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.cellEmpty {
+  background: var(--color-white);
+}
+
+.cellS {
+  background: var(--color-red-light);
+  color: var(--color-green-bg);
+}
+
+.cellO {
+  background: var(--color-gold-light);
+  color: var(--color-green-bg);
+}
+
+.lastMove {
+  border: 2px solid var(--color-red);
+  box-shadow: 0 0 15px rgba(220, 53, 69, 0.6);
+}
+
+.sosHighlight {
+  border: 2px solid #27ae60;
+  background: #2ecc71;
+  color: white;
+  box-shadow: 0 0 20px rgba(46, 204, 113, 0.8);
+  animation: sosPulse 0.5s ease-in-out;
+}
+
+.cursor {
+  border: 2px solid var(--color-gold);
+  background: #fff3cd;
+  box-shadow: 0 0 15px rgba(191, 161, 74, 0.8);
+}
+
+@keyframes sosPulse {
+  0% {
+    box-shadow: 0 0 15px rgba(46, 204, 113, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(46, 204, 113, 1);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(46, 204, 113, 0.8);
+  }
+}
+
+/* Round End Content */
+.roundEndContent {
+  text-align: center;
+  color: var(--color-gold);
+}
+
+.roundScore h3 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: var(--color-gold);
+}
+
+/* Score Cards for Round End */
+.scoreDisplay {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 25px;
+}
+
+.scoreCard {
+  background: linear-gradient(
+    135deg,
+    var(--color-green-bg),
+    var(--color-green)
+  );
+  border: 2px solid var(--color-gold);
+  border-radius: 15px;
+  padding: 20px;
+  min-width: 120px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.scoreLabel {
+  font-size: 1.2rem;
+  color: var(--color-gold);
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.scoreValue {
+  font-size: 2.5rem;
+  color: var(--color-white);
+  font-weight: bold;
+}
+
+.roundWinner {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--color-gold);
+  margin-bottom: 25px;
+}
+
+/* Round Wins Summary */
+.roundWinsSummary {
+  margin-bottom: 25px;
+}
+
+.roundWinsSummary h4 {
+  color: var(--color-gold);
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+}
+
+.winsDisplay {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.winCard {
+  background: rgba(191, 161, 74, 0.1);
+  border: 2px solid var(--color-gold);
+  border-radius: 12px;
+  padding: 15px;
+  min-width: 80px;
+}
+
+.winLabel {
+  font-size: 1rem;
+  color: var(--color-gold);
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.winCount {
+  font-size: 1.8rem;
+  color: var(--color-green-bg);
+  font-weight: bold;
+}
+
+/* Round Board Image */
+.roundBoardImage {
+  margin-bottom: 25px;
+}
+
+.roundBoardImage h4 {
+  color: var(--color-gold);
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+}
+
+.finalBoardImage {
+  max-width: 400px;
+  height: auto;
+  border-radius: 12px;
+  border: 3px solid var(--color-gold);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.roundActions {
+  margin-top: 30px;
+}
+
+/* Game End Content */
+.gameEndContent {
+  text-align: center;
+  color: var(--color-gold);
+}
+
+.finalScore h3 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: var(--color-gold);
+}
+
+/* Combined Final Stats Display */
+.finalWinsDisplay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.finalWinCard {
+  background: linear-gradient(
+    135deg,
+    var(--color-green-bg),
+    var(--color-green)
+  );
+  border: 3px solid var(--color-gold);
+  border-radius: 20px;
+  padding: 25px;
+  min-width: 150px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.finalWinLabel {
+  font-size: 1.3rem;
+  color: var(--color-gold);
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.finalWinCount {
+  font-size: 3rem;
+  color: var(--color-white);
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.finalWinText {
+  font-size: 1rem;
+  color: var(--color-gold);
+  font-weight: bold;
+}
+
+/* Total Points Display - positioned on outer sides */
+.finalPointsDisplay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.finalPointsCard {
+  background: var(--color-blue);
+  border: 3px solid var(--color-gold);
+  border-radius: 20px;
+  padding: 25px;
+  min-width: 150px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.finalPointsLabel {
+  font-size: 1.3rem;
+  color: var(--color-gold);
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.finalPointsCount {
+  font-size: 3rem;
+  color: var(--color-white);
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.finalPointsText {
+  font-size: 1rem;
+  color: var(--color-gold);
+  font-weight: bold;
+}
+
+.gameWinner {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--color-gold);
+  margin-bottom: 30px;
+}
+
+.gameActions {
+  margin-top: 30px;
+}
+
+/* Round Summaries */
+.roundSummaries {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.roundSummaries h4 {
+  color: var(--color-gold);
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.roundSummary {
+  background: rgba(191, 161, 74, 0.1);
+  border: 2px solid var(--color-gold);
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+}
+
+.roundSummary h5 {
+  color: var(--color-gold);
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.scoreInfo {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: var(--color-green-bg);
+}
+
+.boardImage {
+  margin: 15px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.summaryBoardImage {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 2px solid var(--color-gold);
+}
+
+.roundWinner {
+  font-weight: bold;
+  color: var(--color-gold);
+  margin-top: 10px;
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Controls Info */
+.controlsInfo {
+  margin-top: 30px;
+  text-align: center;
+  color: var(--color-green-bg);
+}
+
+.controlsInfo h3 {
+  color: var(--color-gold);
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+}
+
+.controlsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.controlsGrid div {
+  padding: 10px;
+  background: rgba(191, 161, 74, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(191, 161, 74, 0.3);
+}
+
+/* Rules Modal */
+.rulesContent {
+  color: #2d5016;
+  line-height: 1.6;
+}
+
+.rulesContent h3 {
+  color: #2d5016;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 1.3rem;
+}
+
+.rulesContent ul {
+  margin-left: 20px;
+  margin-bottom: 15px;
+}
+
+.rulesContent li {
+  margin-bottom: 8px;
+}
+
+/* Hint Content Styles */
+.hintContent {
+  color: var(--color-green-bg);
+  font-size: 1rem;
+  line-height: 1.5;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.hintContent h3 {
+  color: var(--color-gold);
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.hintGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 20px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hintColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.hintColumn h4 {
+  color: var(--color-gold);
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  border-bottom: 2px solid var(--color-gold);
+  padding-bottom: 5px;
+}
+
+.hintColumn ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.hintColumn li {
+  margin: 8px 0;
+  color: var(--color-green-bg);
+  font-size: 0.95rem;
+}
+
+.hintReminder {
+  background-color: #f0f8ff;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #d0e7ff;
+  margin-top: 20px;
+  text-align: center;
+  color: var(--color-green-bg);
+  font-size: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .scoreDisplay {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .gameArea {
+    min-width: auto;
+    padding: 20px;
+  }
+
+  .board {
+    width: 440px;
+    height: 440px;
+    gap: 2px;
+    padding: 15px;
+  }
+
+  .cell {
+    width: 45px;
+    height: 45px;
+    font-size: 1.3rem;
+  }
+
+  .symbolSelectorContainer {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .symbolButton {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+
+  .hintGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-width: 500px;
+  }
+
+  /* Round End Mobile Styles */
+  .scoreDisplay {
+    gap: 20px;
+  }
+
+  .scoreCard {
+    min-width: 100px;
+    padding: 15px;
+  }
+
+  .scoreValue {
+    font-size: 2rem;
+  }
+
+  .winsDisplay {
+    gap: 20px;
+  }
+
+  .winCard {
+    min-width: 60px;
+    padding: 10px;
+  }
+
+  .winCount {
+    font-size: 1.5rem;
+  }
+
+  .finalBoardImage {
+    max-width: 300px;
+  }
+
+  /* Game End Mobile Styles */
+  .finalWinsDisplay {
+    gap: 20px;
+    flex-direction: column;
+  }
+
+  .finalWinCard {
+    min-width: 120px;
+    padding: 20px;
+  }
+
+  .finalWinCount {
+    font-size: 2.5rem;
+  }
+
+  .finalPointsCard {
+    min-width: 120px;
+    padding: 20px;
+  }
+
+  .finalPointsCount {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .gameArea {
+    display: grid;
+    place-items: center;
+    width: 100%;
+  }
+  .board {
+    width: 95vw;
+    height: 95vw;
+    max-width: 400px;
+    max-height: 400px;
+    gap: 1px;
+    padding: 6px;
+    margin: 10px auto;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+  }
+
+  .cell {
+    width: 36px;
+    height: 36px;
+    font-size: 0.8rem;
+    min-width: 36px;
+    min-height: 36px;
+  }
+
+  .symbolSelectorContainer {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .symbolButton {
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+  }
+
+  .hintGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    max-width: 400px;
+  }
+
+  .summaryGrid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+}
+
+/* Button styling for used state */
+.instructionsButtonUsed {
+  background: #ddd;
+  color: var(--color-green-bg);
+  cursor: default;
+  border: 1px solid var(--color-gold);
+}
+
+.instructionsButtonUsed:hover {
+  transform: none;
+  background: #ddd;
+}
+
+.penaltyText {
+  font-size: 0.8rem;
+  color: #dc3545;
+  font-style: italic;
+  margin-left: 4px;
+}

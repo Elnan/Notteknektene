@@ -1,0 +1,357 @@
+.minigame {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 900px;
+  min-height: 600px;
+  margin: 0 auto;
+  padding: 32px 32px 24px 32px;
+  border: 3px solid var(--color-gold);
+  border-radius: 20px;
+}
+
+.minigameHeader {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  margin-bottom: 20px;
+  padding: 0 0 0 0;
+  border-bottom: none;
+}
+
+.minigameHeader h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.headerFlex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 28px 32px 18px 32px;
+  border-bottom: 2px solid var(--color-gold);
+}
+
+.headerLeft h3 {
+  color: var(--color-green-bg);
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.headerCenter {
+  flex: 1;
+  text-align: center;
+}
+
+.whoQuestion {
+  color: var(--color-green-bg);
+  font-size: 1.2rem;
+  margin: 0;
+  font-weight: 600;
+  padding: 0 20px;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.connectionsGame {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.connectionsGame h4 {
+  margin: 0 0 10px 0;
+  color: #555;
+  font-size: 1.1rem;
+}
+
+.attemptsDisplay {
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: 600;
+  color: var(--color-green-bg);
+  text-align: center;
+}
+
+.revealedCategory {
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  border: 2px solid transparent;
+}
+
+.categoryHeader {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.categoryWords {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+/* Category colors */
+.yellow {
+  background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+  border-color: #ffc107;
+  color: #856404;
+}
+
+.green {
+  background: linear-gradient(135deg, #d4edda, #c3e6cb);
+  border-color: #28a745;
+  color: #155724;
+}
+
+.blue {
+  background: linear-gradient(135deg, #cce5ff, #b3d9ff);
+  border-color: #007bff;
+  color: #004085;
+}
+
+.purple {
+  background: linear-gradient(135deg, #e2d9f3, #d1c4e9);
+  border-color: #6f42c1;
+  color: #4a148c;
+}
+
+.wordsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 18px;
+  margin: 32px 0 24px 0;
+  min-height: 240px;
+}
+
+.wordButton {
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  color: #333;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  text-align: center;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wordButton:hover:not(:disabled) {
+  border-color: var(--color-green-bg);
+  transform: translateY(-1px);
+}
+
+.wordButton.selected {
+  border-color: var(--color-green-bg);
+  background: var(--color-green-bg);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+.wordButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f8f9fa;
+  color: #6c757d;
+}
+
+.wordButton.hinted {
+  border-color: var(--color-gold);
+  background: #fffbe6;
+  color: #b8860b;
+  box-shadow:
+    0 0 0 2px var(--color-gold),
+    0 4px 8px rgba(184, 134, 11, 0.08);
+  position: relative;
+}
+
+.wordButton.selected.hinted {
+  border-color: var(--color-gold);
+  background: var(--color-green-bg);
+  color: white;
+  box-shadow:
+    0 0 0 2px var(--color-gold),
+    0 4px 8px rgba(184, 134, 11, 0.13);
+  position: relative;
+}
+
+.feedbackMessage {
+  text-align: center;
+  padding: 15px;
+  border-radius: 8px;
+  font-weight: 600;
+  margin: 15px 0;
+}
+
+.correctFeedback {
+  color: #155724;
+  background: #d4edda;
+  border: 1px solid #c3e6cb;
+}
+
+.wrongFeedback {
+  color: #721c24;
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+}
+
+.connectionsControls {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Results screen */
+.connectionsResults {
+  text-align: center;
+  padding: 30px;
+}
+
+.connectionsResults h3 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+}
+
+.resultsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin: 30px 0;
+}
+
+.resultCategory {
+  padding: 20px;
+  border-radius: 12px;
+  border: 3px solid transparent;
+  text-align: left;
+}
+
+.resultCategory .categoryHeader {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.resultCategory .categoryWords {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .minigame {
+    padding: 8px;
+    min-height: 400px;
+    max-width: 100vw;
+    width: 100vw;
+    margin: 0;
+    border-radius: 0;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+  }
+
+  .headerFlex {
+    padding: 12px 8px 8px 8px;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .headerLeft h3 {
+    font-size: 1.5rem;
+  }
+
+  .whoQuestion {
+    font-size: 1rem;
+    padding: 0 10px;
+  }
+
+  .headerRight {
+    gap: 8px;
+  }
+
+  .wordsGrid {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 4px;
+    margin: 16px 0 12px 0;
+    min-height: 200px;
+    padding: 0 4px;
+  }
+
+  .wordButton {
+    padding: 8px 6px;
+    font-size: 0.7rem;
+    min-height: 35px;
+    border-radius: 4px;
+  }
+
+  .connectionsControls {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .resultsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .minigame {
+    padding: 4px;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+  }
+
+  .headerFlex {
+    padding: 8px 4px 6px 4px;
+  }
+
+  .headerLeft h3 {
+    font-size: 1.3rem;
+  }
+
+  .whoQuestion {
+    font-size: 0.9rem;
+    padding: 0 5px;
+  }
+
+  .wordsGrid {
+    gap: 3px;
+    margin: 12px 0 8px 0;
+    min-height: 180px;
+    padding: 0 2px;
+  }
+
+  .wordButton {
+    padding: 6px 4px;
+    font-size: 0.65rem;
+    min-height: 30px;
+  }
+}

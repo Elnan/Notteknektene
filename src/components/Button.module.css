@@ -1,0 +1,73 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Funnel Sans", "Yanone Kaffeesatz", Arial, sans-serif;
+  font-weight: 700;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition:
+    box-shadow 0.18s,
+    transform 0.18s,
+    background 0.18s,
+    color 0.18s;
+  outline: none;
+  box-shadow: 0 2px 12px rgba(36, 92, 79, 0.08);
+  position: relative;
+  user-select: none;
+}
+
+.primary {
+  background: var(--color-green-bg);
+  color: white;
+  border: 2px solid var(--color-gold);
+}
+.primary:hover,
+.primary:focus,
+.secondary:hover,
+.secondary:focus,
+.logout:hover,
+.logout:focus {
+  transform: scale(1.04);
+}
+
+.primary:active,
+.secondary:active,
+.logout:active {
+  transform: scale(0.96);
+}
+
+.secondary {
+  background: #fff;
+  color: var(--color-green-bg);
+  border: 2px solid var(--color-gold);
+}
+
+.logout {
+  background: var(--color-red);
+  color: #fff;
+  border: 2px solid var(--color-gold);
+}
+.logout:hover,
+.logout:focus {
+  background: #a12b1a;
+}
+
+.large {
+  font-size: 1.18rem;
+  padding: 16px 40px;
+  min-width: 140px;
+}
+
+.small {
+  font-size: 1rem;
+  padding: 8px 20px;
+  min-width: 80px;
+}
+
+.button:focus-visible {
+  outline: 3px solid var(--color-gold);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--color-gold-light);
+}

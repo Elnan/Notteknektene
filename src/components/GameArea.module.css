@@ -1,0 +1,21 @@
+.gameArea {
+  width: 100%;
+  max-width: 150vw;
+  min-height: 600px;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-white);
+  border-radius: 0;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0 auto;
+}
+
+@media (max-width: 900px) {
+  .gameArea {
+    min-height: 400px;
+    padding: 0;
+  }
+}

@@ -1,0 +1,367 @@
+/*
+  All styles for Header component. The only inline style allowed in JSX is setting --caret-left for the caret's left position.
+  The dropdown's top is set to 48px to align just below the 40px avatar with an 8px gap.
+  The caret's top is set to -16px so the arrow tip aligns with the dropdown border.
+  The dropdown is shifted -12px to the left so the caret is well within the flat part of the border.
+*/
+
+@import url("https://fonts.googleapis.com/css2?family=Funnel+Sans:ital,wght@0,300..800;1,300..800&family=Yanone+Kaffeesatz:wght@200..700&display=swap");
+
+.header {
+  width: 80%;
+  margin: 32px auto 0 auto;
+  min-height: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+  background: linear-gradient(
+    135deg,
+    var(--color-green-bg),
+    var(--color-green)
+  );
+  box-shadow: 0 4px 32px rgba(30, 41, 59, 0.12);
+  border-radius: 32px;
+  position: relative;
+  z-index: 10000;
+  border: 1px solid var(--color-gold);
+}
+
+.nav {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+
+.navLink {
+  font-weight: 500;
+  color: var(--color-gold);
+  font-size: 18px;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-family: "Funnel Sans", Arial, sans-serif;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-gold);
+  letter-spacing: 1px;
+  text-align: center;
+  flex: 1;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  pointer-events: none;
+  text-transform: uppercase;
+  font-family: "Yanone Kaffeesatz", sans-serif;
+}
+
+.account {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--color-gold);
+  object-fit: cover;
+  background: #fff;
+  cursor: pointer;
+  z-index: 102;
+}
+
+.dropdown {
+  position: absolute;
+  top: 48px; /* 40px avatar + 8px gap */
+  right: -12px; /* shift left so caret is well within the flat border */
+  min-width: 180px;
+  background: var(--color-green);
+  border: 2px solid var(--color-gold);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(30, 41, 59, 0.18);
+  padding: 20px 0 12px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 9999;
+  gap: 8px;
+  opacity: 1;
+  transform: translateY(24px) scale(1);
+  transition:
+    opacity 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dropdownHidden {
+  opacity: 0;
+  transform: translateY(-12px) scale(0.98);
+  pointer-events: none;
+}
+
+.caret {
+  position: absolute;
+  top: -16px; /* 14px arrow + 2px border for perfect alignment */
+  left: var(--caret-left, 0);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 14px solid var(--color-gold);
+  z-index: 102;
+  transition: left 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logoutButton {
+  background: var(--color-gold);
+  color: var(--color-green);
+  border: none;
+  border-radius: 12px;
+  padding: 10px 32px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(30, 41, 59, 0.08);
+  margin-bottom: 4px;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--color-gold);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background 0.18s;
+  z-index: 1101;
+}
+.hamburger:active,
+.hamburger:focus {
+  background: #f8f6f2;
+  outline: 2px solid var(--color-gold);
+}
+
+.icon {
+  font-size: 1.2em;
+  margin-right: 6px;
+  color: var(--color-gold);
+  vertical-align: middle;
+}
+
+.linkText {
+  display: inline;
+  font-size: 1em;
+  font-family: "Funnel Sans", Arial, sans-serif;
+}
+
+.fullTitle {
+  display: inline;
+}
+.shortTitle {
+  display: none;
+}
+
+.countdown {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  margin-right: 24px;
+}
+
+.countdownLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-gold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: "Funnel Sans", Arial, sans-serif;
+}
+
+.countdownTime {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-gold);
+  font-family: "Yanone Kaffeesatz", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.adminLink {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  color: var(--color-gold);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-bottom: 1px solid rgba(161, 140, 61, 0.2);
+  transition: background-color 0.2s ease;
+}
+
+.adminLink:hover {
+  background: rgba(161, 140, 61, 0.1);
+  color: var(--color-gold);
+}
+
+.adminLink .icon {
+  font-size: 1rem;
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  color: var(--color-gold);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  border-bottom: 1px solid rgba(161, 140, 61, 0.2);
+  transition: background-color 0.2s ease;
+  font-family: "Funnel Sans", Arial, sans-serif;
+}
+
+.dropdownItem:hover {
+  background: rgba(161, 140, 61, 0.1);
+  color: var(--color-gold);
+}
+
+.dropdownItem .icon {
+  font-size: 1rem;
+}
+
+@media (max-width: 900px) {
+  .header {
+    width: 98vw;
+    padding: 0 12px;
+    min-width: 0;
+    margin: 16px auto 0 auto;
+    border-radius: 20px;
+  }
+  .title {
+    font-size: 22px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    position: absolute;
+    pointer-events: none;
+    text-align: center;
+  }
+  .nav {
+    gap: 12px;
+  }
+  .navLink {
+    font-size: 1em;
+    padding: 8px 10px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    color: var(--color-gold);
+    transition:
+      background 0.18s,
+      color 0.18s;
+    min-width: 0;
+    min-height: 40px;
+    font-weight: 500;
+  }
+  .icon {
+    font-size: 1.3em;
+    margin-right: 4px;
+  }
+  .linkText {
+    font-size: 1em;
+  }
+  .fullTitle {
+    display: none;
+  }
+  .shortTitle {
+    display: inline;
+    font-size: 1.1em;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--color-gold);
+    text-transform: uppercase;
+  }
+
+  .countdown {
+    margin-right: 16px;
+  }
+
+  .countdownLabel {
+    font-size: 12px;
+  }
+
+  .countdownTime {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    width: 100vw;
+    padding: 0 4px;
+    min-width: 0;
+    margin: 0;
+    border-radius: 0 0 16px 16px;
+    height: 48px;
+  }
+  .title {
+    font-size: 16px;
+  }
+  .navLink {
+    font-size: 0.95em;
+    padding: 6px 6px;
+    border-radius: 8px;
+    min-height: 36px;
+  }
+  .icon {
+    font-size: 1.1em;
+    margin-right: 2px;
+  }
+  .shortTitle {
+    font-size: 1em;
+  }
+
+  .countdown {
+    margin-right: 8px;
+  }
+
+  .countdownLabel {
+    font-size: 10px;
+  }
+
+  .countdownTime {
+    font-size: 14px;
+  }
+}
+
+/* Hide header completely on mobile devices */
+@media (max-width: 768px) {
+  .header {
+    display: none;
+  }
+}

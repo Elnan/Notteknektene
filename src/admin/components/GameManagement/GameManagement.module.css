@@ -1,0 +1,490 @@
+.gameManagement {
+  padding: 2rem;
+  font-family: "Funnel Sans", Arial, sans-serif;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  font-family: "Yanone Kaffeesatz", cursive;
+  color: var(--color-gold);
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.header p {
+  color: #718096;
+  font-size: 1.1rem;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  height: calc(100vh - 200px);
+}
+
+/* Games List */
+.gamesList {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  overflow-y: auto;
+}
+
+.gamesList h2 {
+  font-family: "Yanone Kaffeesatz", cursive;
+  color: var(--color-green);
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--color-gold);
+  padding-bottom: 0.5rem;
+}
+
+.gamesGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.gameCard {
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.gameCard:hover {
+  border-color: var(--color-gold);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.gameCard.selected {
+  border-color: var(--color-green);
+  background: linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+}
+
+.gameIcon {
+  font-size: 2rem;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.gameInfo {
+  flex: 1;
+}
+
+.gameInfo h3 {
+  font-family: "Yanone Kaffeesatz", cursive;
+  color: var(--color-green);
+  font-size: 1.3rem;
+  margin-bottom: 0.25rem;
+}
+
+.gameInfo p {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.gameMeta {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.gameType,
+.gameDifficulty {
+  background: var(--color-gold);
+  color: var(--color-green);
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.gameActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.addButton,
+.removeButton {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.addButton {
+  background: var(--color-green);
+  color: white;
+}
+
+.addButton:hover {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+.removeButton {
+  background: var(--color-red);
+  color: white;
+}
+
+.removeButton:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+}
+
+/* Game Details */
+.gameDetails {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  overflow-y: auto;
+}
+
+.gameHeader {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--color-gold);
+}
+
+.gameHeader h2 {
+  font-family: "Yanone Kaffeesatz", cursive;
+  color: var(--color-green);
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.gameStats {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.gameStats span {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Season Games */
+.seasonGames {
+  margin-bottom: 2rem;
+}
+
+.seasonGames h3 {
+  font-family: "Yanone Kaffeesatz", cursive;
+  color: var(--color-green);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.seasonGamesList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.seasonGameItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.gameOrder {
+  background: var(--color-gold);
+  color: var(--color-green);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.gameName {
+  flex: 1;
+  font-weight: 600;
+  color: var(--color-green);
+}
+
+.gameStatus {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.reorderButtons {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.reorderButton {
+  background: #e2e8f0;
+  border: none;
+  border-radius: 4px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.reorderButton:hover {
+  background: var(--color-gold);
+  color: var(--color-green);
+}
+
+.noGames {
+  text-align: center;
+  color: #64748b;
+  font-style: italic;
+  padding: 2rem;
+}
+
+/* Game Configuration */
+.gameConfig {
+  border-top: 2px solid var(--color-gold);
+  padding-top: 1.5rem;
+}
+
+.configHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.configHeader h3 {
+  font-family: "Yanone Kaffeesatz", cursive;
+  color: var(--color-green);
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.editButton,
+.saveButton,
+.cancelButton {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.editButton {
+  background: var(--color-gold);
+  color: var(--color-green);
+}
+
+.editButton:hover {
+  background: #f59e0b;
+  transform: translateY(-1px);
+}
+
+.configActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.saveButton {
+  background: var(--color-green);
+  color: white;
+}
+
+.saveButton:hover {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+.cancelButton {
+  background: #64748b;
+  color: white;
+}
+
+.cancelButton:hover {
+  background: #475569;
+  transform: translateY(-1px);
+}
+
+.configContent {
+  background: #1e293b;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.configEditor {
+  width: 100%;
+  min-height: 300px;
+  background: #1e293b;
+  color: #e2e8f0;
+  border: none;
+  padding: 1rem;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.configEditor:focus {
+  outline: none;
+}
+
+.configDisplay {
+  background: #1e293b;
+  color: #e2e8f0;
+  padding: 1rem;
+  margin: 0;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
+.configLoading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  color: #64748b;
+}
+
+.noConfig {
+  text-align: center;
+  color: #64748b;
+  font-style: italic;
+  padding: 2rem;
+}
+
+/* No Selection */
+.noSelection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  color: #64748b;
+}
+
+.noSelection h3 {
+  font-family: "Yanone Kaffeesatz", cursive;
+  color: var(--color-green);
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.noSelection p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* Loading */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 1rem;
+  color: #64748b;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e2e8f0;
+  border-top: 4px solid var(--color-gold);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .content {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .gameCard {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .gameActions {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .gameManagement {
+    padding: 1rem;
+  }
+
+  .header h1 {
+    font-size: 2rem;
+  }
+
+  .gameStats {
+    flex-direction: column;
+  }
+
+  .seasonGameItem {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+
+  .reorderButtons {
+    justify-content: center;
+  }
+}

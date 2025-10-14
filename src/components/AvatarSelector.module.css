@@ -1,0 +1,233 @@
+@import url("https://fonts.googleapis.com/css2?family=Funnel+Sans:ital,wght@0,300..800;1,300..800&family=Yanone+Kaffeesatz:wght@200..700&display=swap");
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal {
+  background: var(--color-white);
+  border-radius: 16px;
+  max-width: 90vw;
+  max-height: 90vh;
+  width: 800px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 2px solid var(--color-gold);
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  border-bottom: 2px solid var(--color-green-light);
+  background: var(--color-green-bg);
+}
+
+.header h2 {
+  margin: 0;
+  color: var(--color-gold);
+  font-family: "Yanone Kaffeesatz", sans-serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--color-gold);
+  cursor: pointer;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+  background: var(--color-gold-light);
+  transform: scale(1.1);
+}
+
+.content {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+}
+
+.currentAvatar {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: var(--color-green-light);
+  border-radius: 12px;
+  border: 1px solid rgba(46, 125, 79, 0.3);
+}
+
+.currentAvatar h3 {
+  margin: 0 0 15px 0;
+  color: var(--color-green);
+  font-family: "Yanone Kaffeesatz", sans-serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.currentAvatarImage {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid var(--color-gold);
+  object-fit: cover;
+  box-shadow: 0 4px 16px rgba(46, 125, 79, 0.3);
+}
+
+.avatarGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 15px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.avatarOption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--color-white);
+}
+
+.avatarOption:hover {
+  border-color: var(--color-green);
+  transform: scale(1.05);
+  box-shadow: 0 4px 16px rgba(46, 125, 79, 0.2);
+}
+
+.avatarOption.selected {
+  border-color: var(--color-gold);
+  background: var(--color-green-light);
+  transform: scale(1.05);
+  box-shadow: 0 4px 16px rgba(161, 140, 61, 0.3);
+}
+
+.avatarImage {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--color-green-light);
+  margin-bottom: 8px;
+  display: block;
+  background-color: #f0f0f0;
+}
+
+.avatarOption.selected .avatarImage {
+  border-color: var(--color-gold);
+}
+
+.avatarName {
+  font-size: 0.7rem;
+  color: var(--color-green);
+  text-align: center;
+  line-height: 1.2;
+  font-weight: 500;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  padding: 20px 30px;
+  border-top: 2px solid var(--color-green-light);
+  background: var(--color-green-bg);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .modal {
+    width: 95vw;
+    max-height: 95vh;
+  }
+
+  .header {
+    padding: 15px 20px;
+  }
+
+  .header h2 {
+    font-size: 1.4rem;
+  }
+
+  .content {
+    padding: 20px;
+  }
+
+  .avatarGrid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+  }
+
+  .avatarImage {
+    width: 50px;
+    height: 50px;
+  }
+
+  .avatarName {
+    font-size: 0.6rem;
+  }
+
+  .footer {
+    padding: 15px 20px;
+    flex-direction: column;
+  }
+
+  .cancelButton,
+  .saveButton {
+    width: 100%;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .avatarGrid {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 8px;
+  }
+
+  .avatarImage {
+    width: 40px;
+    height: 40px;
+  }
+
+  .avatarName {
+    font-size: 0.5rem;
+  }
+}

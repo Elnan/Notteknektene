@@ -1,0 +1,703 @@
+.patternMatrixWrapper {
+  width: 100%;
+  min-height: 100vh;
+  /* margin-bottom: 50px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-white);
+}
+
+.gridWrapper {
+  margin: 0 auto;
+  margin-bottom: 40px;
+  display: grid;
+  grid-template-columns: repeat(3, 64px);
+  gap: 16px;
+  justify-items: center;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.mainInputWrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.buttonRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 420px;
+  margin: 0 auto;
+  gap: 56px;
+}
+
+.figureWrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 40px);
+  grid-template-rows: repeat(3, 40px);
+  gap: 4px;
+  width: 140px;
+  height: 140px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.figurePiece {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--color-white);
+  border: 2px solid var(--color-black);
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.figureSquare {
+  border-radius: 8px;
+  box-shadow: 0 1px 2px #0001;
+}
+
+.figureCircle {
+  border-radius: 50%;
+  box-shadow: 0 2px 4px #0002;
+}
+
+.figurePiece:hover {
+  box-shadow: 0 0 0 3px var(--color-green-bg) 33;
+}
+
+.primary {
+  background: var(--color-green-bg);
+}
+.secondary {
+  background: var(--color-gold);
+}
+
+.roundButton {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--color-green-bg);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: var(--color-gold);
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
+  box-shadow: 0 2px 8px #0001;
+  margin: 0 24px;
+}
+.roundButton:hover {
+  background: var(--color-gold);
+  color: var(--color-green-bg);
+}
+.roundButtonIcon {
+  font-size: 2.25rem;
+  pointer-events: none;
+}
+
+.underlineButton {
+  background: none;
+  border: none;
+  color: var(--color-green-bg);
+  font-size: 1.25rem;
+  text-decoration: underline;
+  cursor: pointer;
+  margin: 0 16px;
+  padding: 0;
+  transition: color 0.2s;
+}
+.underlineButton:hover {
+  color: var(--color-gold);
+}
+
+/* Timer and pause/play */
+.timerRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  margin-top: 8px;
+}
+
+.timerPill {
+  background: var(--color-white);
+  border-radius: 18px;
+  box-shadow: 0 2px 8px #0001;
+  min-width: 90px;
+  padding: 6px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-weight: 700;
+  font-size: 1.7rem;
+  color: var(--color-green-bg);
+  border: none;
+  margin: 0;
+  z-index: 1;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition:
+    min-width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    padding 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-left: 0;
+}
+.timerPill-expanded {
+  min-width: 180px;
+}
+
+.timerLeftGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.timerPill-expanded .timerLeftGroup {
+  gap: 2px;
+}
+
+.timerIcon {
+  font-size: 1.5rem;
+  color: var(--color-gold);
+  margin-right: 12px;
+  flex-shrink: 0;
+  transition: color 0.2s;
+  user-select: none;
+}
+
+.timerPillText {
+  font-weight: 700;
+  font-size: 1.7rem;
+  color: var(--color-green-bg);
+  white-space: nowrap;
+  margin-left: auto;
+  margin-right: 0;
+  flex-shrink: 0;
+  flex-grow: 0;
+  text-align: center;
+  width: auto;
+  transition: margin-left 0.3s;
+}
+
+.timer {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--color-green-bg);
+  background: var(--color-white);
+  border-radius: 12px;
+  padding: 6px 18px;
+  box-shadow: 0 2px 8px #0001;
+  min-width: 60px;
+  text-align: center;
+}
+
+.pausesInTextPill {
+  font-size: 1.1rem;
+  color: var(--color-gold);
+  margin-right: 8px;
+  opacity: 0;
+  display: inline-block;
+  white-space: nowrap;
+  transform: translateX(100%);
+  transition:
+    opacity 0.3s,
+    transform 0.3s;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+.pausesInTextPill-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+.pausesInTextPill-out {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+/* Larger for main input */
+.inputFigure {
+  width: 220px;
+  height: 220px;
+  grid-template-columns: repeat(3, 64px);
+  grid-template-rows: repeat(3, 64px);
+}
+
+/* Rules page styles */
+.rulesWrapper {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-white);
+  padding: 2rem 1rem;
+}
+
+.rulesContent {
+  max-width: 600px;
+  width: 100%;
+  background: var(--color-white);
+  border-radius: 16px;
+  border: 2px solid var(--color-gold);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.rulesTitle {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: var(--color-gold);
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: "Yanone Kaffeesatz", sans-serif;
+}
+
+.rulesSection {
+  margin-bottom: 2.5rem;
+  text-align: left;
+}
+
+.rulesSubtitle {
+  color: var(--color-green-bg);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.rulesText {
+  color: var(--color-black);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.rulesList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.rulesItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--color-white);
+  border-radius: 12px;
+  border: 2px solid var(--color-green-light);
+  transition: all 0.2s;
+}
+
+.rulesItem:hover {
+  border-color: var(--color-gold);
+  box-shadow: 0 2px 8px rgba(161, 140, 61, 0.2);
+}
+
+.rulesIcon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+}
+
+.rulesItem > div {
+  color: var(--color-black);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.tipsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tipItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  color: var(--color-black);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.tipBullet {
+  color: var(--color-gold);
+  font-weight: bold;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.startButton {
+  background: var(--color-green-bg);
+  color: var(--color-gold);
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 0 auto;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.startButton:hover {
+  background: var(--color-gold);
+  color: var(--color-green-bg);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.startButtonText {
+  font-weight: 600;
+}
+
+.startButtonIcon {
+  font-size: 1.1rem;
+  transition: transform 0.2s;
+}
+
+.startButton:hover .startButtonIcon {
+  transform: translateX(4px);
+}
+
+/* Responsive for mobile */
+@media (max-width: 600px) {
+  .patternMatrixWrapper {
+    min-height: 100vh;
+    padding: 0 4vw;
+  }
+  .figureWrapper {
+    width: 90vw;
+    height: 90vw;
+    max-width: 220px;
+    max-height: 220px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+  }
+  .figurePiece {
+    width: 1fr;
+    height: 1fr;
+    min-width: 0;
+    min-height: 0;
+  }
+  .inputFigure {
+    width: 98vw;
+    height: 98vw;
+    max-width: 320px;
+    max-height: 320px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+  }
+  .buttonRow {
+    width: 98vw;
+    min-width: 0;
+    gap: 16px;
+  }
+  .roundButton {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+  }
+  .timerRow {
+    margin-bottom: 8px;
+    gap: 8px;
+  }
+}
+
+/* Pause overlay styles */
+.pauseOverlayBg {
+  position: fixed;
+  inset: 0;
+  background: rgba(248, 237, 227, 0.98);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pauseOverlayCard {
+  background: var(--color-white);
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  padding: 3rem 2.5rem 2.5rem 2.5rem;
+  max-width: 400px;
+  width: 90vw;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pauseTitle {
+  color: var(--color-green-bg);
+  font-size: 2.1rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.pauseText {
+  color: var(--color-black);
+  font-size: 1.15rem;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+}
+
+.resumeButton {
+  background: var(--color-green-bg);
+  color: var(--color-gold);
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 2.2rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 0 auto;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.resumeButton:hover {
+  background: var(--color-gold);
+  color: var(--color-green-bg);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+.resumeButtonIcon {
+  font-size: 1.1rem;
+  transition: transform 0.2s;
+}
+.resumeButton:hover .resumeButtonIcon {
+  transform: translateX(4px);
+}
+
+/* Practice feedback grid styles */
+.feedbackGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 1.5rem 0;
+  background: var(--color-white);
+  padding: 1rem;
+  border-radius: 12px;
+  border: 2px solid var(--color-gold);
+  max-width: 200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.feedbackGridRow {
+  display: contents;
+}
+
+.feedbackGridCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-gold-light);
+  border-radius: 8px;
+  padding: 4px;
+  min-height: 48px;
+}
+
+/* Explanation box styles */
+.explanationBox {
+  background: var(--color-white);
+  border: 2px solid var(--color-gold);
+  border-radius: 12px;
+  padding: 1rem;
+  margin: 1rem 0;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.explanationBox h4 {
+  color: var(--color-green-bg);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.explanationBox p {
+  color: var(--color-black);
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin: 0;
+  text-align: center;
+}
+
+/* Review section styles */
+.reviewSection {
+  margin: 2rem 0;
+}
+.reviewRound {
+  margin-bottom: 16px;
+}
+.reviewRow {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.reviewLabel {
+  font-size: 12px;
+  color: var(--color-black);
+  margin-bottom: 2px;
+}
+.reviewResult {
+  align-self: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.reviewResult.correct {
+  color: var(--color-green);
+}
+.reviewResult.incorrect {
+  color: var(--color-red);
+}
+
+.roundTitle {
+  font-weight: 600;
+  font-size: 1.25rem;
+  text-align: center;
+  margin-bottom: 8px;
+  color: var(--color-green-bg);
+}
+.roundSubtitle {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 24px;
+}
+
+/* Game over review grid styles */
+.reviewGridOuter {
+  width: 100vw;
+  max-width: 100vw;
+  overflow-x: auto;
+  padding-left: 2vw;
+  padding-right: 2vw;
+  box-sizing: border-box;
+}
+
+.reviewGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2.5rem 2rem;
+  margin: 2.5rem 0 0 0;
+  width: 100%;
+  max-width: 1400px;
+  padding-bottom: 50px;
+}
+.reviewGridItem {
+  background: var(--color-white);
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  padding: 1.5rem 1rem 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 260px;
+}
+.reviewGridItemContent {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+}
+.reviewGridPattern {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+  align-items: center;
+}
+.reviewGridPatternRow {
+  display: flex;
+  gap: 0.25rem;
+}
+.reviewGridUserCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 70px;
+}
+.reviewGridUserLabel {
+  font-size: 0.95rem;
+  color: var(--color-black);
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+.reviewGridUserFigure {
+  margin-bottom: 0.5rem;
+}
+.reviewGridFigure {
+  border-radius: 8px;
+  background: none;
+  box-shadow: none;
+  padding: 0;
+  position: relative;
+}
+.reviewGridFigure--missing {
+  box-shadow: 0 0 0 3px var(--color-gold);
+  z-index: 1;
+}
+.reviewGridFigure--userCorrect {
+  box-shadow: 0 0 0 3px var(--color-green);
+  z-index: 2;
+}
+.reviewGridFigure--userIncorrect {
+  box-shadow: 0 0 0 3px var(--color-red);
+  z-index: 2;
+}
+.reviewGridLabel {
+  font-size: 0.95rem;
+  color: var(--color-black);
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+@media (max-width: 700px) {
+  .reviewGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .reviewGridItem {
+    padding: 1rem 0.5rem;
+  }
+  .reviewGridItemContent {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+  .reviewGridUserCol {
+    min-width: 0;
+  }
+}

@@ -1,0 +1,720 @@
+.container {
+  width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: "Funnel Sans", Arial, sans-serif;
+  background: transparent;
+  min-height: 100vh;
+  color: var(--color-black);
+}
+
+.title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: var(--color-gold);
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: "Yanone Kaffeesatz", sans-serif;
+}
+
+.gameArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  background: linear-gradient(
+    135deg,
+    var(--color-green-bg),
+    var(--color-green)
+  );
+  padding: 30px;
+  border-radius: 32px;
+  border: 1px solid var(--color-gold);
+  box-shadow: 0 4px 32px rgba(30, 41, 59, 0.12);
+  position: relative;
+}
+
+.symbolSelector {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.symbolButton {
+  width: 60px;
+  height: 60px;
+  border: 2px solid var(--color-gold);
+  background: var(--color-white);
+  color: var(--color-green);
+  font-size: 2rem;
+  font-weight: bold;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.symbolButton:hover {
+  background: var(--color-gold-light);
+  border-color: var(--color-gold);
+  transform: translateY(-2px);
+}
+
+.symbolButton.selected {
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+  color: var(--color-green);
+  box-shadow: 0 2px 8px rgba(30, 41, 59, 0.08);
+}
+
+.board {
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+  gap: 5px;
+  background: var(--color-white);
+  padding: 20px;
+  border-radius: 16px;
+  border: 2px solid var(--color-gold);
+  box-shadow: 0 4px 20px rgba(30, 41, 59, 0.12);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 5px;
+}
+
+.cell {
+  width: 60px;
+  height: 60px;
+  border: 2px solid var(--color-gold);
+  background: var(--color-white);
+  color: var(--color-green);
+  font-size: 1.8rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cell:hover:not(:disabled) {
+  background: var(--color-gold-light);
+  border-color: var(--color-gold);
+  transform: scale(1.05);
+}
+
+.cell:disabled {
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.cell.cursor {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 15px rgba(161, 140, 61, 0.6);
+  background: var(--color-gold-light);
+}
+
+.scoreDisplay {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: center;
+  background: linear-gradient(
+    135deg,
+    var(--color-green-bg),
+    var(--color-green)
+  );
+  padding: 20px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  text-align: center;
+  border: 1px solid var(--color-gold);
+  box-shadow: 0 4px 32px rgba(30, 41, 59, 0.12);
+}
+
+.playerInfo,
+.objective {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--color-gold);
+  font-family: "Yanone Kaffeesatz", sans-serif;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.scoreCenter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.roundInfo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--color-gold);
+  text-align: center;
+  font-family: "Yanone Kaffeesatz", sans-serif;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.scores {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.roundScore {
+  background: var(--color-white);
+  color: var(--color-green);
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-weight: bold;
+  min-width: 60px;
+  border: 1px solid var(--color-gold);
+}
+
+.totalScore {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--color-gold);
+}
+
+.gameStatus {
+  text-align: center;
+  background: var(--color-white);
+  color: var(--color-black);
+  padding: 20px;
+  border-radius: 16px;
+  margin-top: 20px;
+  border: 1px solid var(--color-gold);
+}
+
+.gameStatus p {
+  margin: 5px 0;
+  font-size: 1.1rem;
+}
+
+.gameOver {
+  text-align: center;
+  background: var(--color-white);
+  color: var(--color-black);
+  padding: 30px;
+  border-radius: 16px;
+  margin-top: 20px;
+  animation: fadeIn 0.5s ease;
+  border: 1px solid var(--color-gold);
+}
+
+.gameOver h2 {
+  color: var(--color-gold);
+  margin-bottom: 15px;
+  font-size: 2rem;
+}
+
+.gameCompleted {
+  text-align: center;
+  background: var(--color-white);
+  color: var(--color-black);
+  padding: 40px;
+  border-radius: 16px;
+  margin-top: 20px;
+  animation: fadeIn 0.5s ease;
+  border: 1px solid var(--color-gold);
+}
+
+.gameCompleted h2 {
+  color: var(--color-gold);
+  margin-bottom: 20px;
+  font-size: 2.5rem;
+}
+
+.gameCompleted p {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+}
+
+.restartButton {
+  background: var(--color-gold);
+  color: var(--color-green);
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(30, 41, 59, 0.08);
+}
+
+.restartButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.controlsInfo {
+  background: var(--color-white);
+  color: var(--color-black);
+  padding: 20px;
+  border-radius: 16px;
+  margin-top: 20px;
+}
+
+.controlsInfo h3 {
+  margin-bottom: 15px;
+  color: var(--color-gold);
+  text-align: center;
+}
+
+.controlsGrid {
+  display: grid;
+  gap: 10px;
+}
+
+.controlsGrid div {
+  color: var(--color-green-bg);
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+
+  .gameArea {
+    padding: 20px;
+    position: relative;
+  }
+
+  .cell {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+
+  .symbolButton {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+
+  .scores {
+    align-items: center;
+    gap: 5px;
+  }
+
+  .controlsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Hide controls on mobile */
+  .controlsInfo {
+    display: none;
+  }
+
+  /* Mobile controls row layout */
+  .mobileControlsRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  /* Reposition instructions button and symbol selector for mobile */
+  .hintButtonContainer {
+    position: static;
+    top: 15px;
+    left: auto;
+    margin-bottom: 0;
+    display: flex;
+    justify-content: flex-start;
+    flex: 0 0 auto;
+  }
+
+  .symbolSelector {
+    justify-content: flex-end;
+    margin-bottom: 0;
+    flex: 0 0 auto;
+    margin-left: auto;
+    align-self: flex-end;
+  }
+
+  /* Adjust score display for mobile - maintain 3-column layout */
+  .scoreDisplay {
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 10px;
+    padding: 15px;
+  }
+
+  .playerInfo,
+  .objective {
+    font-size: 1.2rem;
+  }
+
+  .roundInfo {
+    font-size: 1.1rem;
+  }
+
+  .totalScore {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 8px;
+  }
+
+  .title {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+  }
+
+  .gameArea {
+    padding: 15px;
+  }
+
+  .cell {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+
+  .symbolButton {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+
+  .board {
+    padding: 15px;
+    gap: 3px;
+  }
+
+  .row {
+    gap: 3px;
+  }
+
+  .symbolSelector {
+    gap: 10px;
+    margin-bottom: 0;
+    justify-content: flex-end;
+    margin-left: auto;
+  }
+
+  .scoreDisplay {
+    padding: 12px;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 8px;
+  }
+
+  .roundScore {
+    padding: 6px 10px;
+    font-size: 0.9rem;
+    min-width: 50px;
+  }
+}
+
+.resultWin {
+  color: var(--color-green);
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.resultLose {
+  color: var(--color-red);
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.resultNeutral {
+  color: var(--color-gold);
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.resultModalOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.resultModalBadge {
+  min-width: 180px;
+  max-width: 90vw;
+  padding: 18px 32px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  pointer-events: none;
+  z-index: 1001;
+}
+
+.summaryWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 24px;
+}
+
+.summaryTitle {
+  font-size: 2rem;
+  color: var(--color-gold);
+  font-family: "Yanone Kaffeesatz", sans-serif;
+  margin-bottom: 24px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.summaryBoards {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.boardSnapshotWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.boardSnapshot {
+  position: relative;
+  background: var(--color-white);
+  border: 2px solid var(--color-gold);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(30, 41, 59, 0.1);
+  padding: 12px;
+  margin-bottom: 8px;
+  min-width: 220px;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.snapshotBadge {
+  position: static;
+  left: unset;
+  top: unset;
+  transform: none;
+  z-index: 2;
+  font-size: 1.2rem;
+  padding: 10px 18px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.summaryScore {
+  font-size: 1.5rem;
+  color: var(--color-gold);
+  font-family: "Yanone Kaffeesatz", sans-serif;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 12px;
+}
+
+/* Hint System Styles */
+.hintButtonContainer {
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  z-index: 100;
+}
+
+.hintButtonUsed {
+  background: #ddd;
+  color: var(--color-green-bg);
+  cursor: default;
+  border: 1px solid var(--color-gold);
+}
+
+.hintButtonUsed:hover {
+  transform: none;
+  background: #ddd;
+}
+
+.penaltyText {
+  font-size: 0.8rem;
+  color: #dc3545;
+  font-style: italic;
+  line-height: 1;
+  margin-left: 8px;
+}
+
+.modalButtons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.hintContent {
+  line-height: 1.6;
+}
+
+.hintContent h4 {
+  color: var(--color-gold);
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  font-family: "Yanone Kaffeesatz", sans-serif;
+  text-transform: uppercase;
+}
+
+.hintContent p {
+  margin-bottom: 15px;
+  color: var(--color-black);
+}
+
+.hintContent ul {
+  margin-bottom: 15px;
+  padding-left: 20px;
+}
+
+.hintContent li {
+  margin-bottom: 10px;
+  color: var(--color-black);
+}
+
+.hintContent strong {
+  color: var(--color-gold);
+}
+
+/* Mobile-specific styles for game summary */
+@media (max-width: 768px) {
+  .summaryBoards {
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    width: 100%;
+    padding: 0 10px;
+  }
+
+  .boardSnapshotWrapper {
+    width: 100%;
+    max-width: 300px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+
+  .boardSnapshotWrapper:hover {
+    transform: scale(1.02);
+  }
+
+  .boardSnapshot {
+    min-width: unset;
+    min-height: unset;
+    width: 100%;
+    height: auto;
+    padding: 8px;
+    border-radius: 8px;
+  }
+
+  .boardSnapshot .row {
+    display: flex;
+    justify-content: center;
+  }
+
+  .boardSnapshot .cell {
+    width: 20px;
+    height: 20px;
+    font-size: 0.8rem;
+    border-radius: 4px;
+  }
+
+  .snapshotBadge {
+    font-size: 1rem;
+    padding: 8px 12px;
+    margin-top: 8px;
+  }
+
+  .boardSnapshotWrapper.enlarged {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    width: 90vw;
+    max-width: 400px;
+    background: var(--color-white);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+  }
+
+  .boardSnapshotWrapper.enlarged .boardSnapshot {
+    min-width: 300px;
+    min-height: 300px;
+    padding: 16px;
+  }
+
+  .boardSnapshotWrapper.enlarged .cell {
+    width: 30px;
+    height: 30px;
+    font-size: 1.2rem;
+  }
+}

@@ -1,0 +1,463 @@
+.theKeeperWrapper {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-white);
+  padding: 20px;
+}
+
+/* Game Screen */
+.gameHeader {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.gameHeader h2 {
+  color: var(--color-gold);
+  font-family: "Yanone Kaffeesatz", sans-serif;
+  margin-bottom: 8px;
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.stats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-green-bg);
+}
+
+.controls {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--color-gold);
+  font-style: italic;
+}
+
+.warning {
+  color: var(--color-red);
+  font-weight: bold;
+  animation: pulse 1s infinite;
+}
+
+.boardWrapper {
+  margin-bottom: 32px;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(10, 50px);
+  grid-template-rows: repeat(10, 50px);
+  gap: 2px;
+  background: var(--color-green-bg);
+  padding: 8px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.cell {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  font-size: 1.2rem;
+}
+
+.cell:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 0 3px var(--color-green-bg);
+}
+
+.empty {
+  background: var(--color-white);
+  border: 2px solid var(--color-gold);
+}
+
+.obstacle {
+  background: linear-gradient(
+    135deg,
+    var(--color-green-bg),
+    var(--color-green)
+  );
+  cursor: not-allowed;
+}
+
+.obstacle:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.player {
+  background: var(--color-gold);
+  border: 2px solid var(--color-green);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.keeper {
+  background: var(--color-red);
+  border: 2px solid var(--color-red-light);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.visited {
+  background: var(--color-gold-light);
+  border: 2px solid var(--color-gold);
+}
+
+.exit {
+  background: var(--color-gold-light);
+  border: 2px solid var(--color-gold);
+  border-right: none;
+  border-bottom: none;
+  animation: exitGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes exitGlow {
+  from {
+    box-shadow: 0 0 5px var(--color-gold);
+  }
+  to {
+    box-shadow:
+      0 0 15px var(--color-gold),
+      0 0 25px var(--color-gold);
+  }
+}
+
+.pressurePlate {
+  background-color: var(--color-green-light);
+  border: 2px solid var(--color-green);
+  position: relative;
+}
+
+.activatedPlate {
+  background-color: var(--color-gold-light);
+  border: 2px solid var(--color-gold);
+  animation: pulse 1s infinite;
+}
+
+.pressurePlateLabel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5em;
+  font-weight: bold;
+  color: var(--color-black);
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.glowing {
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+.corneredKeeper {
+  animation: corneredGlow 1s ease-in-out infinite alternate;
+  box-shadow:
+    0 0 20px #4444ff,
+    0 0 30px #0066ff;
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 5px currentColor;
+  }
+  to {
+    box-shadow:
+      0 0 15px currentColor,
+      0 0 25px currentColor;
+  }
+}
+
+@keyframes corneredGlow {
+  from {
+    box-shadow:
+      0 0 15px #4444ff,
+      0 0 25px #0066ff,
+      0 0 35px #0044cc;
+  }
+  to {
+    box-shadow:
+      0 0 25px #4444ff,
+      0 0 35px #0066ff,
+      0 0 45px #0044cc;
+  }
+}
+
+.playerIcon,
+.keeperIcon,
+.exitIcon {
+  font-size: 2rem;
+  pointer-events: none;
+}
+
+/* Game Controls */
+.gameControls {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.buttonRow {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 32px;
+}
+
+/* End Screen */
+.endScreen {
+  text-align: center;
+  background: var(--color-white);
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+}
+
+.endScreen h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-green-bg);
+  margin-bottom: 16px;
+}
+
+.endScreen p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: var(--color-black);
+  margin-bottom: 32px;
+}
+
+/* Mobile Directional Pad */
+.mobileControls {
+  margin: 12px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.directionalPad {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 2px;
+  background: var(--color-green-bg);
+  padding: 6px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.dPadRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  height: 35px;
+}
+
+.dPadButton {
+  background: var(--color-white);
+  border: 1px solid var(--color-gold);
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--color-green-bg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 35px;
+  min-height: 35px;
+  user-select: none;
+}
+
+.dPadButton:hover {
+  background: var(--color-gold-light);
+  transform: scale(1.05);
+}
+
+.dPadButton:active {
+  transform: scale(0.95);
+  background: var(--color-gold);
+  color: white;
+}
+
+.dPadCenter {
+  background: var(--color-gold-light);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  color: var(--color-green-bg);
+  font-weight: bold;
+}
+
+/* Mobile Layout Adjustments */
+.mobileLayout .gameControls {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 300px;
+  margin: 16px auto;
+}
+
+.mobileLayout .stats {
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto 16px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .theKeeperWrapper {
+    padding: 8px;
+    min-height: 100vh;
+  }
+
+  .gameHeader {
+    margin-bottom: 16px;
+  }
+
+  .boardWrapper {
+    margin-bottom: 16px;
+  }
+
+  .board {
+    grid-template-columns: repeat(10, 35px);
+    grid-template-rows: repeat(10, 35px);
+    gap: 1px;
+    padding: 3px;
+  }
+
+  .cell {
+    width: 35px;
+    height: 35px;
+    font-size: 0.9rem;
+  }
+
+  .playerIcon,
+  .keeperIcon,
+  .goalIcon,
+  .goalCellIcon {
+    font-size: 1.3rem;
+  }
+
+  .gameControls {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 280px;
+    margin: 12px auto 0;
+  }
+
+  .stats {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto 12px;
+    font-size: 1rem;
+  }
+
+  .gameHeader h2 {
+    font-size: 1.8rem;
+    margin-bottom: 6px;
+  }
+
+  .controls {
+    font-size: 0.75rem;
+    margin-top: 2px;
+  }
+}
+
+@media (max-width: 480px) {
+  .theKeeperWrapper {
+    padding: 6px;
+  }
+
+  .gameHeader {
+    margin-bottom: 12px;
+  }
+
+  .boardWrapper {
+    margin-bottom: 12px;
+  }
+
+  .mobileControls {
+    margin: 8px 0;
+  }
+
+  .directionalPad {
+    padding: 4px;
+    gap: 1px;
+  }
+
+  .dPadRow {
+    height: 30px;
+    gap: 1px;
+  }
+
+  .dPadButton {
+    min-width: 30px;
+    min-height: 30px;
+    font-size: 1rem;
+  }
+
+  .board {
+    grid-template-columns: repeat(10, 28px);
+    grid-template-rows: repeat(10, 28px);
+  }
+
+  .cell {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+  }
+
+  .playerIcon,
+  .keeperIcon,
+  .goalIcon,
+  .goalCellIcon {
+    font-size: 1.1rem;
+  }
+
+  .gameHeader h2 {
+    font-size: 1.6rem;
+  }
+
+  .stats {
+    font-size: 0.9rem;
+    margin: 0 auto 8px;
+  }
+
+  .gameControls {
+    margin: 8px auto 0;
+  }
+}

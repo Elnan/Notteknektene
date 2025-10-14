@@ -1,0 +1,223 @@
+@import url("https://fonts.googleapis.com/css2?family=Funnel+Sans:ital,wght@0,300..800;1,300..800&family=Yanone+Kaffeesatz:wght@200..700&display=swap");
+
+.adminLayout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--color-white);
+  font-family: "Funnel Sans", Arial, sans-serif;
+}
+
+.mainContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  transition: margin-left 0.3s ease;
+  margin-left: 280px;
+}
+
+.sidebarClosed {
+  margin-left: 80px;
+}
+
+.header {
+  background: linear-gradient(
+    135deg,
+    var(--color-green-bg),
+    var(--color-green)
+  );
+  border-bottom: 2px solid var(--color-gold);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 4px 32px rgba(30, 41, 59, 0.12);
+}
+
+.headerContent {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headerContent h1 {
+  margin: 0;
+  color: var(--color-gold);
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: "Yanone Kaffeesatz", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.userInfo {
+  color: var(--color-gold);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .mainContent {
+    margin-left: 0;
+  }
+
+  .sidebarClosed {
+    margin-left: 0;
+  }
+
+  .header {
+    padding: 1rem;
+  }
+
+  .content {
+    padding: 1rem;
+  }
+}
+
+/* Loading */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: #718096;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e2e8f0;
+  border-top: 4px solid #4299e1;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Authentication Prompt */
+.authPrompt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--color-white);
+  padding: 2rem;
+}
+
+.authCard {
+  background: linear-gradient(
+    135deg,
+    var(--color-green-bg),
+    var(--color-green)
+  );
+  border: 2px solid var(--color-gold);
+  border-radius: 32px;
+  padding: 2rem;
+  box-shadow: 0 4px 32px rgba(30, 41, 59, 0.12);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.authCard h2 {
+  margin: 0 0 1rem 0;
+  color: var(--color-gold);
+  font-size: 1.8rem;
+  font-weight: 700;
+  font-family: "Yanone Kaffeesatz", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.authCard p {
+  margin: 0.5rem 0;
+  color: var(--color-gold);
+  font-weight: 500;
+}
+
+.authButtons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  justify-content: center;
+}
+
+.loginButton,
+.registerButton,
+.backButton {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.loginButton {
+  background: var(--color-gold);
+  color: var(--color-green);
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(30, 41, 59, 0.08);
+}
+
+.loginButton:hover {
+  background: var(--color-gold-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(30, 41, 59, 0.12);
+}
+
+.registerButton {
+  background: var(--color-gold);
+  color: var(--color-green);
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(30, 41, 59, 0.08);
+}
+
+.registerButton:hover {
+  background: var(--color-gold-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(30, 41, 59, 0.12);
+}
+
+.backButton {
+  background: var(--color-red);
+  color: var(--color-white);
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(30, 41, 59, 0.08);
+}
+
+.backButton:hover {
+  background: var(--color-red-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(30, 41, 59, 0.12);
+}

@@ -1,0 +1,378 @@
+/* Mini-game Layout */
+.minigame {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(36, 92, 79, 0.1);
+  border: 2px solid var(--color-gold);
+  margin-bottom: 20px;
+}
+
+.minigameHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid var(--color-gold);
+}
+
+.minigameHeader h3 {
+  color: var(--color-green-bg);
+  font-size: 2rem;
+  margin: 0;
+}
+
+.whenWhereQuestion {
+  color: var(--color-green-bg);
+  font-size: 1.2rem;
+  margin: 0;
+  font-weight: 600;
+  text-align: center;
+  flex: 1;
+  padding: 0 20px;
+}
+
+/* Header buttons layout */
+.headerButtons {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+/* When/Where Game Specific Styles */
+.whenWhereGame {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.imageSection {
+  text-align: center;
+}
+
+.artifactImage {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.artifactImg {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 3px solid var(--color-gold);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.artifactImg:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.imageOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 10px;
+  border-radius: 0 0 9px 9px;
+  font-size: 0.9rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.artifactImage:hover .imageOverlay {
+  opacity: 1;
+}
+
+.inputSection {
+  padding: 20px 0;
+}
+
+.inputGroup {
+  margin-bottom: 25px;
+}
+
+.inputLabel {
+  display: block;
+  color: var(--color-green-bg);
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.yearInput {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid var(--color-gold);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: "Funnel Sans", "Yanone Kaffeesatz", Arial, sans-serif;
+  background: white;
+  color: var(--color-green-bg);
+  font-weight: 500;
+}
+
+.yearInput:focus {
+  outline: none;
+  border-color: var(--color-green-bg);
+  box-shadow: 0 0 0 3px rgba(36, 92, 79, 0.1);
+}
+
+.countryInputContainer {
+  position: relative;
+}
+
+.countryInput {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid var(--color-gold);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: "Funnel Sans", "Yanone Kaffeesatz", Arial, sans-serif;
+  background: white;
+  color: var(--color-green-bg);
+  font-weight: 500;
+}
+
+.countryInput:focus {
+  outline: none;
+  border-color: var(--color-green-bg);
+  box-shadow: 0 0 0 3px rgba(36, 92, 79, 0.1);
+}
+
+.countryDropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 2px solid var(--color-gold);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.countryOption {
+  padding: 12px 15px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid #eee;
+  font-family: "Funnel Sans", "Yanone Kaffeesatz", Arial, sans-serif;
+  color: var(--color-green-bg);
+}
+
+.countryOption:hover {
+  background: rgba(36, 92, 79, 0.1);
+}
+
+.countryOption:last-child {
+  border-bottom: none;
+}
+
+.submitButton {
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Results Styles */
+.whenWhereResults {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px;
+}
+
+.whenWhereResults h3 {
+  color: var(--color-green-bg);
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+.whenWhereSuccess {
+  background: rgba(76, 175, 80, 0.1);
+  border: 2px solid #4caf50;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 20px;
+}
+
+.whenWhereSuccess h4 {
+  color: #4caf50;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.whenWhereFailure {
+  background: rgba(244, 67, 54, 0.1);
+  border: 2px solid #f44336;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 20px;
+}
+
+.whenWhereFailure h4 {
+  color: #f44336;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.resultBreakdown {
+  text-align: left;
+  margin: 15px 0;
+}
+
+.resultBreakdown p {
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+}
+
+/* Hint penalty styling */
+.hintPenalty {
+  font-size: 0.9em;
+  color: #dc3545;
+  margin-top: 5px;
+  font-style: italic;
+}
+
+/* Hint display in game area */
+.hintDisplay {
+  background: rgba(36, 92, 79, 0.1);
+  border: 2px solid var(--color-gold);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 25px 0;
+}
+
+.hintDisplay h4 {
+  color: var(--color-green-bg);
+  margin: 0 0 15px 0;
+  font-size: 1.2rem;
+}
+
+.hintDisplay p {
+  margin: 0;
+  color: var(--color-green-bg);
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* Results screen styles */
+.scoreBreakdown {
+  background: rgba(36, 92, 79, 0.1);
+  border: 2px solid var(--color-gold);
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 20px;
+}
+
+.resultBreakdown p {
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  color: var(--color-green-bg);
+}
+
+.correct {
+  color: #4caf50;
+  font-weight: 600;
+}
+
+.incorrect {
+  color: #f44336;
+  font-weight: 600;
+}
+
+.answerReveal {
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 20px;
+  border: 1px solid var(--color-gold);
+}
+
+.answerReveal p {
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+.finalScore {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid var(--color-gold);
+  text-align: center;
+}
+
+.finalScore p {
+  font-size: 1.3rem;
+  color: var(--color-green-bg);
+  margin-bottom: 10px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .minigame {
+    padding: 20px;
+  }
+
+  .whenWhereGame {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .minigameHeader h3 {
+    font-size: 1.5rem;
+  }
+
+  .yearInput,
+  .countryInput {
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 15px;
+  }
+
+  .countryDropdown {
+    max-height: 150px;
+  }
+
+  .countryOption {
+    padding: 15px;
+    font-size: 16px;
+  }
+
+  .enlargedImage {
+    max-height: 60vh;
+  }
+
+  .whenWhereQuestion {
+    font-size: 1rem;
+    padding: 0 10px;
+  }
+}
+
+.modalLargeImage {
+  width: 100%;
+  height: auto;
+  max-width: 95vw;
+  max-height: 85vh;
+  border-radius: 12px;
+  display: block;
+  margin: 0 auto;
+}

@@ -1,0 +1,256 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+.progressBarContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 40px 0 32px 0;
+  width: 100%;
+}
+
+.progressBar {
+  background: var(--color-green-bg);
+  border-radius: 32px;
+  box-shadow: 0 2px 24px var(--color-green-bg);
+  padding: 0;
+  display: flex;
+  align-items: stretch;
+  min-width: 600px;
+  max-width: 1200px;
+  width: 90vw;
+  height: 72px;
+}
+
+.segment {
+  flex: 1;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #fff;
+  font-weight: 700;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 0;
+  box-sizing: border-box;
+  border: 1.5px solid var(--color-gold);
+}
+
+.segment:hover {
+  transform: scale(1.2);
+  background-color: var(--color-gold-light);
+  border: 1.5px solid var(--color-gold);
+  z-index: 10;
+  border-radius: 0;
+}
+
+.segment:first-child {
+  border-top-left-radius: 32px;
+  border-bottom-left-radius: 32px;
+}
+.segment:last-child {
+  border-top-right-radius: 32px;
+  border-bottom-right-radius: 32px;
+  border-right: none;
+}
+
+/* Live game (this week's game) - Just has LIVE badge, no special styling */
+.live {
+  background: var(--color-green-bg);
+  color: #fff;
+  font-size: 24px;
+  z-index: 1;
+  position: relative;
+}
+
+.live .number {
+  position: relative;
+  z-index: 2;
+}
+
+.live::before {
+  content: "";
+  display: none;
+}
+
+.live::after {
+  content: "";
+  display: none;
+}
+
+/* Selected game (user's selection) - Golden background with arrow */
+.selected {
+  background: var(--color-gold);
+  color: var(--color-green-bg);
+  font-size: 28px;
+  z-index: 2;
+  position: relative;
+  animation: pulse 4s infinite;
+}
+
+.selected .number {
+  position: relative;
+  z-index: 3;
+}
+
+.selected::before {
+  content: "";
+  display: none;
+}
+
+.selected::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -20px;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-bottom: 16px solid var(--color-gold);
+  z-index: 10;
+  filter: drop-shadow(0 2px 4px rgba(161, 140, 61, 0.3));
+}
+
+/* When both live and selected are the same game */
+.live.selected {
+  background: var(--color-gold);
+  color: var(--color-green-bg);
+  border: 1.5px solid var(--color-gold);
+}
+
+.live.selected::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -20px;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-bottom: 16px solid var(--color-gold);
+  z-index: 10;
+  filter: drop-shadow(0 2px 4px rgba(161, 140, 61, 0.3));
+}
+
+/* Completed games show green background */
+.completed {
+  background: var(--color-green-bg);
+  color: #fff;
+}
+
+/* Upcoming games white */
+.upcoming {
+  background: #fff;
+  color: var(--color-green-bg);
+}
+
+.number {
+  font-size: inherit;
+  font-weight: 700;
+  font-family: "Press Start 2P", Arial, sans-serif;
+}
+
+.activeBadge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 10px;
+  background: var(--color-green-bg);
+  color: var(--color-gold);
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-weight: 600;
+  font-family: Arial, sans-serif;
+  pointer-events: none;
+  animation: blink 2s ease-in-out infinite;
+}
+
+.placementBadge {
+  position: absolute;
+  bottom: 10px;
+  right: 16px;
+  font-size: 14px;
+  background: #fff;
+  color: var(--color-green-bg);
+  border-radius: 8px;
+  padding: 0 4px;
+  font-weight: 600;
+  pointer-events: none;
+  border: 1.5px solid var(--color-gold);
+}
+
+/* Animations */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(161, 140, 61, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(161, 140, 61, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(161, 140, 61, 0);
+  }
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 900px) {
+  .progressBar {
+    min-width: 320px;
+    height: 48px;
+    border-radius: 20px;
+  }
+  .segment {
+    font-size: 16px;
+    gap: 4px;
+  }
+  .selected {
+    font-size: 19px;
+  }
+  .live {
+    font-size: 19px;
+  }
+  .selected::after {
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid var(--color-gold);
+    bottom: -12px;
+  }
+  .activeBadge {
+    font-size: 8px;
+    top: 2px;
+    right: 2px;
+    padding: 1px 2px;
+  }
+  .placementBadge {
+    font-size: 12px;
+    bottom: 4px;
+    right: 8px;
+  }
+}
+
+/* Hide progress bar on mobile devices */
+@media (max-width: 768px) {
+  .progressBarContainer {
+    display: none;
+  }
+}

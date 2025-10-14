@@ -1,0 +1,954 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 400px;
+  padding: 32px 0 64px 0;
+  position: relative;
+}
+
+.title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: var(--color-gold);
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: "Yanone Kaffeesatz", sans-serif;
+}
+
+.quoteWordsArea {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 0;
+  justify-content: center;
+  align-items: flex-end;
+  margin-bottom: 32px;
+  max-width: 900px;
+  font-size: 1.6rem;
+  background: none;
+}
+
+.wordGroup {
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  align-items: flex-end;
+  margin-right: 32px;
+}
+.wordSpace {
+  display: inline-block;
+  min-width: 32px;
+  height: 1px;
+}
+
+.letterSlot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 36px;
+  min-height: 64px;
+  margin: 0 2px;
+  position: relative;
+  background: none;
+  border: none;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+.selected .underline {
+  border-bottom: 2.5px solid var(--color-green-bg);
+}
+.selected .underlineTight {
+  border-bottom: 2.5px solid var(--color-green-bg);
+  box-shadow: 0 2px 0 0 var(--color-green-bg);
+}
+.letterAbove {
+  min-height: 28px;
+  font-size: 1.2em;
+  font-family: "Funnel Sans", "Yanone Kaffeesatz", Arial, sans-serif;
+  font-weight: 700;
+  color: var(--color-green-bg);
+  margin-bottom: 0px;
+  letter-spacing: 0.04em;
+  text-align: center;
+  line-height: 1.1;
+}
+.revealedLetter {
+  font-size: 1.2em;
+  font-weight: 800;
+  color: #6a4c2b;
+  font-family: "Funnel Sans", "Yanone Kaffeesatz", Arial, sans-serif;
+  letter-spacing: 0.04em;
+}
+.underline {
+  border-bottom: 2.5px solid #b8a05a;
+  min-width: 28px;
+  min-height: 18px;
+  font-size: 1.1em;
+  text-align: center;
+  background: none;
+  border-radius: 0;
+  padding: 0 2px;
+  margin-bottom: 2px;
+  transition: border 0.18s;
+  display: block;
+  line-height: 1.1;
+}
+.code {
+  font-size: 0.95em;
+  color: #b8a05a;
+  margin-top: 2px;
+  font-family: "Press Start 2P", Arial, sans-serif;
+  letter-spacing: 0.02em;
+  text-align: center;
+  min-height: 16px;
+}
+
+.padlockAbove {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 28px;
+  margin-bottom: 0px;
+}
+.padlockIcon {
+  font-size: 1.3em;
+  color: #b8a05a;
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.padlockDots {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  gap: 2px;
+  margin-top: 0px;
+}
+.dot {
+  color: #b8a05a;
+  font-size: 1.1em;
+  margin: 0 1px;
+  line-height: 1;
+}
+
+.status {
+  margin-bottom: 18px;
+  font-size: 1.1em;
+  color: var(--color-green-bg);
+  text-align: center;
+}
+
+.win {
+  color: var(--color-gold);
+  font-size: 1.2em;
+  font-weight: 700;
+}
+
+.lose {
+  color: var(--color-red);
+  font-size: 1.2em;
+  font-weight: 700;
+}
+
+.codeNormal {
+  font-size: 1em;
+  color: #b8a05a;
+  margin-top: 2px;
+  font-family: "Funnel Sans", Arial, sans-serif;
+  letter-spacing: 0.01em;
+  text-align: center;
+  min-height: 18px;
+  font-weight: 500;
+}
+
+.letterAboveTight {
+  min-height: 18px;
+  font-size: 1.18em;
+  font-family: "Funnel Sans", "Yanone Kaffeesatz", Arial, sans-serif;
+  font-weight: 700;
+  color: var(--color-green-bg);
+  margin-bottom: 0px;
+  letter-spacing: 0.04em;
+  text-align: center;
+  line-height: 1.1;
+  padding-bottom: 2px;
+}
+.underlineTight {
+  border-bottom: 2.5px solid #b8a05a;
+  min-width: 28px;
+  min-height: 8px;
+  font-size: 1.1em;
+  text-align: center;
+  background: none;
+  border-radius: 0;
+  padding: 0 2px;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  transition: border 0.18s;
+  display: block;
+  line-height: 1.1;
+}
+.codeNormalTight {
+  font-size: 0.98em;
+  color: #b8a05a;
+  margin-top: 0px;
+  font-family: "Funnel Sans", Arial, sans-serif;
+  letter-spacing: 0.01em;
+  text-align: center;
+  min-height: 14px;
+  font-weight: 500;
+  padding-top: 2px;
+}
+
+@media (max-width: 700px) {
+  .quoteWordsArea {
+    font-size: 1.1rem;
+    gap: 10px 0;
+    max-width: 98vw;
+  }
+  .wordGroup {
+    margin-right: 16px;
+  }
+  .letterSlot {
+    min-width: 22px;
+    min-height: 36px;
+  }
+  .underline {
+    min-width: 14px;
+    min-height: 10px;
+    font-size: 1em;
+    padding: 0 1px;
+  }
+  .code {
+    font-size: 0.7em;
+    min-height: 10px;
+  }
+  .padlockIcon {
+    width: 14px;
+    height: 14px;
+  }
+  .padlockAbove {
+    min-height: 16px;
+  }
+}
+
+.selectedContainer {
+  background: var(--color-green);
+  border-radius: 12px;
+  position: absolute;
+  top: -24px;
+  left: 0;
+  width: 100%;
+  height: calc(100% + 24px);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transition:
+    background 0.18s,
+    box-shadow 0.18s;
+}
+.selected .letterAboveTight,
+.selected .underlineTight,
+.selected .codeNormalTight {
+  position: relative;
+  z-index: 3;
+}
+
+.mistake .selectedContainer {
+  box-shadow:
+    0 0 0 3px var(--color-red),
+    0 2px 8px rgba(36, 92, 79, 0.08);
+  background: #ffeaea;
+  border: 2px solid var(--color-red);
+}
+
+.invisibleCode {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.padlockOneDot .padlockDot {
+  transition:
+    opacity 0.3s,
+    transform 0.3s;
+}
+.dotFadeOut {
+  opacity: 0.3;
+  transform: scale(0.7);
+  transition:
+    opacity 0.3s,
+    transform 0.3s;
+}
+.padlockFadeOut {
+  opacity: 0;
+  transform: scale(0.7);
+  transition:
+    opacity 0.4s,
+    transform 0.4s;
+  pointer-events: none;
+}
+.padlockUnlockedFadeIn {
+  animation: fadeInSlot 0.4s;
+}
+@keyframes fadeInSlot {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.completionScreenAnimated {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 60vh;
+  background: var(--color-bg-creamy);
+  color: var(--color-text-main);
+  padding: 2rem;
+  margin-top: 48px;
+  animation: fadeInUpQuote 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeInUpQuote {
+  from {
+    opacity: 0;
+    transform: translateY(48px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.completionScreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 60vh;
+  background: var(--color-bg-creamy);
+  color: var(--color-text-main);
+  padding: 2rem;
+  margin-top: 64px;
+  animation: fadeInCompletion 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeInCompletion {
+  from {
+    opacity: 0;
+    transform: translateY(32px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-16px) scale(1);
+  }
+}
+
+.quoteText {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-family: var(--font-serif, serif);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.3;
+}
+
+.authorBlock {
+  text-align: right;
+  width: 100%;
+  max-width: 600px;
+}
+
+.authorName {
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--color-accent-gold, #bfa14a);
+}
+
+.authorDetails {
+  font-size: 1rem;
+  color: var(--color-text-secondary, #a09e9c);
+}
+
+.puzzleCompletedContainer {
+  position: relative;
+  width: 100%;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.puzzleCompletedOverlay {
+  position: absolute;
+  top: 32px;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 32px);
+  background: rgba(248, 246, 242, 0.85);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  z-index: 10;
+  pointer-events: none;
+  animation: fadeInOverlay 0.5s;
+  padding-top: 32px;
+}
+
+@keyframes fadeInOverlay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.puzzleCompletedText {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--color-accent-gold, #bfa14a);
+  margin-bottom: 2rem;
+  text-shadow:
+    0 2px 8px #fff,
+    0 1px 0 #bfa14a;
+  letter-spacing: 0.04em;
+}
+
+.congratsBlock {
+  margin-top: 2.5rem;
+  font-size: 1.15rem;
+  color: var(--color-green-bg);
+  text-align: center;
+  font-weight: 600;
+}
+
+.statsButton {
+  margin-top: 1.2rem;
+  padding: 0.7em 2.2em;
+  font-size: 1.1rem;
+  font-weight: 700;
+  background: var(--color-accent-gold, #bfa14a);
+  color: #fff;
+  border: none;
+  border-radius: 18px;
+  cursor: pointer;
+  transition:
+    background 0.18s,
+    box-shadow 0.18s;
+  box-shadow: 0 2px 8px rgba(191, 161, 74, 0.1);
+}
+.statsButton:hover {
+  background: #a88c36;
+}
+
+.attemptsWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.attemptsHeading {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+  font-family: "Funnel Sans", "Yanone Kaffeesatz", Arial, sans-serif;
+  margin-bottom: 0.3rem;
+  letter-spacing: 0.02em;
+}
+
+.attemptsCircles {
+  display: flex;
+  flex-direction: row;
+  gap: 0.7rem;
+}
+
+.attemptCircle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2.5px solid var(--color-accent-gold, #bfa14a);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  box-shadow: 0 1px 4px rgba(191, 161, 74, 0.07);
+}
+
+.attemptCross {
+  color: var(--color-red, #d32f2f);
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+.lossScreen {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-creamy);
+}
+
+.lossMessage {
+  color: var(--color-red, #d32f2f);
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-align: center;
+  background: #fff6f6;
+  border-radius: 18px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 2px 12px rgba(211, 47, 47, 0.08);
+  margin-top: 2rem;
+}
+
+.statsInfoBlock {
+  margin-top: 0.7rem;
+  font-size: 1.02rem;
+  color: var(--color-text-secondary, #a09e9c);
+  text-align: center;
+  font-weight: 500;
+}
+
+.hintButton {
+  margin-top: 1.2rem;
+  padding: 0.6em 2em;
+  font-size: 1.08rem;
+  font-weight: 700;
+  background: var(--color-green-bg);
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition:
+    background 0.18s,
+    box-shadow 0.18s;
+  box-shadow: 0 2px 8px rgba(36, 92, 79, 0.1);
+}
+.hintButton:disabled {
+  background: #e0e0e0;
+  color: #bbb;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.hintContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hintInstr {
+  font-size: 1.05rem;
+  color: var(--color-text-main);
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+
+.hintInput {
+  font-size: 1.3rem;
+  padding: 0.4em 0.7em;
+  border: 2px solid var(--color-accent-gold, #bfa14a);
+  border-radius: 10px;
+  width: 3.5em;
+  text-align: center;
+  margin-bottom: 0.7rem;
+  outline: none;
+  font-weight: 700;
+  color: var(--color-green-bg);
+  background: #fff !important;
+}
+
+.hintError {
+  color: var(--color-red, #d32f2f);
+  font-size: 1.02rem;
+  margin-bottom: 0.7rem;
+  text-align: center;
+}
+
+.hintActions {
+  display: flex;
+  flex-direction: row;
+  gap: 1.2rem;
+  margin-top: 0.2rem;
+}
+
+.attemptsAndHintRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 1.5rem auto;
+  padding: 0 8px;
+}
+
+.attemptsRowCenter {
+  flex: 1;
+  text-align: center;
+}
+
+.hintButtonAbsolute {
+  display: none;
+}
+
+.keyboardRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 900px;
+  margin: 24px auto 0 auto;
+}
+
+.attemptsLeft {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+.keyboardCenter {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.hintRight {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.mobileNavigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin: 15px 0;
+  padding: 12px;
+  background: rgba(191, 161, 74, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(191, 161, 74, 0.2);
+}
+
+.navButton {
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.navText {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary, #a09e9c);
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 20px 0 40px 0;
+    min-height: 100vh;
+  }
+
+  .title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+
+  .quoteWordsArea {
+    font-size: 1rem;
+    gap: 8px 0;
+    max-width: 95vw;
+    margin-bottom: 20px;
+  }
+
+  .wordGroup {
+    margin-right: 12px;
+  }
+
+  .letterSlot {
+    min-width: 20px;
+    min-height: 32px;
+  }
+
+  .letterAboveTight {
+    font-size: 1rem;
+    min-height: 16px;
+  }
+
+  .underlineTight {
+    min-width: 16px;
+    min-height: 6px;
+    font-size: 0.9em;
+  }
+
+  .codeNormalTight {
+    font-size: 0.8em;
+    min-height: 12px;
+  }
+
+  .padlockIcon {
+    font-size: 1.1em;
+  }
+
+  .padlockAbove {
+    min-height: 14px;
+  }
+
+  /* Reorganize layout for mobile - keyboard only at bottom */
+  .keyboardRow {
+    justify-content: center;
+    margin: 20px auto 0 auto;
+  }
+
+  .keyboardCenter {
+    flex: 1;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  /* Position attempts and buttons at the top of the game area */
+  .container {
+    position: relative;
+  }
+
+  .attemptsAndButtons {
+    position: absolute;
+    top: 60px; /* Move down to avoid covering the title */
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background: var(--color-bg-creamy);
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(191, 161, 74, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .attemptsAndButtons .attemptsLeft {
+    justify-content: center;
+  }
+
+  .attemptsAndButtons .hintRight {
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .quoteWordsArea {
+    margin-top: 160px; /* Increased to make room for the repositioned top controls */
+  }
+
+  /* Make attempts more compact */
+  .attemptsWrapper {
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+
+  .attemptsHeading {
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .attemptsCircles {
+    gap: 0.5rem;
+  }
+
+  .attemptCircle {
+    width: 24px;
+    height: 24px;
+    border-width: 2px;
+  }
+
+  .attemptCross {
+    font-size: 1.2rem;
+  }
+
+  .hintInstr {
+    font-size: 0.95rem;
+  }
+
+  .hintInput {
+    font-size: 1.1rem;
+    width: 3em;
+    background: #fff !important;
+  }
+
+  .hintActions {
+    gap: 1rem;
+  }
+
+  .mobileNavigation {
+    gap: 12px;
+    margin: 12px 0;
+    padding: 10px;
+  }
+
+  .navButton {
+    min-width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+  }
+
+  .navText {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+  }
+
+  .quoteWordsArea {
+    font-size: 0.9rem;
+    gap: 6px 0;
+    max-width: 98vw;
+    margin-bottom: 15px;
+    margin-top: 140px; /* Adjusted for smaller screens */
+  }
+
+  .keyboardCenter {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  .keyboardCenter {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .wordGroup {
+    margin-right: 30px;
+  }
+
+  .letterSlot {
+    min-width: 18px;
+    min-height: 28px;
+  }
+
+  .letterAboveTight {
+    font-size: 0.9rem;
+    min-height: 14px;
+  }
+
+  .underlineTight {
+    min-width: 14px;
+    min-height: 5px;
+    font-size: 0.8em;
+  }
+
+  .codeNormalTight {
+    font-size: 0.7em;
+    min-height: 10px;
+  }
+
+  .padlockIcon {
+    font-size: 1em;
+  }
+
+  .keyboardRow {
+    gap: 12px;
+    margin: 15px auto 0 auto;
+  }
+
+  .hintRight {
+    gap: 12px;
+  }
+
+  .attemptsHeading {
+    font-size: 0.9rem;
+  }
+
+  .attemptCircle {
+    width: 22px;
+    height: 22px;
+  }
+
+  .attemptCross {
+    font-size: 1.1rem;
+  }
+
+  .hintInstr {
+    font-size: 0.9rem;
+  }
+
+  .hintInput {
+    font-size: 1rem;
+    width: 2.8em;
+    background: #fff !important;
+  }
+
+  .mobileNavigation {
+    gap: 10px;
+    margin: 10px 0;
+    padding: 8px;
+  }
+
+  .navButton {
+    min-width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+
+  .navText {
+    font-size: 0.8rem;
+  }
+}
+
+/* Button styling for used state */
+.instructionsButtonUsed,
+.hintButtonUsed {
+  background: #ddd;
+  color: var(--color-green-bg);
+  cursor: default;
+  border: 1px solid var(--color-gold);
+}
+
+.instructionsButtonUsed:hover,
+.hintButtonUsed:hover {
+  transform: none;
+  background: #ddd;
+}
+
+.penaltyText {
+  font-size: 0.8rem;
+  color: #dc3545;
+  font-style: italic;
+  margin-left: 4px;
+}

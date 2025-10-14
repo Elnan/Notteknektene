@@ -1,0 +1,956 @@
+.seasonManagement {
+  padding: 2rem;
+  font-family: "Funnel Sans", Arial, sans-serif;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  font-family: "Yanone Kaffeesatz", cursive;
+  color: var(--color-gold);
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.header p {
+  color: #718096;
+  font-size: 1.1rem;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Current Season */
+.currentSeason {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.currentSeason h2 {
+  font-family: "Yanone Kaffeesatz", cursive;
+  color: var(--color-green);
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--color-gold);
+  padding-bottom: 0.5rem;
+}
+
+.currentSeasonCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.seasonInfo {
+  flex: 1;
+}
+
+.seasonInfo h3 {
+  font-family: "Yanone Kaffeesatz", cursive;
+  color: var(--color-green);
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.seasonInfo p {
+  color: #64748b;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.seasonStats {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.seasonStats span {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.liveGame {
+  background: linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%);
+  border: 2px solid var(--color-green);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  display: inline-block;
+}
+
+.liveGame span {
+  font-weight: 600;
+  color: var(--color-green);
+}
+
+.currentSeasonActions {
+  display: flex;
+  gap: 1rem;
+}
+
+.noCurrentSeason {
+  text-align: center;
+  padding: 2rem;
+  color: #64748b;
+}
+
+.noCurrentSeason p {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+/* Form Section */
+.formSection {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.formSection h2 {
+  font-family: "Yanone Kaffeesatz", cursive;
+  color: var(--color-green);
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--color-gold);
+  padding-bottom: 0.5rem;
+}
+
+.seasonForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formGroup label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.formGroup input,
+.formGroup textarea {
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus {
+  outline: none;
+  border-color: var(--color-gold);
+}
+
+.formGroup textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.formActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* Seasons List */
+.seasonsList {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.seasonsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.seasonsHeader h2 {
+  font-family: "Yanone Kaffeesatz", cursive;
+  color: var(--color-green);
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.seasonsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.seasonCard {
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.seasonCard:hover {
+  border-color: var(--color-gold);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.seasonHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.seasonHeader h3 {
+  font-family: "Yanone Kaffeesatz", cursive;
+  color: var(--color-green);
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.status {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.status.active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status.ended {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.status.upcoming {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status.inactive {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.status.completed {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+.seasonDescription {
+  color: #64748b;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+  font-size: 0.9rem;
+}
+
+.seasonDetails {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.detailItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.detailLabel {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.detailItem span:last-child {
+  color: #374151;
+  font-weight: 600;
+}
+
+.seasonActions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.noSeasons {
+  text-align: center;
+  padding: 3rem;
+  color: #64748b;
+}
+
+.noSeasons p {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+/* Game Management for Selected Season */
+.gameManagement {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+}
+
+.gameManagementHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--color-gold);
+}
+
+.gameManagementHeader h2 {
+  font-family: "Yanone Kaffeesatz", cursive;
+  color: var(--color-green);
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.gameCounter {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.warning {
+  color: #dc2626;
+  font-weight: 700;
+}
+
+.removeDuplicatesButton {
+  background: #fef3c7;
+  color: #92400e;
+  border: 2px solid #f59e0b;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.removeDuplicatesButton:hover {
+  background: #fde68a;
+  border-color: #d97706;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+}
+
+.fixActiveGameButton {
+  background: #dbeafe;
+  color: #1e40af;
+  border: 2px solid #3b82f6;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.fixActiveGameButton:hover {
+  background: #bfdbfe;
+  border-color: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.applyOrderButton {
+  background: #dcfce7;
+  color: #166534;
+  border: 2px solid #22c55e;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.applyOrderButton:hover {
+  background: #bbf7d0;
+  border-color: #16a34a;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+}
+
+.gameManagementContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+/* Available Games */
+.availableGames h3,
+.seasonGames h3 {
+  font-family: "Yanone Kaffeesatz", cursive;
+  color: var(--color-green);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.gamesGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.gameCard {
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.gameCard:hover {
+  border-color: var(--color-gold);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.gameCard.selected {
+  border-color: var(--color-green);
+  background: linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+}
+
+.gameIcon {
+  font-size: 2rem;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.gameInfo {
+  flex: 1;
+}
+
+.gameInfo h4 {
+  font-family: "Yanone Kaffeesatz", cursive;
+  color: var(--color-green);
+  font-size: 1.2rem;
+  margin-bottom: 0.25rem;
+}
+
+.gameInfo p {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.gameMeta {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.gameType,
+.gameDifficulty {
+  background: var(--color-gold);
+  color: var(--color-green);
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.gameActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.addButton,
+.removeButton {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.addButton {
+  background: var(--color-green);
+  color: white;
+}
+
+.addButton:hover:not(:disabled) {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+.addButton:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.removeButton {
+  background: var(--color-red);
+  color: white;
+}
+
+.removeButton:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+}
+
+/* Season Games Order */
+.seasonGamesList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.seasonGameItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.gameOrder {
+  background: var(--color-gold);
+  color: var(--color-green);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.gameName {
+  flex: 1;
+  font-weight: 600;
+  color: var(--color-green);
+}
+
+.gameStatus {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.gameItemActions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.reorderButtons {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.reorderButton {
+  background: #e2e8f0;
+  border: none;
+  border-radius: 4px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.reorderButton:hover {
+  background: var(--color-gold);
+  color: var(--color-green);
+}
+
+.noGames {
+  text-align: center;
+  color: #64748b;
+  font-style: italic;
+  padding: 2rem;
+}
+
+.seasonActions {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.backButton {
+  background: #64748b;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.backButton:hover {
+  background: #475569;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(100, 116, 139, 0.3);
+}
+
+/* Buttons */
+.createButton,
+.editButton,
+.activateButton,
+.manageButton,
+.deleteButton,
+.finishButton,
+.submitButton,
+.cancelButton {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.createButton {
+  background: var(--color-gold);
+  color: var(--color-green);
+}
+
+.createButton:hover {
+  background: #f59e0b;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.editButton,
+.manageButton {
+  background: var(--color-blue);
+  color: white;
+}
+
+.editButton:hover,
+.manageButton:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.deleteButton {
+  background: var(--color-red);
+  color: white;
+}
+
+.deleteButton:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.activateButton {
+  background: var(--color-green);
+  color: white;
+}
+
+.activateButton:hover {
+  background: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+.finishButton {
+  background: #7c3aed;
+  color: white;
+}
+
+.finishButton:hover {
+  background: #6d28d9;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+
+.finishButton:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.submitButton {
+  background: var(--color-green);
+  color: white;
+}
+
+.submitButton:hover {
+  background: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+.cancelButton {
+  background: #64748b;
+  color: white;
+}
+
+.cancelButton:hover {
+  background: #475569;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(100, 116, 139, 0.3);
+}
+
+/* Loading */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 1rem;
+  color: #64748b;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e2e8f0;
+  border-top: 4px solid var(--color-gold);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .currentSeasonCard {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .currentSeasonActions {
+    justify-content: flex-start;
+  }
+
+  .liveGameSection {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .seasonsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .seasonManagement {
+    padding: 1rem;
+  }
+
+  .header h1 {
+    font-size: 2rem;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+
+  .seasonDetails {
+    grid-template-columns: 1fr;
+  }
+
+  .seasonActions {
+    flex-direction: column;
+  }
+
+  .seasonsHeader {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .formActions {
+    flex-direction: column;
+  }
+}
+
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  border-radius: 12px;
+  padding: 0;
+  max-width: 500px;
+  width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.modalHeader h2 {
+  color: var(--color-green);
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #666;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.closeButton:hover {
+  background: #f0f0f0;
+}
+
+.modalBody {
+  padding: 1.5rem;
+}
+
+.modalBody p {
+  color: #333;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.modalActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.modalActions .deleteButton {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.modalActions .deleteButton:hover {
+  background: #c82333;
+}
+
+.modalActions .cancelButton {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.modalActions .cancelButton:hover {
+  background: #5a6268;
+}

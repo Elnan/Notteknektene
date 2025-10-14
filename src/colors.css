@@ -1,0 +1,13 @@
+:root {
+  --color-gold: #a18c3d;
+  --color-gold-light: #e6d9a7;
+  --color-green-bg: #245c4f;
+  --color-green: #2e7d4f;
+  --color-green-gradient: linear-gradient(135deg, #245c4f, #2e7d4f);
+  --color-green-light: #bfe3c6;
+  --color-red: #c0392b;
+  --color-red-light: #f7bdb7;
+  --color-white: #f8f6f2;
+  --color-black: #22223b;
+  --color-blue: linear-gradient(135deg, #2c5aa0, #1e3a8a);
+}

@@ -1,0 +1,160 @@
+.registerWrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-white);
+  position: relative;
+}
+
+.backButton {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--color-gold);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.backButton:hover {
+  color: var(--color-gold-light);
+  transform: scale(1.1);
+}
+
+.backButton:active {
+  transform: scale(0.95);
+}
+
+.registerContainer {
+  background: linear-gradient(
+    135deg,
+    var(--color-green-bg),
+    var(--color-green)
+  );
+  border: 2px solid var(--color-gold);
+  border-radius: 32px;
+  padding: 2rem;
+  box-shadow: 0 4px 32px rgba(30, 41, 59, 0.12);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.registerTitle {
+  margin: 0 0 1.5rem 0;
+  color: var(--color-gold);
+  font-size: 1.8rem;
+  font-weight: 700;
+  font-family: "Yanone Kaffeesatz", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.registerForm .formGroup {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.formLabel {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-gold);
+  font-weight: 500;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  font-size: 0.9rem;
+}
+
+.formInput {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid var(--color-gold);
+  border-radius: 12px;
+  font-size: 1rem;
+  background: var(--color-white);
+  color: var(--color-black);
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: var(--color-gold-light);
+  box-shadow: 0 0 0 3px rgba(161, 140, 61, 0.1);
+}
+
+.formInput:focus + .formLabel,
+.formInput.hasText + .formLabel {
+  top: 0;
+  left: 0.75rem;
+  font-size: 1rem;
+  background: var(--color-green);
+  padding: 0 0.5rem;
+  border-radius: 4px;
+  color: var(--color-gold);
+}
+
+.errorMessage {
+  color: var(--color-red);
+  background: var(--color-red-light);
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 1rem;
+  background: var(--color-gold);
+  color: var(--color-green);
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 1rem;
+}
+
+.submitButton:hover {
+  background: var(--color-gold-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(30, 41, 59, 0.12);
+}
+
+.buttonDisabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.loginLink {
+  color: var(--color-gold);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.loginLink:hover {
+  color: var(--color-gold-light);
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .registerContainer {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+
+  .registerTitle {
+    font-size: 1.5rem;
+  }
+}

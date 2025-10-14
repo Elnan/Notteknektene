@@ -1,0 +1,404 @@
+.liveSchedule {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  margin: 0;
+  color: #2d3748;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.refreshButton {
+  background: #4299e1;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease;
+}
+
+.refreshButton:hover {
+  background: #3182ce;
+}
+
+/* Current Status */
+.currentStatus {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.currentStatus h2 {
+  margin: 0 0 1rem 0;
+  color: #2d3748;
+  font-size: 1.5rem;
+}
+
+.statusGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.statusCard {
+  background: #f7fafc;
+  border-radius: 8px;
+  padding: 1.5rem;
+  border-left: 4px solid #4299e1;
+}
+
+.statusCard h3 {
+  margin: 0 0 0.5rem 0;
+  color: #2d3748;
+  font-size: 1.1rem;
+}
+
+.statusCard p {
+  margin: 0.25rem 0;
+  color: #4a5568;
+}
+
+.liveGameName {
+  font-weight: 600;
+  color: #48bb78 !important;
+}
+
+.liveGameTime {
+  font-size: 0.9rem;
+  color: #718096 !important;
+}
+
+.noLiveGame {
+  color: #e53e3e;
+  font-style: italic;
+}
+
+/* Auto Schedule */
+.autoSchedule {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.autoSchedule h2 {
+  margin: 0 0 1rem 0;
+  color: #2d3748;
+  font-size: 1.5rem;
+}
+
+.autoScheduleControl {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #cbd5e0;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #48bb78;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.autoScheduleInfo h3 {
+  margin: 0 0 0.5rem 0;
+  color: #2d3748;
+  font-size: 1.1rem;
+}
+
+.autoScheduleInfo p {
+  margin: 0;
+  color: #718096;
+  font-size: 0.9rem;
+}
+
+/* Game Schedule */
+.gameSchedule {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.gameSchedule h2 {
+  margin: 0 0 1rem 0;
+  color: #2d3748;
+  font-size: 1.5rem;
+}
+
+.gamesList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.gameCard {
+  background: #f7fafc;
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid #e2e8f0;
+}
+
+.gameHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.gameInfo h3 {
+  margin: 0 0 0.25rem 0;
+  color: #2d3748;
+  font-size: 1.2rem;
+}
+
+.gameStatus {
+  background: #e2e8f0;
+  color: #4a5568;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.gameOrder {
+  background: #4299e1;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.gameDetails {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.gameSchedule p {
+  margin: 0.25rem 0;
+  color: #4a5568;
+  font-size: 0.9rem;
+}
+
+.setLiveButton {
+  background: #48bb78;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease;
+}
+
+.setLiveButton:hover {
+  background: #38a169;
+}
+
+.liveIndicator {
+  background: #48bb78;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Schedule Override */
+.scheduleOverride {
+  border-top: 1px solid #e2e8f0;
+  padding-top: 1rem;
+}
+
+.scheduleOverride h4 {
+  margin: 0 0 1rem 0;
+  color: #2d3748;
+  font-size: 1rem;
+}
+
+.overrideControls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.dateInput {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dateInput label {
+  font-size: 0.9rem;
+  color: #4a5568;
+  font-weight: 500;
+}
+
+.dateInput input {
+  padding: 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+/* Instructions */
+.instructions {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.instructions h2 {
+  margin: 0 0 1rem 0;
+  color: #2d3748;
+  font-size: 1.5rem;
+}
+
+.instructionGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.instructionCard {
+  background: #f7fafc;
+  border-radius: 8px;
+  padding: 1.5rem;
+  border-left: 4px solid #ed8936;
+}
+
+.instructionCard h3 {
+  margin: 0 0 0.5rem 0;
+  color: #2d3748;
+  font-size: 1.1rem;
+}
+
+.instructionCard p {
+  margin: 0;
+  color: #718096;
+  font-size: 0.9rem;
+}
+
+/* Loading */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  color: #718096;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e2e8f0;
+  border-top: 4px solid #4299e1;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.noSeason {
+  text-align: center;
+  padding: 2rem;
+  color: #718096;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .statusGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .autoScheduleControl {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .gameDetails {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .overrideControls {
+    grid-template-columns: 1fr;
+  }
+
+  .instructionGrid {
+    grid-template-columns: 1fr;
+  }
+}

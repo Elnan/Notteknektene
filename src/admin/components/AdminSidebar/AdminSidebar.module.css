@@ -1,0 +1,197 @@
+@import url("https://fonts.googleapis.com/css2?family=Funnel+Sans:ital,wght@0,300..800;1,300..800&family=Yanone+Kaffeesatz:wght@200..700&display=swap");
+
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  background: linear-gradient(
+    135deg,
+    var(--color-green-bg),
+    var(--color-green)
+  );
+  border-right: 2px solid var(--color-gold);
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease;
+  z-index: 1000;
+  box-shadow: 4px 0 32px rgba(30, 41, 59, 0.12);
+  font-family: "Funnel Sans", Arial, sans-serif;
+}
+
+.open {
+  width: 280px;
+}
+
+.closed {
+  width: 80px;
+}
+
+.sidebarHeader {
+  padding: 1.15rem;
+  border-bottom: 2px solid var(--color-gold);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  white-space: nowrap;
+  overflow: hidden;
+  font-family: "Yanone Kaffeesatz", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.toggleButton {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  color: var(--color-gold);
+}
+
+.toggleButton:hover {
+  background-color: var(--color-gold-light);
+  transform: scale(1.05);
+}
+
+.navigation {
+  flex: 1;
+  padding: 1rem 0;
+  overflow-y: auto;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  text-decoration: none;
+  color: var(--color-gold);
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+  margin: 0.25rem 0;
+  font-weight: 500;
+}
+
+.navItem:hover {
+  background-color: var(--color-gold-light);
+  color: var(--color-green);
+  border-left-color: var(--color-gold);
+  transform: translateX(4px);
+}
+
+.navItem.active {
+  background-color: var(--color-gold-light);
+  color: var(--color-green);
+  border-left-color: var(--color-gold);
+  font-weight: 700;
+}
+
+.icon {
+  font-size: 1.2rem;
+  margin-right: 1rem;
+  min-width: 1.2rem;
+  text-align: center;
+}
+
+.navContent {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.description {
+  font-size: 0.75rem;
+  color: var(--color-gold);
+  margin-top: 0.25rem;
+  white-space: nowrap;
+  opacity: 0.8;
+}
+
+.sidebarFooter {
+  padding: 1rem 1.5rem;
+  border-top: 2px solid var(--color-gold);
+}
+
+.userSection {
+  margin-bottom: 1rem;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.userName {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-gold);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.userRole {
+  font-size: 0.75rem;
+  color: var(--color-gold);
+  margin-top: 0.25rem;
+  opacity: 0.8;
+}
+
+.logoutButton {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.75rem;
+  background: var(--color-red);
+  color: var(--color-white);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(30, 41, 59, 0.08);
+}
+
+.logoutButton:hover {
+  background: var(--color-red-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(30, 41, 59, 0.12);
+}
+
+.logoutButton .icon {
+  margin-right: 0.75rem;
+  color: white;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+    width: 280px;
+  }
+
+  .sidebar.closed {
+    transform: translateX(-100%);
+  }
+}

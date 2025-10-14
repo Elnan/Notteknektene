@@ -1,0 +1,430 @@
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: var(--color-white);
+  min-height: 100vh;
+  font-family: "Funnel Sans", "Yanone Kaffeesatz", Arial, sans-serif;
+}
+
+.minigame {
+  border-radius: 16px;
+  padding: 30px;
+  /* box-shadow: 0 4px 20px rgba(36, 92, 79, 0.1); */
+  margin-bottom: 20px;
+}
+
+.minigameHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid var(--color-gold);
+}
+
+.minigameHeader h3 {
+  font-size: 2.5rem;
+  margin-block: 15px;
+  color: var(--color-gold);
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: "Yanone Kaffeesatz", sans-serif;
+}
+
+.headerButtons {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.gameArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.anagramsSection {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.anagramList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  font-family: monospace;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--color-green-bg);
+  letter-spacing: 2px;
+}
+
+.anagramItem {
+  padding: 8px 12px;
+  background: white;
+  border: 2px solid var(--color-gold);
+  border-radius: 8px;
+}
+
+.gridSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mobileInput {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+  border: none;
+  background: transparent;
+  color: transparent;
+  font-size: 1px;
+}
+
+.buildingGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  background: var(--color-green-bg);
+  border: 3px solid var(--color-gold);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(36, 92, 79, 0.1);
+  margin-bottom: 30px;
+}
+
+.gridRow {
+  display: contents;
+}
+
+.gridCell {
+  width: 50px;
+  height: 50px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--color-green-bg);
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.gridCell.filled {
+  background: white;
+  border-color: var(--color-gold-light);
+}
+
+.gridCell.selected {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 3px rgba(161, 140, 61, 0.3);
+}
+
+.gridCell.diagonal {
+  background: rgba(161, 140, 61, 0.2);
+  border-color: var(--color-gold);
+  font-weight: 900;
+  color: var(--color-gold);
+}
+
+.finalAnswerSection {
+  text-align: center;
+}
+
+.finalAnswerInput {
+  width: 200px;
+  padding: 12px 15px;
+  border: 2px solid var(--color-gold);
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-family: "Funnel Sans", "Yanone Kaffeesatz", Arial, sans-serif;
+  text-transform: uppercase;
+  text-align: center;
+  margin-right: 15px;
+  background: #fff;
+  color: #222;
+}
+
+.finalAnswerInput:focus {
+  outline: none;
+  border-color: var(--color-green-bg);
+  box-shadow: 0 0 0 3px rgba(36, 92, 79, 0.1);
+}
+
+.controls {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.instructionsButton,
+.hintButton {
+  background: var(--color-green-bg);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.instructionsButton:hover,
+.hintButton:hover {
+  background: var(--color-green);
+  transform: translateY(-2px);
+}
+
+.instructionsButton.used,
+.hintButton.used {
+  background: #ddd;
+  color: var(--color-green-bg);
+  cursor: default;
+  border: 1px solid var(--color-gold);
+}
+
+.instructionsButton.used:hover,
+.hintButton.used:hover {
+  transform: none;
+}
+
+.penaltyText {
+  font-size: 0.8rem;
+  color: #dc3545;
+  font-style: italic;
+  line-height: 1;
+  margin-left: 8px;
+}
+
+/* Results Screen */
+.resultsScreen {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 30px;
+}
+
+.resultsHeader {
+  margin-bottom: 40px;
+}
+
+.resultsHeader h2 {
+  color: var(--color-green-bg);
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.successMessage {
+  background: rgba(76, 175, 80, 0.1);
+  border: 2px solid #4caf50;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 30px;
+}
+
+.successMessage h3 {
+  color: #4caf50;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.successMessage p {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  color: var(--color-green-bg);
+}
+
+.failureMessage {
+  background: rgba(244, 67, 54, 0.1);
+  border: 2px solid #f44336;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 30px;
+}
+
+.failureMessage h3 {
+  color: #f44336;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.failureMessage p {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  color: var(--color-green-bg);
+}
+
+.solutionGrid {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 20px rgba(36, 92, 79, 0.1);
+  border: 2px solid var(--color-gold);
+}
+
+.solutionGrid h3 {
+  color: var(--color-green-bg);
+  font-size: 1.8rem;
+  margin-bottom: 25px;
+}
+
+.correctSolution {
+  background: rgba(76, 175, 80, 0.1);
+  border: 2px solid #4caf50;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.correctSolution h4 {
+  color: #4caf50;
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+}
+
+.correctSolution p {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  color: var(--color-green-bg);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+
+  .minigame {
+    padding: 20px;
+  }
+
+  .minigameHeader {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+    margin-bottom: 15px;
+  }
+
+  .minigameHeader h3 {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .headerButtons {
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .gameArea {
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .anagramsSection {
+    margin-bottom: 15px;
+  }
+
+  .anagramList {
+    gap: 8px;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+  }
+
+  .anagramItem {
+    padding: 6px 8px;
+    font-size: 0.8rem;
+  }
+
+  .buildingGrid {
+    width: 90vw;
+    max-width: 90vw;
+    padding: 15px;
+    gap: 2px;
+    margin-bottom: 20px;
+  }
+
+  .gridCell {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .finalAnswerSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .finalAnswerInput {
+    width: 200px;
+    margin-right: 0;
+    margin-bottom: 0;
+    background: #fff;
+    color: #222;
+  }
+
+  .controls {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .minigame {
+    padding: 15px;
+  }
+
+  .minigameHeader h3 {
+    font-size: 1.8rem;
+  }
+
+  .anagramList {
+    font-size: 0.8rem;
+    gap: 6px;
+  }
+
+  .anagramItem {
+    padding: 4px 6px;
+    font-size: 0.7rem;
+  }
+
+  .buildingGrid {
+    width: 90vw;
+    max-width: 90vw;
+    padding: 10px;
+    gap: 1px;
+  }
+
+  .gridCell {
+    width: 35px;
+    height: 35px;
+    font-size: 0.9rem;
+  }
+
+  .finalAnswerInput {
+    width: 180px;
+    font-size: 1rem;
+    padding: 10px 12px;
+    background: #fff;
+    color: #222;
+  }
+}

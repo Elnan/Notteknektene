@@ -1,0 +1,14 @@
+.scoreboardPage {
+  min-height: 100vh;
+  background: var(--color-bg-creamy, #f8f6f2);
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

@@ -1,0 +1,158 @@
+.sumGridContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  margin-top: 32px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 48px repeat(5, 48px);
+  grid-template-rows: 48px repeat(5, 48px) 48px;
+  gap: 4px;
+  margin-bottom: 24px;
+}
+
+.cell {
+  background: #fff;
+  border: 2px solid var(--color-gold);
+  border-radius: 8px;
+  font-size: 1.25rem;
+  font-family: "Funnel Sans", "Yanone Kaffeesatz", Arial, sans-serif;
+  font-weight: 700;
+  color: var(--color-green-bg);
+  text-align: center;
+  outline: none;
+  width: 48px;
+  height: 48px;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+}
+
+.cell:focus {
+  border-color: var(--color-green-bg);
+  background: #f8f6f2;
+}
+
+.numberLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  background: #f8f6f2;
+  border-radius: 8px;
+  width: 48px;
+  height: 48px;
+}
+
+.colSum {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  background: transparent;
+  border: none;
+  width: 48px;
+  height: 48px;
+  position: relative;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+}
+
+.colSum::after {
+  content: "";
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 2px;
+  background: var(--color-gold);
+}
+
+.correct {
+  background: #e6ffe6;
+  border-color: var(--color-green-bg);
+}
+
+.incorrect {
+  background: #ffe6e6;
+  border-color: #e57373;
+}
+
+.controls {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.moveCounter {
+  font-size: 1rem;
+  color: var(--color-green-bg);
+  margin-bottom: 12px;
+}
+
+.hintButton {
+  background: var(--color-gold);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+
+.hintButton:active {
+  background: var(--color-green-bg);
+}
+
+.resetButton {
+  background: #fff;
+  color: var(--color-gold);
+  border: 2px solid var(--color-gold);
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+
+.resetButton:active {
+  background: var(--color-gold);
+  color: #fff;
+}
+
+.roundNav {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.roundButton {
+  background: #fff;
+  color: var(--color-green-bg);
+  border: 2px solid var(--color-gold);
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+
+.roundButton.active,
+.roundButton:active {
+  background: var(--color-gold);
+  color: #fff;
+}
