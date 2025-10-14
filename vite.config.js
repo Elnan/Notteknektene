@@ -10,7 +10,7 @@ export default defineConfig({
   publicDir: "public",
   build: {
     // Production optimizations
-    minify: "terser",
+    minify: "esbuild", // Use esbuild (faster, no extra dependencies)
     sourcemap: false,
     rollupOptions: {
       output: {
