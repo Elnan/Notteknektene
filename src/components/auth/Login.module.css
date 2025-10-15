@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Funnel+Sans:ital,wght@0,300..800;1,300..800&family=Yanone+Kaffeesatz:wght@200..700&display=swap");
+
 body,
 html {
   margin: 0;
@@ -10,6 +12,7 @@ html {
 .loginWrapper {
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   background: var(--color-white);
@@ -18,6 +21,24 @@ html {
   background-position: center;
   background-repeat: no-repeat;
   position: relative;
+  padding: 2rem 1rem;
+}
+
+.logoContainer {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.logo {
+  font-family: "Yanone Kaffeesatz", sans-serif;
+  font-size: 4.5rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  text-align: center;
 }
 
 .loginContainer {
@@ -201,13 +222,41 @@ html {
 }
 
 @media (max-width: 768px) {
+  .loginWrapper {
+    padding: 1rem 0.5rem;
+  }
+
+  .logo {
+    font-size: 2.8rem;
+    letter-spacing: 1px;
+  }
+
+  .logoContainer {
+    margin-bottom: 1.5rem;
+  }
+
   .loginContainer {
-    margin: 1rem;
+    margin: 0;
     padding: 1.5rem;
   }
 
   .loginTitle {
     font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    font-size: 2.8rem;
+    letter-spacing: 0.5px;
+  }
+
+  .logoContainer {
+    margin-bottom: 1rem;
+  }
+
+  .loginContainer {
+    padding: 1rem;
   }
 }
 

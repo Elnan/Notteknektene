@@ -100,6 +100,9 @@ const Login = () => {
 
   return (
     <div className={styles.loginWrapper}>
+      <div className={styles.logoContainer}>
+        <h1 className={styles.logo}>NØTTEKNEKTENE</h1>
+      </div>
       <div className={styles.loginContainer}>
         <h2 className={styles.loginTitle}>Logg inn</h2>
 
