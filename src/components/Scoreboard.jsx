@@ -32,6 +32,12 @@ const Scoreboard = () => {
   const [loading, setLoading] = useState(true);
   const [seasonGames, setSeasonGames] = useState([]);
   const { roundNumber } = useContext(TaskContext);
+  const { currentUser } = useAuth();
+
+  // Don't render if user is not authenticated
+  if (!currentUser) {
+    return <div className="loading">Loading...</div>;
+  }
 
   // Move fetchCurrentRoundTable outside useEffect so it can be accessed by manual refresh
   const fetchCurrentRoundTable = async () => {
@@ -195,14 +201,13 @@ const Scoreboard = () => {
     };
 
     // Only fetch data if user is authenticated
-    const { currentUser } = useAuth();
     if (currentUser) {
       fetchUserAvatars();
       fetchCurrentRoundTable();
       fetchTotalScores();
       fetchSeasonGames();
     }
-  }, [roundNumber]);
+  }, [roundNumber, currentUser]);
 
   // Add effect to refresh round table when season changes
   useEffect(() => {

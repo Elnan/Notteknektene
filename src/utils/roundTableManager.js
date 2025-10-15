@@ -31,8 +31,8 @@ export const initializeRoundTableManager = () => {
     5 * 60 * 1000
   ); // 5 minutes
 
-  // Also check immediately
-  checkForExpiredGames();
+  // Don't check immediately - wait for authentication
+  // checkForExpiredGames();
 
   return () => {
     clearInterval(checkInterval);
@@ -47,9 +47,11 @@ export const checkForExpiredGames = async () => {
   try {
     // Check if user is authenticated before making Firebase calls
     const { getAuth } = await import("firebase/auth");
-    const { notteknekteneAuth } = await import("../firebase/firebase-config-notteknektene.js");
+    const { notteknekteneAuth } = await import(
+      "../firebase/firebase-config-notteknektene.js"
+    );
     const auth = getAuth(notteknekteneAuth.app);
-    
+
     if (!auth.currentUser) {
       console.log("ℹ️ No authenticated user, skipping expired game check");
       return;
