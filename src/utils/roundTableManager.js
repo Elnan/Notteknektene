@@ -45,6 +45,16 @@ export const initializeRoundTableManager = () => {
  */
 export const checkForExpiredGames = async () => {
   try {
+    // Check if user is authenticated before making Firebase calls
+    const { getAuth } = await import("firebase/auth");
+    const { notteknekteneAuth } = await import("../firebase/firebase-config-notteknektene.js");
+    const auth = getAuth(notteknekteneAuth.app);
+    
+    if (!auth.currentUser) {
+      console.log("ℹ️ No authenticated user, skipping expired game check");
+      return;
+    }
+
     // Get current season
     const { getCurrentSeason } = await import(
       "../firebase/new-database-utils.js"

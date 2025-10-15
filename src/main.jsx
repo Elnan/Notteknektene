@@ -11,26 +11,26 @@ if (import.meta.env.DEV) {
 }
 
 // Initialize round table manager for automatic deadline checking
+// Only initialize after user authentication to avoid permission errors
 const initializeApp = async () => {
   try {
+    // Wait for authentication to be ready
     const { initializeRoundTableManager } = await import(
       "./utils/roundTableManager.js"
     );
-    const cleanup = initializeRoundTableManager();
-
-    // Store cleanup function for potential use
-    window.cleanupRoundTableManager = cleanup;
-
+    
+    // Don't initialize immediately - let the auth context handle this
+    // The round table manager will be initialized when needed
     if (import.meta.env.DEV) {
-      console.log("✅ Round Table Manager initialized");
+      console.log("✅ Round Table Manager ready for initialization");
     }
   } catch (error) {
-    console.error("❌ Failed to initialize Round Table Manager:", error);
+    console.error("❌ Failed to prepare Round Table Manager:", error);
   }
 };
 
-// Initialize the round table manager
-initializeApp();
+// Don't initialize immediately - wait for authentication
+// initializeApp();
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

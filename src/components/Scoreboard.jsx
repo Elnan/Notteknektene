@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { getDocs, collection } from "firebase/firestore";
 import { notteknekteneDb } from "../firebase/firebase-config-notteknektene";
 import { TaskContext } from "../context/TaskContext";
+import { useAuth } from "../context/authContext";
 import {
   getCurrentSeason,
   getMostRecentSeason,
@@ -193,10 +194,14 @@ const Scoreboard = () => {
       }
     };
 
-    fetchUserAvatars();
-    fetchCurrentRoundTable();
-    fetchTotalScores();
-    fetchSeasonGames();
+    // Only fetch data if user is authenticated
+    const { currentUser } = useAuth();
+    if (currentUser) {
+      fetchUserAvatars();
+      fetchCurrentRoundTable();
+      fetchTotalScores();
+      fetchSeasonGames();
+    }
   }, [roundNumber]);
 
   // Add effect to refresh round table when season changes
