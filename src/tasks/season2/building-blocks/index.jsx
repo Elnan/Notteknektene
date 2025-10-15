@@ -3,12 +3,7 @@ import styles from "./BuildingBlocks.module.css";
 import Button from "../../../components/Button";
 import Modal from "../../../components/Modal";
 import modalStyles from "../../../components/Modal.module.css";
-import {
-  BUILDING_BLOCKS_CONFIG,
-  validateAnagramSolution,
-  checkGridSolution,
-  getDiagonalReading,
-} from "./gameConfig";
+import { BUILDING_BLOCKS_CONFIG } from "./gameConfig";
 
 const BuildingBlocks = ({ onComplete, onBack, currentGameId }) => {
   // State management

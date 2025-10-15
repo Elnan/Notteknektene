@@ -331,11 +331,11 @@
 
 /* Thicker borders for category separations in the main grid */
 .thickerRightBorder {
-  border-right: 3px solid var(--color-gold) !important;
+  border-right: 3px solid var(--color-gold);
 }
 
 .thickerBottomBorder {
-  border-bottom: 3px solid var(--color-gold) !important;
+  border-bottom: 3px solid var(--color-gold);
 }
 
 /* Cell states */

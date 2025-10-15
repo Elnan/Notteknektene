@@ -108,7 +108,6 @@ const PatternSolver = ({ onComplete, currentGameId }) => {
     isSaving,
     autoSave,
     saveState,
-    deleteSave,
   } = useUniversalSaveState(
     currentGameId || "pattern-solver",
     "pattern-solver"
@@ -180,14 +179,6 @@ const PatternSolver = ({ onComplete, currentGameId }) => {
 
           if (savedState) {
             // Debug: Log what's being loaded
-            console.log("🎮 Loading saved state for Pattern Solver:", {
-              currentRound: savedState.currentRound,
-              roundScores: savedState.roundScores,
-              boardSnapshots: savedState.boardSnapshots?.length || 0,
-              roundResults: savedState.roundResults?.length || 0,
-              hintsUsed: savedState.hintsUsed,
-              instructionsUsed: savedState.instructionsUsed,
-            });
 
             // Restore game state from save
             if (savedState.currentRound !== undefined)
@@ -239,8 +230,6 @@ const PatternSolver = ({ onComplete, currentGameId }) => {
               setRoundMoves(savedState.roundMoves);
             if (savedState.roundStartTime !== undefined)
               setRoundStartTime(savedState.roundStartTime);
-
-            console.log("🎮 Loaded saved state for Pattern Solver");
           }
         } catch (error) {
           console.error("❌ Error loading saved state:", error);
@@ -288,16 +277,6 @@ const PatternSolver = ({ onComplete, currentGameId }) => {
         roundStartTime,
       };
 
-      // Debug: Log what's being saved
-      console.log("🎮 Auto-saving Pattern Solver state:", {
-        currentRound: gameState.currentRound,
-        roundScores: gameState.roundScores,
-        boardSnapshots: gameState.boardSnapshots?.length || 0,
-        roundResults: gameState.roundResults?.length || 0,
-        hintsUsed: gameState.hintsUsed,
-        instructionsUsed: gameState.instructionsUsed,
-      });
-
       autoSave(gameState);
     }
   }, [
@@ -343,7 +322,6 @@ const PatternSolver = ({ onComplete, currentGameId }) => {
       const gameId = currentGameId || "pattern-solver";
       const localStorageKey = `game_save_${gameId}`;
       localStorage.removeItem(localStorageKey);
-      console.log(`🗑️ Cleared local storage for ${gameId}`);
       window.location.reload();
     };
 
@@ -353,17 +331,7 @@ const PatternSolver = ({ onComplete, currentGameId }) => {
       const saved = localStorage.getItem(localStorageKey);
       if (saved) {
         const parsed = JSON.parse(saved);
-        console.log(`🔍 Local storage for ${gameId}:`, {
-          currentRound: parsed.currentRound,
-          roundScores: parsed.roundScores,
-          boardSnapshots: parsed.boardSnapshots?.length || 0,
-          roundResults: parsed.roundResults?.length || 0,
-          hintsUsed: parsed.hintsUsed,
-          instructionsUsed: parsed.instructionsUsed,
-          gameCompleted: parsed.gameCompleted,
-        });
       } else {
-        console.log(`🔍 No local storage found for ${gameId}`);
       }
     };
 
@@ -390,32 +358,13 @@ const PatternSolver = ({ onComplete, currentGameId }) => {
           );
 
           if (existingSubmission && existingSubmission.completed) {
-            console.log(`🔍 Database submission found for ${gameId}:`, {
-              id: existingSubmission.id,
-              score: existingSubmission.score,
-              completed: existingSubmission.completed,
-              submittedAt: existingSubmission.submittedAt,
-            });
           } else {
-            console.log(`🔍 No database submission found for ${gameId}`);
           }
         }
       } catch (error) {
         console.error("❌ Error checking database submission:", error);
       }
     };
-
-    // Log the functions for easy access
-    console.log("🔧 Debug functions available:");
-    console.log(
-      "  - window.clearPatternSolverSave() - Clear local storage and reset game"
-    );
-    console.log(
-      "  - window.checkPatternSolverSave() - Check what's in local storage"
-    );
-    console.log(
-      "  - window.checkDatabaseSubmission() - Check if user has already submitted to database"
-    );
   }, [currentGameId]);
 
   // Check if grid is complete (all cells filled with both color and shape)
@@ -886,28 +835,6 @@ const PatternSolver = ({ onComplete, currentGameId }) => {
           answer: `Completed ${roundsWon}/${MAX_ROUNDS} rounds`, // Add answer field
         };
 
-        // Debug log to check for undefined values
-        console.log("🎮 Pattern Solver - Submission Data:", submissionData);
-        console.log("🎮 Pattern Solver - Variables check:", {
-          finalScore,
-          roundsWon,
-          rounds: rounds.length,
-          totalMistakes,
-          hintsUsed,
-          timeSpent,
-          instructionsUsed,
-        });
-
-        // Debug: Check the source data
-        console.log("🎮 Pattern Solver - Source data check:", {
-          roundScores: roundScores,
-          boardSnapshots: boardSnapshots?.length || 0,
-          roundResults: roundResults?.length || 0,
-          newRoundScores: newRoundScores,
-          newBoardSnapshots: newBoardSnapshots?.length || 0,
-          newRoundResults: newRoundResults?.length || 0,
-        });
-
         // Check for undefined values in submission data
         const undefinedFields = Object.entries(submissionData)
           .filter(([key, value]) => value === undefined)
@@ -1297,9 +1224,6 @@ const PatternSolver = ({ onComplete, currentGameId }) => {
               const gameId = currentGameId || "pattern-solver";
               const localStorageKey = `game_save_${gameId}`;
               localStorage.removeItem(localStorageKey);
-              console.log(
-                `🗑️ Cleared local storage for fresh start: ${gameId}`
-              );
               window.location.reload();
             }}
           >

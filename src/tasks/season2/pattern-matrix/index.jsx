@@ -54,34 +54,11 @@ const PatternMatrix = ({ onComplete, currentGameId }) => {
     const loadSaveState = async () => {
       try {
         setIsLoading(true);
-        console.log("Pattern Matrix: Loading save state...");
 
         // Try to load existing save state
         const savedState = await loadGameState(currentGameId);
 
         if (savedState) {
-          console.log("Pattern Matrix: Found save state, applying smart logic");
-
-          console.log("Pattern Matrix: Loaded save state", {
-            phase: savedState.phase,
-            practiceRound: savedState.practiceRound,
-            mainRound: savedState.mainRound,
-            practiceAnswers:
-              savedState.practiceAnswers?.filter((a) => a !== null).length || 0,
-            mainAnswers:
-              savedState.mainAnswers?.filter((a) => a !== null).length || 0,
-            mainAnswersDetail: savedState.mainAnswers,
-          });
-
-          console.log("Pattern Matrix: Raw saved state data", {
-            practiceAnswers: savedState.practiceAnswers,
-            mainAnswers: savedState.mainAnswers,
-            practiceAnswersType: typeof savedState.practiceAnswers,
-            mainAnswersType: typeof savedState.mainAnswers,
-            practiceAnswersIsArray: Array.isArray(savedState.practiceAnswers),
-            mainAnswersIsArray: Array.isArray(savedState.mainAnswers),
-          });
-
           // Validate and fix save state data
           const validatedState = {
             ...savedState,
@@ -111,10 +88,8 @@ const PatternMatrix = ({ onComplete, currentGameId }) => {
           setGameState(validatedState);
           setHasLoadedSave(true);
 
-          // Apply smart round logic here, not in a separate effect
           applySmartRoundLogic(validatedState);
         } else {
-          console.log("Pattern Matrix: No save state found, starting fresh");
           setGameState(initialState);
         }
 
@@ -129,22 +104,11 @@ const PatternMatrix = ({ onComplete, currentGameId }) => {
     };
 
     loadSaveState();
-  }, [currentGameId, loadGameState]); // Only depend on stable values
+  }, [currentGameId, loadGameState]);
 
   // Simple save function - no complex dependencies
   const saveGameState = useCallback(async () => {
     try {
-      console.log("Pattern Matrix: Saving game state", {
-        phase: gameState.phase,
-        practiceRound: gameState.practiceRound,
-        mainRound: gameState.mainRound,
-        practiceAnswers:
-          gameState.practiceAnswers?.filter((a) => a !== null).length || 0,
-        mainAnswers:
-          gameState.mainAnswers?.filter((a) => a !== null).length || 0,
-        mainAnswersDetail: gameState.mainAnswers,
-      });
-
       await contextSaveGameState(currentGameId, gameState, {
         timeSpent: Date.now() - gameState.gameStartTime,
         hintsUsed: 0,
@@ -161,7 +125,7 @@ const PatternMatrix = ({ onComplete, currentGameId }) => {
     }
   }, [currentGameId, gameState, contextSaveGameState]);
 
-  // Auto-save every 10 seconds - simple approach
+  // Auto-save every 10 seconds
   useEffect(() => {
     if (!isLoading && gameState.phase !== "rules") {
       const interval = setInterval(() => {
@@ -201,9 +165,6 @@ const PatternMatrix = ({ onComplete, currentGameId }) => {
 
       // Don't apply smart logic if player is paused between rounds
       if (loadedState.pausedDueToTimer || loadedState.showPauseOverlay) {
-        console.log(
-          "Pattern Matrix: Player paused between rounds, not advancing"
-        );
         return;
       }
 
@@ -216,10 +177,6 @@ const PatternMatrix = ({ onComplete, currentGameId }) => {
 
         // If more than 60 seconds have passed since round start, advance to next round
         if (timeSinceRoundStart >= ROUND_TIME * 1000) {
-          console.log(
-            "Pattern Matrix: Round timeout detected, advancing to next round"
-          );
-
           if (currentPhase === "practice") {
             if (currentRound + 1 < PRACTICE_ROUNDS) {
               setGameState((prev) => ({
@@ -267,10 +224,6 @@ const PatternMatrix = ({ onComplete, currentGameId }) => {
 
       // If we're paused between rounds and timer expired, advance to next round
       if (currentPhase === "pause" && lastRoundCompleted !== null) {
-        console.log(
-          "Pattern Matrix: Paused between rounds, advancing to next round"
-        );
-
         if (lastRoundCompleted < PRACTICE_ROUNDS - 1) {
           // Still in practice rounds
           setGameState((prev) => ({
@@ -327,8 +280,6 @@ const PatternMatrix = ({ onComplete, currentGameId }) => {
     },
     [setGameState]
   );
-
-  // Smart round logic is now applied directly in the load effect above
 
   // Extract state from gameState
   const {
@@ -458,16 +409,6 @@ const PatternMatrix = ({ onComplete, currentGameId }) => {
             (userAnswer && typeof userAnswer === "object"))
         ) {
           const mainPattern = generatePattern(i, false);
-
-          console.log("Pattern Matrix: Checking answer", {
-            round: i + 1,
-            userAnswer,
-            userAnswerType: typeof userAnswer,
-            userAnswerIsArray: Array.isArray(userAnswer),
-            correctAnswer: mainPattern.missing,
-            correctAnswerType: typeof mainPattern.missing,
-            correctAnswerIsArray: Array.isArray(mainPattern.missing),
-          });
 
           // Convert object answers to arrays if needed
           const normalizedAnswer = Array.isArray(userAnswer)
@@ -613,13 +554,6 @@ const PatternMatrix = ({ onComplete, currentGameId }) => {
     // Save answer (store at current round index, which is 0-based)
     const next = [...mainAnswers];
     next[mainRound] = input;
-
-    console.log("Pattern Matrix: Storing answer", {
-      mainRound,
-      input,
-      mainAnswersBefore: mainAnswers,
-      mainAnswersAfter: next,
-    });
 
     // Next round or end
     if (mainRound + 1 < MAIN_ROUNDS) {
@@ -848,16 +782,6 @@ const PatternMatrix = ({ onComplete, currentGameId }) => {
     let correct = 0;
     const review = mainAnswers.map((ans, i) => {
       const pat = generatePattern(i, false);
-
-      console.log("Pattern Matrix: Review checking answer", {
-        round: i + 1,
-        userAnswer: ans,
-        userAnswerType: typeof ans,
-        userAnswerIsArray: Array.isArray(ans),
-        correctAnswer: pat.missing,
-        correctAnswerType: typeof pat.missing,
-        correctAnswerIsArray: Array.isArray(pat.missing),
-      });
 
       // Convert object answers to arrays if needed
       const normalizedAnswer = Array.isArray(ans)

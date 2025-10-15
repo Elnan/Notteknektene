@@ -37,7 +37,6 @@ const InvestigationMystery = ({ onComplete, currentGameId }) => {
     saveLoading: isSaving,
     saveGameState,
     loadGameState,
-    clearSaveState,
     cleanup,
   } = useInvestigationMysterySaveState(
     currentGameId || "investigation-mystery",
@@ -73,9 +72,6 @@ const InvestigationMystery = ({ onComplete, currentGameId }) => {
           if (savedState.gameStartTime) {
             window.gameStartTime = savedState.gameStartTime;
           }
-          console.log(
-            "🎮 Loaded saved Investigation Mystery game state - returning to overview"
-          );
         }
         setHasLoadedInitialState(true);
       }
@@ -88,29 +84,6 @@ const InvestigationMystery = ({ onComplete, currentGameId }) => {
   useEffect(() => {
     return cleanup;
   }, [cleanup]);
-
-  // Make clearSaveState globally available for testing
-  useEffect(() => {
-    window.clearInvestigationMysterySave = async () => {
-      await clearSaveState();
-      window.location.reload();
-    };
-    return () => {
-      delete window.clearInvestigationMysterySave;
-    };
-  }, [clearSaveState]);
-
-  // Add temporary clear save button for testing
-  const handleClearSave = async () => {
-    if (
-      window.confirm(
-        "Are you sure you want to clear all save data? This cannot be undone."
-      )
-    ) {
-      await clearSaveState();
-      window.location.reload();
-    }
-  };
 
   // Helper function to sanitize data for Firebase submission
   const sanitizeForSubmission = (data) => {
@@ -144,8 +117,7 @@ const InvestigationMystery = ({ onComplete, currentGameId }) => {
   // Handle "Play Again" functionality
   const handlePlayAgain = useCallback(() => {
     if (isSubmitted) {
-      // Clear all save data and reset game
-      clearSaveState();
+      // Reset game state
       setGameState("overview");
       setCompletedMinigames({});
       setScore(0);
@@ -159,7 +131,7 @@ const InvestigationMystery = ({ onComplete, currentGameId }) => {
       setSubmissionData(null);
       window.gameStartTime = Date.now();
     }
-  }, [isSubmitted, clearSaveState]);
+  }, [isSubmitted]);
 
   // Check if user has already submitted
   useEffect(() => {
@@ -200,14 +172,8 @@ const InvestigationMystery = ({ onComplete, currentGameId }) => {
 
   // Check if all mini-games are completed
   useEffect(() => {
-    console.log(
-      `🔍 Checking completion: ${Object.keys(completedMinigames).length}/5 games completed`
-    );
-    console.log(`📋 Completed games:`, Object.keys(completedMinigames));
-
     // There are 5 minigames: what, when-where, how, why, who
     if (Object.keys(completedMinigames).length === 5) {
-      console.log(`🎉 All 5 mini-games completed! Ready for submission.`);
       setGameCompleted(true);
       setGameState("completed");
     }
@@ -257,14 +223,8 @@ const InvestigationMystery = ({ onComplete, currentGameId }) => {
   const completeMinigame = useCallback(
     (minigameName, result) => {
       // result can be a number (legacy) or { points, hintUsed, timeSpent, ... }
-      console.log(`🎮 Mini-game completed: ${minigameName}`, result);
-      console.log(
-        `📊 Current completed games:`,
-        Object.keys(completedMinigames)
-      );
       setCompletedMinigames((prev) => {
         const updated = { ...prev, [minigameName]: result };
-        console.log(`📊 Updated completed games:`, Object.keys(updated));
 
         // Save game state after minigame completion
         saveGameState({
@@ -300,12 +260,8 @@ const InvestigationMystery = ({ onComplete, currentGameId }) => {
   );
 
   const prepareAndSubmitGameData = async () => {
-    console.log("🎯 Preparing submission data for Investigation Mysteries");
-    console.log("🎯 Current completedMinigames:", completedMinigames);
-
     // Check if already submitted
     if (isSubmitted) {
-      console.log("❌ Game has already been submitted");
       setSubmissionError(
         "This investigation has already been submitted successfully!"
       );
@@ -345,10 +301,6 @@ const InvestigationMystery = ({ onComplete, currentGameId }) => {
         );
         return;
       }
-
-      console.log(
-        `🎯 Found Investigation Mystery game: ${investigationGame.gameId}`
-      );
 
       const totalTimeSpent = window.gameStartTime
         ? Date.now() - window.gameStartTime
@@ -429,14 +381,7 @@ const InvestigationMystery = ({ onComplete, currentGameId }) => {
       // Sanitize the submission data to remove any nested arrays or complex objects
       const sanitizedSubmissionData = sanitizeForSubmission(submissionData);
 
-      console.log("🎯 Submission data prepared:", submissionData);
-      console.log("🎯 Sanitized submission data:", sanitizedSubmissionData);
-      console.log(
-        `🎯 Calling onComplete with gameId: ${investigationGame.gameId}`
-      );
-
       if (onComplete) {
-        console.log("✅ onComplete function exists, calling it...");
         onComplete(investigationGame.gameId, sanitizedSubmissionData);
         setIsSubmitted(true);
         setShowSuccessMessage(true);
@@ -516,19 +461,6 @@ const InvestigationMystery = ({ onComplete, currentGameId }) => {
         <div className={styles.mysteryHeader}>
           <h2>{currentMystery.title}</h2>
           <p>{currentMystery.description}</p>
-          {/* Temporary clear save button for testing */}
-          <Button
-            variant="secondary"
-            size="small"
-            onClick={handleClearSave}
-            style={{
-              marginTop: "10px",
-              backgroundColor: "#ff6b6b",
-              color: "white",
-            }}
-          >
-            🗑️ Clear Save (Testing)
-          </Button>
         </div>
 
         <div className={styles.progressBoard}>
@@ -606,13 +538,11 @@ const InvestigationMystery = ({ onComplete, currentGameId }) => {
                   size="small"
                   onClick={() => {
                     if (isSubmitted) {
-                      console.log("❌ Game already submitted");
                       setSubmissionError(
                         "This investigation has already been submitted successfully!"
                       );
                       return;
                     }
-                    console.log("📤 Manual submission triggered");
                     prepareAndSubmitGameData();
                   }}
                   disabled={isSubmitted || isSubmitting}
@@ -675,13 +605,11 @@ const InvestigationMystery = ({ onComplete, currentGameId }) => {
             size="large"
             onClick={() => {
               if (isSubmitted) {
-                console.log("❌ Game already submitted");
                 setSubmissionError(
                   "This investigation has already been submitted successfully!"
                 );
                 return;
               }
-              console.log("🔄 Manual submission triggered");
               prepareAndSubmitGameData();
             }}
             disabled={isSubmitted || isSubmitting}
@@ -801,15 +729,11 @@ const InvestigationMystery = ({ onComplete, currentGameId }) => {
           <h2>Error Loading Game</h2>
           <p>There was an error loading your save data: {saveError}</p>
           <Button
-            onClick={async () => {
-              await clearSaveState();
-              window.location.reload();
-            }}
+            onClick={() => window.location.reload()}
             variant="secondary"
             size="small"
-            style={{ backgroundColor: "#ff4444", color: "white" }}
           >
-            Clear Save
+            Reload Game
           </Button>
         </div>
       </div>

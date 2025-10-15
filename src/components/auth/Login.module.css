@@ -13,29 +13,11 @@ html {
   align-items: center;
   justify-content: center;
   background: var(--color-white);
+  background-image: url("/NK_Background.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   position: relative;
-}
-
-.backButton {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  background: none;
-  border: none;
-  font-size: 2rem;
-  color: var(--color-gold);
-  cursor: pointer;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.backButton:hover {
-  color: var(--color-gold-light);
-  transform: scale(1.1);
-}
-
-.backButton:active {
-  transform: scale(0.95);
 }
 
 .loginContainer {
@@ -49,8 +31,10 @@ html {
   padding: 2rem;
   box-shadow: 0 4px 32px rgba(30, 41, 59, 0.12);
   text-align: center;
-  max-width: 400px;
+  max-width: 350px;
   width: 100%;
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 .loginTitle {
@@ -208,7 +192,7 @@ html {
 .googleSigninButton:disabled {
   opacity: 0.6;
   cursor: not-allowed;
-  transform: none !important;
+  transform: none;
 }
 
 .googleIcon {
@@ -220,12 +204,6 @@ html {
   .loginContainer {
     margin: 1rem;
     padding: 1.5rem;
-  }
-
-  .backButton {
-    top: 15px;
-    left: 15px;
-    font-size: 1.5rem;
   }
 
   .loginTitle {

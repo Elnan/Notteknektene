@@ -15,12 +15,12 @@ const HowGame = ({ onComplete, onBack, onHint, savedGameState }) => {
   const currentPathRef = useRef([]);
   const [completed, setCompleted] = useState(false);
   const [gameCompleted, setGameCompleted] = useState(false);
-  const [completedGrid, setCompletedGrid] = useState(null); // <-- NEW
-  const [victoryStage, setVictoryStage] = useState("none"); // <-- NEW: victory animation state
-  const [pendingVictory, setPendingVictory] = useState(false); // <-- NEW: track pending victory
+  const [completedGrid, setCompletedGrid] = useState(null);
+  const [victoryStage, setVictoryStage] = useState("none");
+  const [pendingVictory, setPendingVictory] = useState(false);
   const [moves, setMoves] = useState(0);
   const [dotConnections, setDotConnections] = useState(new Map());
-  const [history, setHistory] = useState([]); // <-- Add history state
+  const [history, setHistory] = useState([]);
   const [showHintModal, setShowHintModal] = useState(false);
   const [hintUsed, setHintUsed] = useState(false);
   const [gameStartTime, setGameStartTime] = useState(null);
@@ -49,11 +49,8 @@ const HowGame = ({ onComplete, onBack, onHint, savedGameState }) => {
   // Complete the mini-game with detailed data
   const completeGame = useCallback(() => {
     if (gameCompleted) {
-      console.log("🎯 HowGame already completed, skipping...");
       return;
     }
-
-    console.log("🎯 HowGame completeGame() called");
     const timeSpent = getTimeSpent();
     const points = getPoints();
 
@@ -79,7 +76,6 @@ const HowGame = ({ onComplete, onBack, onHint, savedGameState }) => {
       },
     };
 
-    console.log("🎯 HowGame calling onComplete with data:", gameData);
     setGameCompleted(true);
     onComplete("how", gameData);
   }, [
@@ -210,8 +206,8 @@ const HowGame = ({ onComplete, onBack, onHint, savedGameState }) => {
     setMoves(0);
     setDotConnections(new Map());
     setHistory([]);
-    setVictoryStage("none"); // <-- NEW: reset victory stage
-    setPendingVictory(false); // <-- NEW: reset pending victory
+    setVictoryStage("none");
+    setPendingVictory(false);
   };
 
   // ===== PATHFINDING UTILITIES =====
@@ -351,11 +347,7 @@ const HowGame = ({ onComplete, onBack, onHint, savedGameState }) => {
 
   // Auto-complete when game is finished
   useEffect(() => {
-    console.log(
-      `🔍 How game completion check: completed=${completed}, gameCompleted=${gameCompleted}`
-    );
     if (completed && !gameCompleted) {
-      console.log("✅ How game completed! Calling completeGame()");
       completeGame();
     }
   }, [completed, gameCompleted, completeGame]);
@@ -2188,28 +2180,8 @@ const HowGame = ({ onComplete, onBack, onHint, savedGameState }) => {
     >
       <div className={styles.minigameHeader}>
         <div className={styles.headerContent}>
-          <h3
-            style={{
-              flex: 1,
-              textAlign: "left",
-              color: "var(--color-green-bg)",
-              margin: 0,
-            }}
-          >
-            How
-          </h3>
-          <h4
-            className={styles.howQuestion}
-            style={{
-              flex: 2,
-              textAlign: "center",
-              color: "var(--color-green-bg)",
-              fontWeight: 600,
-              fontSize: "1.2rem",
-              margin: 0,
-              padding: "0 20px",
-            }}
-          >
+          <h3>How</h3>
+          <h4 className={styles.howQuestion}>
             We need to connect all the dots to understand how they did it.
           </h4>
           <div className={styles.headerButtons}>

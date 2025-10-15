@@ -15,7 +15,7 @@ const WhatGame = ({ onComplete, onBack, onHint, savedGameState }) => {
   const [wordleAttempt, setWordleAttempt] = useState(0);
   const [showHintModal, setShowHintModal] = useState(false);
   const [hintUsed, setHintUsed] = useState(false);
-  const [finalGuesses, setFinalGuesses] = useState(null); // Store snapshot
+  const [finalGuesses, setFinalGuesses] = useState(null);
   const [gameStartTime, setGameStartTime] = useState(null);
 
   const gameData = MYSTERY_DATA.what;

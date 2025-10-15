@@ -37,19 +37,9 @@ Players must solve 7 anagrams of building-related words and place them in the co
 - Confirmation modals before using help features
 - Help can only be used once per game
 
-### Anagrams
+### Anagram Categories
 
-1. **EEELPST** → STEEPLE (A tall pointed structure on a church)
-2. **AIMNNOS** → MANSION (A large, impressive house)
-3. **CEHIMNY** → CHIMNEY (A structure that carries smoke from a fire)
-4. **AACHRWY** → ARCHWAY (A passage under an arch)
-5. **EEHKLOY** → KEYHOLE (A hole for inserting a key)
-6. **BDIOORU** → DOORBUI (A door combined with a building structure)
-7. **EELMPST** → TEMPLES (Places of worship)
-
-### Final Answer
-
-The diagonal reading reveals: **KREMLIN**
+The anagrams are all related to building and architectural terms. Players must solve 7 anagrams and arrange them in the correct order to reveal the final building name through diagonal reading.
 
 ### Technical Implementation
 

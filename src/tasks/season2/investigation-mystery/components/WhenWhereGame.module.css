@@ -193,40 +193,6 @@
   padding: 30px;
 }
 
-.whenWhereResults h3 {
-  color: var(--color-green-bg);
-  font-size: 2rem;
-  margin-bottom: 30px;
-}
-
-.whenWhereSuccess {
-  background: rgba(76, 175, 80, 0.1);
-  border: 2px solid #4caf50;
-  border-radius: 12px;
-  padding: 25px;
-  margin-bottom: 20px;
-}
-
-.whenWhereSuccess h4 {
-  color: #4caf50;
-  font-size: 1.5rem;
-  margin-bottom: 15px;
-}
-
-.whenWhereFailure {
-  background: rgba(244, 67, 54, 0.1);
-  border: 2px solid #f44336;
-  border-radius: 12px;
-  padding: 25px;
-  margin-bottom: 20px;
-}
-
-.whenWhereFailure h4 {
-  color: #f44336;
-  font-size: 1.5rem;
-  margin-bottom: 15px;
-}
-
 .resultBreakdown {
   text-align: left;
   margin: 15px 0;
@@ -243,28 +209,6 @@
   color: #dc3545;
   margin-top: 5px;
   font-style: italic;
-}
-
-/* Hint display in game area */
-.hintDisplay {
-  background: rgba(36, 92, 79, 0.1);
-  border: 2px solid var(--color-gold);
-  border-radius: 12px;
-  padding: 20px;
-  margin: 25px 0;
-}
-
-.hintDisplay h4 {
-  color: var(--color-green-bg);
-  margin: 0 0 15px 0;
-  font-size: 1.2rem;
-}
-
-.hintDisplay p {
-  margin: 0;
-  color: var(--color-green-bg);
-  font-weight: 500;
-  line-height: 1.5;
 }
 
 /* Results screen styles */

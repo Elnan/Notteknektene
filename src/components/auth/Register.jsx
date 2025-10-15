@@ -9,6 +9,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import { useAuth } from "../../context/authContext";
 import styles from "./Register.module.css";
+import Button from "../Button";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -93,9 +94,6 @@ const Register = () => {
 
   return (
     <div className={styles.registerWrapper}>
-      <Link to="/" className={styles.backButton}>
-        <IoArrowBackCircleOutline />
-      </Link>
       <div className={styles.registerContainer}>
         <h2 className={styles.registerTitle}>Registrer deg</h2>
         <form className={styles.registerForm} onSubmit={handleSubmit}>
@@ -150,13 +148,14 @@ const Register = () => {
             <label className={styles.formLabel}>Bekreft Passord</label>
           </div>
           {error && <div className={styles.errorMessage}>{error}</div>}
-          <button
-            type="submit"
+          <Button
+            onClick={handleSubmit}
             disabled={isSigningUp}
-            className={`${styles.submitButton} ${isSigningUp ? styles.buttonDisabled : ""}`}
+            variant="primary"
+            size="large"
           >
-            {isSigningUp ? "Registrerer..." : "Registrer"}
-          </button>
+            Registrer
+          </Button>
         </form>
         <p>
           Har du allerede bruker?{" "}

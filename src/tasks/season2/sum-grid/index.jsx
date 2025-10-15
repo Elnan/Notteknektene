@@ -70,7 +70,6 @@ const SumGrid = () => {
   // Handle input (keyboard or on-screen)
   const handleInput = (value) => {
     if (value === "←" || value === "Clear") {
-      // Erase, do not increment move count
       setGrid((prev) => {
         const next = prev.map((row) => [...row]);
         next[selected.row][selected.col] = "";
@@ -103,7 +102,6 @@ const SumGrid = () => {
     else if (e.key === "ArrowRight" && colIdx < GRID_SIZE - 1)
       setSelected({ row: rowIdx, col: colIdx + 1 });
     else if (e.key === "Backspace" || e.key === "Delete") {
-      // Only erase, do not increment move count
       setGrid((prev) => {
         const next = prev.map((row) => [...row]);
         next[rowIdx][colIdx] = "";
@@ -170,11 +168,11 @@ const SumGrid = () => {
             onClick={() => handleRoundChange(idx)}
             disabled={round === idx}
           >
-            Runde {idx + 1}
+            Round {idx + 1}
           </button>
         ))}
       </div>
-      <div className={styles.moveCounter}>Trekk: {moveCount}</div>
+      <div className={styles.moveCounter}>Moves: {moveCount}</div>
       <div className={styles.controls}>
         <button
           className={styles.hintButton}
@@ -184,7 +182,7 @@ const SumGrid = () => {
           Hint
         </button>
         <button className={styles.resetButton} onClick={handleReset}>
-          Nullstill
+          Reset
         </button>
       </div>
       <div className={styles.grid}>
@@ -223,7 +221,7 @@ const SumGrid = () => {
               onKeyDown={(e) => handleKeyDown(e, i, j)}
               ref={(el) => (inputRefs.current[i * GRID_SIZE + j] = el)}
               tabIndex={0}
-              aria-label={`Rad ${i + 1}, Kolonne ${j + 1}`}
+              aria-label={`Row ${i + 1}, Column ${j + 1}`}
               autoComplete="off"
             />
           )),
@@ -259,17 +257,17 @@ const SumGrid = () => {
       {showHintModal && (
         <Modal onClose={() => setShowHintModal(false)}>
           <div>
-            <h3>Er du sikker på at du vil bruke et hint?</h3>
-            <p>Et riktig tall vil bli avslørt på brettet.</p>
+            <h3>Are you sure you want to use a hint?</h3>
+            <p>A correct number will be revealed on the board.</p>
             <div style={{ display: "flex", gap: 16, marginTop: 16 }}>
               <button className={styles.hintButton} onClick={confirmHint}>
-                Ja, vis hint
+                Yes, show hint
               </button>
               <button
                 className={styles.resetButton}
                 onClick={() => setShowHintModal(false)}
               >
-                Avbryt
+                Cancel
               </button>
             </div>
           </div>
@@ -279,13 +277,13 @@ const SumGrid = () => {
       {showSuccess && (
         <Modal onClose={() => setShowSuccess(false)}>
           <div>
-            <h2>Gratulerer!</h2>
-            <p>Du løste oppgaven på {moveCount} trekk.</p>
+            <h2>Congratulations!</h2>
+            <p>You solved the puzzle in {moveCount} moves.</p>
             <button
               className={styles.hintButton}
               onClick={() => setShowSuccess(false)}
             >
-              Lukk
+              Close
             </button>
           </div>
         </Modal>
@@ -296,7 +294,7 @@ const SumGrid = () => {
   return (
     <TaskOpener
       taskName="Sum Grid"
-      taskDescription="Fyll ut rutenettet slik at summen av tallene i hver kolonne matcher det oppgitte tallet. Bruk tallene som er gitt for hver rad og kolonne som hint."
+      taskDescription="Fill out the grid so that the sum of the numbers in each column matches the given number. Use the numbers given for each row and column as a hint."
       onTaskOpen={handleTaskOpen}
       isOpened={isOpened}
     >

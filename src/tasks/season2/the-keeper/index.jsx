@@ -11,7 +11,6 @@ import {
   OBSTACLES,
   KEEPER_RULES,
   GAME_TITLE,
-  UI_CONFIG,
   PRESSURE_PLATES,
   VALID_COMBINATIONS,
 } from "./gameConfig";
@@ -21,7 +20,6 @@ const TheKeeper = ({ onComplete, currentGameId }) => {
   const {
     saveGameState,
     loadGameState,
-    clearSaveState,
     isLoading: saveLoading,
     error: saveError,
     cleanup,
@@ -101,7 +99,6 @@ const TheKeeper = ({ onComplete, currentGameId }) => {
           setTotalGameStartTime(savedState.totalGameStartTime);
         }
         setHasLoadedInitialState(true);
-        console.log("🎮 Loaded saved Keeper game state");
       } else {
         setHasLoadedInitialState(true);
       }
@@ -122,7 +119,6 @@ const TheKeeper = ({ onComplete, currentGameId }) => {
         setGameLost(true);
         setPhase("end");
         // No database submission when caught - just show end screen
-        console.log("🎮 The Keeper - Game Lost (no submission)");
         return;
       }
     }
@@ -643,14 +639,13 @@ const TheKeeper = ({ onComplete, currentGameId }) => {
           : 0;
         const submissionData = {
           moves: moves + 1, // Include the final winning move
-          attempts: attempts, // Current attempt number (already correct)
+          attempts: attempts, // Current attempt number
           gameWon: true,
           timeSpent: timeSpent, // Total time from first opening the game
           hintsUsed: hintUsed ? 1 : 0,
           completed: true,
           // Score will be calculated after round ends based on ranking
         };
-        console.log("🎮 The Keeper - Game Won Submission:", submissionData);
         // Use currentGameId if available, otherwise fall back to base game ID
         const gameId = currentGameId || "the-keeper";
         onComplete(gameId, submissionData);
@@ -731,9 +726,6 @@ const TheKeeper = ({ onComplete, currentGameId }) => {
   // Reset game
   const resetGame = () => {
     const newAttempts = attempts + 1;
-    console.log(
-      `🎮 The Keeper - Resetting game. Attempt ${attempts} -> ${newAttempts}`
-    );
 
     setPlayerPos(INITIAL_PLAYER_POS);
     setKeeperPos(INITIAL_KEEPER_POS);
@@ -752,9 +744,6 @@ const TheKeeper = ({ onComplete, currentGameId }) => {
     const now = Date.now();
     setCurrentAttemptStartTime(now);
     window.gameStartTime = now; // Keep for backward compatibility
-    console.log(
-      `🎮 The Keeper - New attempt started at: ${new Date(now).toLocaleTimeString()}`
-    );
 
     // Save state after reset
     saveGameState({

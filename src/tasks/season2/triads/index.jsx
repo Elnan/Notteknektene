@@ -34,7 +34,6 @@ const Triads = ({ onComplete, currentGameId }) => {
   const {
     saveGameState,
     loadGameState,
-    clearSaveState,
     isLoading: saveLoading,
     error: saveError,
     cleanup,
@@ -454,19 +453,6 @@ const Triads = ({ onComplete, currentGameId }) => {
         currentState.roundStates || {}
       ).reduce((sum, roundState) => sum + (roundState?.hintsUsed || 0), 0);
 
-      // Debug logging
-      console.log("🔍 Triads Scoring Debug:", {
-        allRoundResults,
-        roundsCompleted,
-        totalHintsUsed,
-        currentRound: currentState.currentRound,
-        completedRounds: Array.from(currentState.completedRounds),
-        roundStates: currentState.roundStates,
-        currentHintsUsed: currentState.hintsUsed,
-        currentMoveCount: currentState.moveCount,
-        currentFoundTriads: currentState.foundTriads.length,
-      });
-
       // Calculate score: 2 points per round completed, -1 point per hint used
       const score = Math.max(0, roundsCompleted * 2 - totalHintsUsed);
 
@@ -489,7 +475,6 @@ const Triads = ({ onComplete, currentGameId }) => {
         score: score || 0,
       };
 
-      console.log("🎮 Triads - Game Submission:", submissionData);
       // Use currentGameId if available, otherwise fall back to base game ID
       const gameId = currentGameId || "triads";
 
@@ -861,17 +846,6 @@ const Triads = ({ onComplete, currentGameId }) => {
           >
             ?
           </button>
-          <Button
-            onClick={async () => {
-              await clearSaveState();
-              window.location.reload();
-            }}
-            variant="secondary"
-            size="small"
-            style={{ backgroundColor: "#ff4444", color: "white" }}
-          >
-            Clear Save
-          </Button>
         </div>
       </div>
 

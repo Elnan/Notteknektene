@@ -25,6 +25,10 @@ const Rules = () => {
           forklaring, men man kan alltid få instrukser mot -1 poeng. Det er med
           andre ord "bonuspoeng" å hente på å skjønne oppgaven på egenhånd.
         </li>
+        <li>
+          <strong>Lagring</strong> - Du kan forlate en oppgave midt i og
+          fortsette hvor du slapp senere.
+        </li>
 
         <h3>Generelle regler</h3>
         <li>

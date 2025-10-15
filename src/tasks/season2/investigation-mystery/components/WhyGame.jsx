@@ -117,10 +117,6 @@ const WhyGame = ({ onComplete, onBack, onHint, savedGameState }) => {
   // ===== RESTORE SAVED STATE =====
   useEffect(() => {
     if (savedGameState && savedGameState.gameState) {
-      console.log(
-        "🔄 Restoring WhyGame saved state:",
-        savedGameState.gameState
-      );
       const { gameState } = savedGameState;
 
       // Restore game state
@@ -340,16 +336,9 @@ const WhyGame = ({ onComplete, onBack, onHint, savedGameState }) => {
   };
 
   const handleNumberInput = (number) => {
-    console.log(
-      "handleNumberInput called:",
-      number,
-      "selectedCell:",
-      selectedCell
-    );
     if (!selectedCell) return;
     const [row, col] = selectedCell;
     if (!isCellEditable(row, col)) {
-      console.log("Cell not editable:", row, col);
       return;
     }
     setHistory((prev) => [
@@ -376,11 +365,9 @@ const WhyGame = ({ onComplete, onBack, onHint, savedGameState }) => {
 
   // Erase cell content (fill or notes)
   const handleErase = () => {
-    console.log("handleErase called, selectedCell:", selectedCell);
     if (!selectedCell) return;
     const [row, col] = selectedCell;
     if (!isCellEditable(row, col)) {
-      console.log("Cell not editable (erase):", row, col);
       return;
     }
     setHistory((prev) => [
@@ -669,7 +656,6 @@ const WhyGame = ({ onComplete, onBack, onHint, savedGameState }) => {
           </div>
         </div>
       </div>
-      {/* How to Play button, now under the header dividing line, top right */}
       <div className={styles.howToButtonWrapper}>
         <button
           aria-label="How to Play"

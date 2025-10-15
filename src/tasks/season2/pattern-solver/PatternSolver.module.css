@@ -254,18 +254,18 @@
 .colorButton:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  transform: none !important;
+  transform: none;
 }
 
 .colorButton.fullyUsed {
   opacity: 0.3;
   cursor: not-allowed;
-  transform: none !important;
+  transform: none;
   filter: grayscale(50%);
 }
 
 .colorButton.fullyUsed:hover {
-  transform: none !important;
+  transform: none;
   box-shadow: none;
   border-color: var(--color-gold);
 }
@@ -732,12 +732,12 @@
 .shapeButton.fullyUsed {
   opacity: 0.3;
   cursor: not-allowed;
-  transform: none !important;
+  transform: none;
   filter: grayscale(50%);
 }
 
 .shapeButton.fullyUsed:hover {
-  transform: none !important;
+  transform: none;
   box-shadow: none;
   border-color: var(--color-gold);
 }

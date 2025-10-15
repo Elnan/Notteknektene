@@ -3,7 +3,7 @@ import styles from "./OrderChaos.module.css";
 import Button from "../../../components/Button";
 import Modal from "../../../components/Modal";
 import { useOrderChaosSaveState } from "../../../hooks/useOrderChaosSaveState";
-import { checkWin, checkDraw, getValidMoves } from "./gameLogic";
+import { checkWin, checkDraw } from "./gameLogic";
 import { makeComputerMove } from "./ai";
 import { BOARD_SIZE, WIN_LENGTH, ROUNDS_TOTAL } from "./constants";
 
@@ -160,7 +160,6 @@ const OrderChaos = ({ onComplete, currentGameId }) => {
         submissionRounds &&
         submissionFinalScore !== undefined
       ) {
-        console.log("🎮 Using saved submission data for Order & Chaos");
         const submissionData = {
           score: submissionFinalScore,
           wins: submissionWins,

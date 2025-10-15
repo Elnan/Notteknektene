@@ -206,9 +206,7 @@ const WhoGame = ({ onComplete, onBack, onHint, savedGameState }) => {
     }
   }, [revealedCategories]);
 
-  useEffect(() => {
-    // No-op: removed debug log
-  }, [showHintConfirm]);
+  useEffect(() => {}, [showHintConfirm]);
 
   const getAvailableWords = () => {
     return shuffledWords.filter(

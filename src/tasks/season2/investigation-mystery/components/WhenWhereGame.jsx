@@ -98,7 +98,6 @@ const WhenWhereGame = ({ onComplete, onBack, onHint, savedGameState }) => {
     if (onHint) {
       onHint(0); // Use hint index 0 for the first hint
     }
-    // Do not close the modal, just set hintUsed to true so the modal shows the hint
   };
 
   // Calculate time spent on this mini-game
@@ -134,7 +133,7 @@ const WhenWhereGame = ({ onComplete, onBack, onHint, savedGameState }) => {
       countryCorrect: countryCorrect,
       yearClose: yearClose,
       completed: totalPoints > 0,
-      // Include complete game state for save/load
+      // Includes complete game state for save/load
       gameState: {
         yearInput,
         selectedCountry,
@@ -333,7 +332,7 @@ const WhenWhereGame = ({ onComplete, onBack, onHint, savedGameState }) => {
         />
       </Modal>
 
-      {/* Hint Confirmation Modal (refactored to use shared Modal) */}
+      {/* Hint Confirmation Modal */}
       <Modal
         isOpen={showHintModal}
         onClose={() => setShowHintModal(false)}

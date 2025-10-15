@@ -579,7 +579,7 @@
   outline: none;
   font-weight: 700;
   color: var(--color-green-bg);
-  background: #fff !important;
+  background: #fff;
 }
 
 .hintError {
@@ -746,7 +746,7 @@
 
   .attemptsAndButtons {
     position: absolute;
-    top: 60px; /* Move down to avoid covering the title */
+    top: 60px; /* Moved down to avoid covering the title */
     left: 0;
     right: 0;
     z-index: 10;
@@ -768,10 +768,8 @@
   }
 
   .quoteWordsArea {
-    margin-top: 160px; /* Increased to make room for the repositioned top controls */
+    margin-top: 160px;
   }
-
-  /* Make attempts more compact */
   .attemptsWrapper {
     margin-bottom: 0;
     margin-top: 0;
@@ -803,7 +801,7 @@
   .hintInput {
     font-size: 1.1rem;
     width: 3em;
-    background: #fff !important;
+    background: #fff;
   }
 
   .hintActions {
@@ -838,7 +836,7 @@
     gap: 6px 0;
     max-width: 98vw;
     margin-bottom: 15px;
-    margin-top: 140px; /* Adjusted for smaller screens */
+    margin-top: 140px;
   }
 
   .keyboardCenter {
@@ -911,7 +909,7 @@
   .hintInput {
     font-size: 1rem;
     width: 2.8em;
-    background: #fff !important;
+    background: #fff;
   }
 
   .mobileNavigation {

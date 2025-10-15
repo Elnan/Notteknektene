@@ -13,6 +13,7 @@ import { doc, setDoc, getDoc } from "firebase/firestore";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import { useAuth } from "../../context/authContext";
 import styles from "./Login.module.css";
+import Button from "../Button";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -99,9 +100,6 @@ const Login = () => {
 
   return (
     <div className={styles.loginWrapper}>
-      <Link to="/" className={styles.backButton}>
-        <IoArrowBackCircleOutline />
-      </Link>
       <div className={styles.loginContainer}>
         <h2 className={styles.loginTitle}>Logg inn</h2>
 
@@ -153,13 +151,13 @@ const Login = () => {
             <label className={styles.formLabel}>Passord</label>
           </div>
           {error && <div className={styles.errorMessage}>{error}</div>}
-          <button
-            type="submit"
-            disabled={isSigningIn}
-            className={`${styles.submitButton} ${isSigningIn ? styles.buttonDisabled : ""}`}
+          <Button
+            onClick={() => setState({ showSubmitConfirm: true })}
+            variant="primary"
+            size="large"
           >
-            {isSigningIn ? "Logger inn..." : "Logg inn"}
-          </button>
+            Logg inn
+          </Button>
         </form>
 
         <div className={styles.textCenter}>
