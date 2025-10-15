@@ -28,19 +28,6 @@ export function AuthProvider({ children }) {
       const userData = userDoc.data();
       const isAdminUser =
         user.email === adminEmail || userData?.isAdmin === true;
-      
-      // Debug logging (remove after fixing)
-      if (import.meta.env.DEV) {
-        console.log("🔍 Admin Check Debug:", {
-          userEmail: user.email,
-          adminEmail: adminEmail,
-          userData: userData,
-          isAdminFlag: userData?.isAdmin,
-          emailMatch: user.email === adminEmail,
-          isAdminUser: isAdminUser
-        });
-      }
-      
       setIsAdmin(isAdminUser);
     }
   };
