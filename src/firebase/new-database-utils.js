@@ -1730,6 +1730,21 @@ export const finishSeason = async (seasonName, forceComplete = false) => {
       }
     }
 
+    // IMPORTANT: Set ALL games to inactive when finishing the season
+    console.log(`🔧 Setting all games to inactive for finished season...`);
+    const updatePromises = games.map(async (game) => {
+      try {
+        await updateGame(seasonName, game.id, {
+          isActive: false,
+        });
+        console.log(`✅ Set game ${game.gameId} to inactive`);
+      } catch (error) {
+        console.error(`Failed to set game ${game.gameId} to inactive:`, error);
+      }
+    });
+
+    await Promise.all(updatePromises);
+
     // Get the last game
     const lastGame = games[games.length - 1];
 
