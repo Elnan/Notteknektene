@@ -1510,6 +1510,11 @@ export const archiveSeason = async (seasonName) => {
     };
   } catch (error) {
     console.error("Error archiving season:", error);
+    console.error("Error details:", {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
     throw error;
   }
 };
@@ -1735,6 +1740,11 @@ export const finishSeason = async (seasonName, forceComplete = false) => {
     };
   } catch (error) {
     console.error("Error finishing season:", error);
+    console.error("Error details:", {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
     throw error;
   }
 };
