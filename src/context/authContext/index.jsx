@@ -25,8 +25,22 @@ export function AuthProvider({ children }) {
       // Check if user is admin (either by email or admin flag)
       const adminEmail =
         import.meta.env.VITE_ADMIN_EMAIL || "olavelnan@gmail.com";
+      const userData = userDoc.data();
       const isAdminUser =
-        user.email === adminEmail || userDoc.data()?.isAdmin === true;
+        user.email === adminEmail || userData?.isAdmin === true;
+      
+      // Debug logging (remove after fixing)
+      if (import.meta.env.DEV) {
+        console.log("🔍 Admin Check Debug:", {
+          userEmail: user.email,
+          adminEmail: adminEmail,
+          userData: userData,
+          isAdminFlag: userData?.isAdmin,
+          emailMatch: user.email === adminEmail,
+          isAdminUser: isAdminUser
+        });
+      }
+      
       setIsAdmin(isAdminUser);
     }
   };
