@@ -1433,49 +1433,69 @@ export const archiveSeason = async (seasonName) => {
       }
     }
 
-    // Create archive structure
-    const archiveData = {
+    // Helper function to remove undefined values
+    const removeUndefinedValues = (obj) => {
+      if (obj === null || obj === undefined) return null;
+      if (typeof obj !== 'object') return obj;
+      if (Array.isArray(obj)) {
+        return obj.map(removeUndefinedValues).filter(item => item !== null);
+      }
+      const cleaned = {};
+      for (const [key, value] of Object.entries(obj)) {
+        if (value !== undefined) {
+          cleaned[key] = removeUndefinedValues(value);
+        }
+      }
+      return cleaned;
+    };
+
+    // Create archive structure with undefined value filtering
+    const archiveData = removeUndefinedValues({
       seasonMetadata: {
         ...season,
         archivedAt: serverTimestamp(),
         totalGames: games.length,
         totalParticipants: participants.length,
         totalSubmissions: allSubmissions.reduce(
-          (sum, game) => sum + game.submissions.length,
+          (sum, game) => sum + (game.submissions?.length || 0),
           0
         ),
       },
       games: games.map((game) => ({
-        id: game.id,
-        gameId: game.gameId,
-        roundNumber: game.roundNumber,
-        status: game.status,
-        isActive: game.isActive,
-        createdAt: game.createdAt,
-        releasedAt: game.releasedAt,
-        completedAt: game.completedAt,
+        id: game.id || '',
+        gameId: game.gameId || '',
+        roundNumber: game.roundNumber || 0,
+        status: game.status || 'unknown',
+        isActive: game.isActive || false,
+        createdAt: game.createdAt || null,
+        releasedAt: game.releasedAt || null,
+        completedAt: game.completedAt || null,
         config: game.config || {},
       })),
       participants: participants.map((participant) => ({
-        userId: participant.userId,
-        userName: participant.userName,
-        userEmail: participant.userEmail,
-        participating: participant.participating,
-        joinedAt: participant.joinedAt,
+        userId: participant.userId || '',
+        userName: participant.userName || '',
+        userEmail: participant.userEmail || '',
+        participating: participant.participating || false,
+        joinedAt: participant.joinedAt || null,
         totalScore: participant.totalScore || 0,
         gamesPlayed: participant.gamesPlayed || 0,
         gamesCompleted: participant.gamesCompleted || 0,
       })),
       roundTables: roundTables.map((table) => ({
-        roundNumber: table.roundNumber,
-        gameId: table.gameId,
-        gameName: table.gameName,
-        startDate: table.startDate,
-        endDate: table.endDate,
-        participants: table.participants,
-        summary: table.summary,
+        roundNumber: table.roundNumber || 0,
+        gameId: table.gameId || '',
+        gameName: table.gameName || '',
+        startDate: table.startDate || null,
+        endDate: table.endDate || null,
+        participants: table.participants || [],
+        summary: table.summary || '',
       })),
-      submissions: allSubmissions,
+      submissions: allSubmissions.map(submission => ({
+        gameId: submission.gameId || '',
+        roundNumber: submission.roundNumber || 0,
+        submissions: submission.submissions || [],
+      })),
       archiveInfo: {
         archivedAt: new Date().toISOString(),
         archiveVersion: "2.0",
@@ -1485,7 +1505,16 @@ export const archiveSeason = async (seasonName) => {
           roundTables.length +
           allSubmissions.length,
       },
-    };
+    });
+
+    // Log archive data for debugging
+    console.log("📦 Archive data prepared:", {
+      seasonMetadata: archiveData.seasonMetadata,
+      gamesCount: archiveData.games?.length || 0,
+      participantsCount: archiveData.participants?.length || 0,
+      roundTablesCount: archiveData.roundTables?.length || 0,
+      submissionsCount: archiveData.submissions?.length || 0,
+    });
 
     // Store archive in Firebase
     const archiveRef = doc(notteknekteneDb, "seasonArchives", seasonName);
