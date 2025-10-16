@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./TaskOpener.module.css";
+import AnimatedLogo from "../AnimatedLogo";
 
 const TaskOpener = ({
   children,
@@ -51,7 +52,9 @@ const TaskOpener = ({
           <div className={styles.taskCard}>
             <div className={styles.cardTop}>
               <h2 className={styles.taskTitle}>{taskName}</h2>
-              <div className={styles.taskIcon}>🥜</div>
+              <div className={styles.taskIcon}>
+                <AnimatedLogo className={styles.logoImage} />
+              </div>
             </div>
             <div className={styles.cardBottom}>
               <p className={styles.taskDescription}>Loading...</p>
@@ -68,7 +71,9 @@ const TaskOpener = ({
         <div className={`${styles.taskCard} ${styles[`step${animationStep}`]}`}>
           <div className={styles.cardTop}>
             <h2 className={styles.taskTitle}>{taskName}</h2>
-            <div className={styles.taskIcon}>🥜</div>
+            <div className={styles.taskIcon}>
+              <AnimatedLogo className={styles.logoImage} />
+            </div>
           </div>
 
           <div className={styles.cardBottom}>

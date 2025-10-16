@@ -91,28 +91,20 @@
 .taskIcon {
   font-size: 4rem;
   margin-bottom: 20px;
-  animation: bounce 2s infinite;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-@keyframes bounce {
-  0%,
-  20%,
-  50%,
-  80%,
-  100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-10px);
-  }
-  60% {
-    transform: translateY(-5px);
-  }
+.logoImage {
+  width: 4rem;
+  height: 4rem;
 }
 
 .taskTitle {
   font-size: 2.5rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-gold);
   text-transform: uppercase;
   font-family: "Yanone Kaffeesatz", sans-serif;
