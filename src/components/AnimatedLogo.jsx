@@ -45,7 +45,7 @@ const AnimatedLogo = ({ className }) => {
         // After drawing completes, transition to dotted pattern
         setTimeout(() => {
           circle.style.transition = "stroke-dasharray 0.5s ease-in-out";
-          circle.style.strokeDasharray = "2, 2";
+          circle.style.strokeDasharray = "3, 2";
           circle.style.strokeDashoffset = "0";
         }, 4000); // 4s for the drawing animation
       }
@@ -101,7 +101,7 @@ const AnimatedLogo = ({ className }) => {
         fill="none"
         stroke="var(--color-gold)"
         strokeWidth="2"
-        strokeDasharray="2, 2"
+        strokeDasharray="5, 3"
         strokeLinecap="butt"
         style={{ strokeDashoffset: "1000", opacity: "0" }}
       />

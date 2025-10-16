@@ -13,7 +13,7 @@ const Footer = () => {
 
       <div className={styles.footerContent}>
         <div className={styles.footerSection}>
-          <p className={styles.copyright}>© {currentYear} Notteknektene.</p>
+          <p className={styles.copyright}>© {currentYear} Notteknektene</p>
         </div>
         <div className={styles.footerSection}>
           <div className={styles.footerLinks}>
