@@ -1,0 +1,249 @@
+.footer {
+  width: 100%;
+  padding: 40px 0 32px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: transparent;
+  margin-top: auto;
+}
+
+.divider {
+  margin: 0 auto 32px auto;
+  width: 420px;
+  max-width: 100%;
+  position: relative;
+}
+
+.dividermask {
+  overflow: hidden;
+  height: 20px;
+}
+
+.dividermask::after {
+  content: "";
+  display: block;
+  margin: -25px auto 0;
+  width: 100%;
+  height: 25px;
+  border-radius: 125px / 12px;
+  box-shadow:
+    0 0 12px rgba(161, 140, 61, 0.4),
+    0 0 24px rgba(161, 140, 61, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-gold) 15%,
+    var(--color-gold-light) 50%,
+    var(--color-gold) 85%,
+    transparent 100%
+  );
+}
+
+.divider span {
+  width: 52px;
+  height: 52px;
+  position: absolute;
+  bottom: 100%;
+  margin-bottom: -26px;
+  left: 50%;
+  margin-left: -26px;
+  border-radius: 100%;
+  box-shadow:
+    0 4px 12px rgba(161, 140, 61, 0.3),
+    0 2px 6px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  background: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px dashed var(--color-gold);
+  font-family: "Yanone Kaffeesatz", sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-green-bg);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.divider span:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 6px 16px rgba(161, 140, 61, 0.4),
+    0 3px 8px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.footerContent {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 0 24px;
+}
+
+.footerSection {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 200px;
+}
+
+.footerSection:first-child {
+  justify-content: flex-start;
+}
+
+.footerSection:nth-child(2) {
+  justify-content: center;
+}
+
+.footerSection:last-child {
+  justify-content: flex-end;
+}
+
+.copyright {
+  color: var(--color-green-bg);
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin: 0;
+  opacity: 0.85;
+  letter-spacing: 0.3px;
+}
+
+.footerLinks {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.footerLink {
+  color: var(--color-green-bg);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.8;
+  letter-spacing: 0.2px;
+}
+
+.footerLink:hover {
+  color: var(--color-gold);
+  text-shadow: 0 0 8px rgba(161, 140, 61, 0.4);
+  transform: translateY(-1px);
+  opacity: 1;
+}
+
+.footerLink::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--color-gold);
+  transition: width 0.3s ease;
+}
+
+.footerLink:hover::after {
+  width: 100%;
+}
+
+.footerLink::before {
+  content: "↗";
+  font-size: 0.8em;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.footerLink:hover::before {
+  opacity: 1;
+}
+
+.footerText {
+  color: var(--color-green-bg);
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin: 0;
+  opacity: 0.8;
+  text-align: right;
+  letter-spacing: 0.3px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .footer {
+    padding: 32px 0 100px 0;
+    margin-top: auto;
+  }
+
+  .divider {
+    width: 320px;
+    margin: 0 auto 28px auto;
+  }
+
+  .footerContent {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+    padding: 0 20px;
+  }
+
+  .footerSection {
+    justify-content: center;
+    min-width: auto;
+  }
+
+  .footerLinks {
+    gap: 28px;
+  }
+
+  .footerText {
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 28px 0 90px 0;
+    margin-top: auto;
+  }
+
+  .divider {
+    width: 280px;
+    margin: 0 auto 24px auto;
+  }
+
+  .footerLinks {
+    gap: 16px;
+  }
+
+  .footerContent {
+    padding: 0 16px;
+    gap: 18px;
+  }
+
+  .footerLink {
+    font-size: 0.9rem;
+  }
+
+  .copyright,
+  .footerText {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .footer {
+    padding: 24px 0 80px 0;
+    margin-top: auto;
+  }
+}

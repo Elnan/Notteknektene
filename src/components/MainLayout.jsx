@@ -3,6 +3,7 @@ import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import Header from "./Header";
 import ProgressBar from "./ProgressBar";
 import MobileBottomNav from "./MobileBottomNav/MobileBottomNav";
+import Footer from "./Footer";
 import { games as defaultGames } from "../utils/gamesConfig";
 import {
   getSeasonGames,
@@ -113,17 +114,18 @@ const MainLayout = () => {
   };
 
   return (
-    <div>
+    <div className="main-layout">
       {!isMobile && <Header />}
       {!isMobile && (
         <ProgressBar games={gamesList} onGameSelect={handleGameSelection} />
       )}
-      <div className={isMobile ? "mobile-content" : ""}>
+      <div className={`main-content ${isMobile ? "mobile-content" : ""}`}>
         <Outlet />
       </div>
       {isMobile && (
         <MobileBottomNav games={gamesList} onGameSelect={handleGameSelection} />
       )}
+      <Footer />
     </div>
   );
 };
