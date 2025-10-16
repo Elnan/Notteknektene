@@ -118,20 +118,17 @@
 }
 
 .openButton {
-  background: linear-gradient(
-    135deg,
-    var(--color-green-bg),
-    var(--color-green)
-  );
+  background: var(--color-green-bg);
   color: white;
   border: none;
   padding: 15px 30px;
   border-radius: 50px;
+  border: 2px solid var(--color-gold);
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 5px 15px #aaa;
   position: relative;
   overflow: hidden;
 }
