@@ -549,18 +549,6 @@ const Scoreboard = () => {
           >
             {view === "round" ? "Total" : "Round"}
           </Button>
-          <Button
-            variant="secondary"
-            size="small"
-            onClick={async () => {
-              await fetchTotalScores();
-              await fetchCurrentRoundTable();
-              await fetchSeasonGames();
-            }}
-            className={styles.buttonContainer}
-          >
-            Refresh
-          </Button>
         </div>
       </div>
 

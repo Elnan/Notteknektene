@@ -83,7 +83,7 @@ const TaskOpener = ({
               onClick={handleOpenTask}
               disabled={isOpening}
             >
-              Åpne Oppgave
+              Open Task
             </button>
           </div>
 

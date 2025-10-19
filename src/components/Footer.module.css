@@ -1,6 +1,6 @@
 .footer {
   width: 100%;
-  padding: 40px 0 32px 0;
+  padding: 48px 0 40px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,7 +41,7 @@
   );
 }
 
-.divider span {
+.logoContainer {
   width: 52px;
   height: 52px;
   position: absolute;
@@ -59,21 +59,50 @@
   align-items: center;
   justify-content: center;
   border: 1.5px dashed var(--color-gold);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.logoText {
   font-family: "Yanone Kaffeesatz", sans-serif;
   font-size: 1.4rem;
   font-weight: 700;
   color: var(--color-green-bg);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  transition: all 0.3s ease;
+  transition: opacity 0.3s ease;
+  position: absolute;
+  z-index: 2;
 }
 
-.divider span:hover {
+.logoImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.logoContainer:hover {
   transform: translateY(-1px);
   box-shadow:
     0 6px 16px rgba(161, 140, 61, 0.4),
     0 3px 8px rgba(0, 0, 0, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.logoContainer:hover .logoText {
+  opacity: 0;
+}
+
+.logoContainer:hover .logoImage {
+  opacity: 1;
 }
 
 .footerContent {
@@ -106,25 +135,31 @@
   justify-content: flex-end;
 }
 
+.footerSection p {
+  font-family: "Yanone Kaffeesatz", Arial, sans-serif;
+  font-size: 1rem;
+}
+
 .copyright {
   color: var(--color-green-bg);
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 500;
   margin: 0;
-  opacity: 0.85;
+  opacity: 0.8;
   letter-spacing: 0.3px;
+  font-family: "Yanone Kaffeesatz", Arial, sans-serif;
 }
 
 .footerLinks {
   display: flex;
-  gap: 24px;
+  gap: 32px;
   align-items: center;
 }
 
 .footerLink {
   color: var(--color-green-bg);
   text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 500;
   transition: all 0.3s ease;
   position: relative;
@@ -133,6 +168,7 @@
   gap: 6px;
   opacity: 0.8;
   letter-spacing: 0.2px;
+  font-family: "Yanone Kaffeesatz", Arial, sans-serif;
 }
 
 .footerLink:hover {
@@ -170,12 +206,66 @@
 
 .footerText {
   color: var(--color-green-bg);
-  font-size: 0.95rem;
+
   font-weight: 500;
   margin: 0;
   opacity: 0.8;
   text-align: right;
   letter-spacing: 0.3px;
+}
+
+.authorInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.authorWithBadge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.authorText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+}
+
+.armyBadge {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 5px;
+  transition: all 0.3s ease;
+}
+
+.armyBadge:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15))
+    drop-shadow(0 0 16px rgba(161, 140, 61, 0.4));
+}
+
+.authorName {
+  color: var(--color-green-bg);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  opacity: 0.9;
+  letter-spacing: 0.3px;
+  font-family: "Yanone Kaffeesatz", Arial, sans-serif;
+}
+
+.authorTitle {
+  color: var(--color-green-bg);
+  font-size: 0.8rem;
+  font-weight: 400;
+  margin: 0;
+  opacity: 0.7;
+  letter-spacing: 0.1px;
+  font-family: "Yanone Kaffeesatz", Arial, sans-serif;
+  font-style: italic;
 }
 
 /* Responsive adjustments */
@@ -192,9 +282,11 @@
 
   .footerContent {
     flex-direction: column;
-    gap: 20px;
+    gap: 24px;
     text-align: center;
     padding: 0 20px;
+    max-width: 400px;
+    margin: 0 auto;
   }
 
   .footerSection {
@@ -203,11 +295,27 @@
   }
 
   .footerLinks {
-    gap: 28px;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
   .footerText {
     text-align: center;
+  }
+
+  .authorInfo {
+    align-items: center;
+  }
+
+  .authorText {
+    align-items: center;
+    text-align: center;
+  }
+
+  .armyBadge {
+    width: 28px;
+    height: 28px;
   }
 }
 
@@ -224,20 +332,40 @@
 
   .footerLinks {
     gap: 16px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
   }
 
   .footerContent {
+    gap: 0;
     padding: 0 16px;
-    gap: 18px;
+    max-width: 360px;
   }
 
   .footerLink {
     font-size: 0.9rem;
   }
 
-  .copyright,
-  .footerText {
-    font-size: 0.9rem;
+  .copyright {
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 12px 20px;
+  }
+
+  .authorName {
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+
+  .authorTitle {
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+
+  .armyBadge {
+    width: 28px;
+    height: 28px;
   }
 }
 

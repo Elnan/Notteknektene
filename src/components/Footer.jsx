@@ -8,7 +8,14 @@ const Footer = () => {
     <footer className={styles.footer}>
       <div className={styles.divider}>
         <div className={styles.dividermask}></div>
-        <span>NK</span>
+        <span className={styles.logoContainer}>
+          <span className={styles.logoText}>NK</span>
+          <img
+            src="/NK_ishihara.png"
+            alt="NK Ishihara"
+            className={styles.logoImage}
+          />
+        </span>
       </div>
 
       <div className={styles.footerContent}>
@@ -44,7 +51,19 @@ const Footer = () => {
           </div>
         </div>
         <div className={styles.footerSection}>
-          <p className={styles.footerText}>Olav Elnan</p>
+          <div className={styles.authorInfo}>
+            <div className={styles.authorText}>
+              <div className={styles.authorWithBadge}>
+                <img
+                  src="/NK_army_badge_colored.svg"
+                  alt="NK Army Badge"
+                  className={styles.armyBadge}
+                />
+                <p className={styles.authorName}>Olav Elnan</p>
+              </div>
+              <p className={styles.authorTitle}>Der Nussführer</p>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

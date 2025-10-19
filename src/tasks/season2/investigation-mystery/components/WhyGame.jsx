@@ -550,22 +550,28 @@ const WhyGame = ({ onComplete, onBack, onHint, savedGameState }) => {
     if (boardRef.current) boardRef.current.focus();
   };
 
-  // Victory screen inline
+  // Victory screen as modal
   const renderVictoryScreen = () => {
     const points = getPoints();
     return (
-      <div className={styles.whyResults}>
-        <h3>Case Solved!</h3>
+      <Modal
+        isOpen={victory}
+        onClose={() => {}} // Prevent closing the victory modal
+        title="Case Solved!"
+        className={modalStyles.modalWide}
+      >
         <div className={styles.whySuccess}>
           <h4>You solved the Suguru puzzle!</h4>
           <p>
             Points earned: {points} / 2{hintUsed ? " (hint used)" : ""}
           </p>
         </div>
-        <Button variant="secondary" size="small" onClick={onBack}>
-          Back to Overview
-        </Button>
-      </div>
+        <div className={modalStyles.modalButtons}>
+          <Button variant="secondary" size="small" onClick={onBack}>
+            Back to Overview
+          </Button>
+        </div>
+      </Modal>
     );
   };
 
@@ -736,7 +742,9 @@ const WhyGame = ({ onComplete, onBack, onHint, savedGameState }) => {
           Reset Grid
         </Button>
       </div>
-      {victory && renderVictoryScreen()}
+
+      {/* Victory Modal */}
+      {renderVictoryScreen()}
     </div>
   );
 };

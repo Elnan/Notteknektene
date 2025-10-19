@@ -168,6 +168,14 @@
 .minigameIcon {
   font-size: 3rem;
   margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logoImage {
+  width: 5rem;
+  height: 5rem;
 }
 
 .minigameCard h4 {

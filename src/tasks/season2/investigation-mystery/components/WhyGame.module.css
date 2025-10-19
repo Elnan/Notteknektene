@@ -286,42 +286,21 @@
 
 /* ===== VICTORY SCREEN ===== */
 
-.whyResults {
-  text-align: center;
-  background: var(--color-green-bg);
-  border-radius: 20px;
-  padding: 50px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-  border: 3px solid var(--color-gold);
-  margin-top: 20px;
-}
-
-.whyResults h3 {
-  font-size: 2.5rem;
-  margin-bottom: 25px;
-  color: var(--color-gold);
-  font-weight: 700;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
 .whySuccess {
-  margin: 25px 0;
-  padding: 25px;
-  background: rgba(46, 125, 79, 0.3);
-  border-radius: 16px;
-  border: 2px solid var(--color-gold);
+  text-align: center;
+  padding: 20px 0;
 }
 
 .whySuccess h4 {
   font-size: 1.5rem;
-  color: var(--color-gold);
+  color: var(--color-green-bg);
   margin-bottom: 15px;
   font-weight: 700;
 }
 
 .whySuccess p {
   font-size: 1.2rem;
-  color: var(--color-gold);
+  color: var(--color-green-bg);
   margin-bottom: 8px;
   font-weight: 600;
 }

@@ -6,6 +6,7 @@ import WhatGame from "./components/WhatGame";
 import HowGame from "./components/HowGame";
 import WhyGame from "./components/WhyGame";
 import WhoGame from "./components/WhoGame";
+import SuccessLogo from "../../../components/SuccessLogo";
 import {
   MYSTERIES,
   POINTS_PER_QUESTION,
@@ -428,31 +429,31 @@ const InvestigationMystery = ({ onComplete, currentGameId }) => {
         key: "what",
         name: "What",
         description: "What is the stolen artifact?",
-        icon: "🔍",
+        icon: "/nk-logo-complete.svg",
       },
       {
         key: "when-where",
         name: "When & Where",
         description: "Where and when is the artifact from?",
-        icon: "📸",
+        icon: "/nk-logo-complete.svg",
       },
       {
         key: "how",
         name: "How",
         description: "Connect the dots to understand how the thief stole it?",
-        icon: "🔐",
+        icon: "/nk-logo-complete.svg",
       },
       {
         key: "why",
         name: "Why",
         description: "Solve the logic grid puzzle to understand the motive.",
-        icon: "🧩",
+        icon: "/nk-logo-complete.svg",
       },
       {
         key: "who",
         name: "Who",
         description: "Find the connections to solve who did it ",
-        icon: "👥",
+        icon: "/nk-logo-complete.svg",
       },
     ];
 
@@ -491,7 +492,17 @@ const InvestigationMystery = ({ onComplete, currentGameId }) => {
                     }
                   }}
                 >
-                  <div className={styles.minigameIcon}>{minigame.icon}</div>
+                  <div className={styles.minigameIcon}>
+                    {isCompleted ? (
+                      <SuccessLogo className={styles.logoImage} />
+                    ) : (
+                      <img
+                        src={minigame.icon}
+                        alt="NK Logo"
+                        className={styles.logoImage}
+                      />
+                    )}
+                  </div>
                   <h4>{minigame.name}</h4>
                   <p>{minigame.description}</p>
                   {isCompleted ? (
@@ -514,7 +525,15 @@ const InvestigationMystery = ({ onComplete, currentGameId }) => {
               className={`${styles.minigameCard} ${styles.submitCard} ${isSubmitted ? styles.submitted : ""} ${isSubmitting ? styles.submitting : ""}`}
             >
               <div className={styles.minigameIcon}>
-                {isSubmitted ? "✅" : "📤"}
+                {isSubmitted ? (
+                  <SuccessLogo className={styles.logoImage} />
+                ) : (
+                  <img
+                    src="/nk-logo-complete.svg"
+                    alt="NK Logo"
+                    className={styles.logoImage}
+                  />
+                )}
               </div>
               <h4>{isSubmitted ? "Results Submitted" : "Submit Results"}</h4>
               <p>

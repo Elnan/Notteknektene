@@ -16,6 +16,7 @@ const WhenWhereGame = ({ onComplete, onBack, onHint, savedGameState }) => {
   const [showHintModal, setShowHintModal] = useState(false);
   const [hintUsed, setHintUsed] = useState(false);
   const [gameStartTime, setGameStartTime] = useState(null);
+  const [showSubmissionSuccess, setShowSubmissionSuccess] = useState(false);
 
   // Ref for the country input container to detect clicks outside
   const countryInputRef = useRef(null);
@@ -145,8 +146,20 @@ const WhenWhereGame = ({ onComplete, onBack, onHint, savedGameState }) => {
       },
     };
 
+    // Show immediate visual feedback
+    console.log("🎯 When&Where submission successful!");
+
+    // Show success message briefly
+    setShowSubmissionSuccess(true);
+
+    // Call parent completion handler
     onComplete("when-where", submissionData);
-    setWhenWhereSubmitted(true);
+
+    // Show results screen after a brief delay to ensure user sees the success message
+    setTimeout(() => {
+      setWhenWhereSubmitted(true);
+      setShowSubmissionSuccess(false);
+    }, 1000);
   };
 
   if (whenWhereSubmitted) {
@@ -315,6 +328,17 @@ const WhenWhereGame = ({ onComplete, onBack, onHint, savedGameState }) => {
           >
             Submit Investigation
           </Button>
+
+          {/* Success message overlay */}
+          {showSubmissionSuccess && (
+            <div className={styles.submissionSuccessOverlay}>
+              <div className={styles.submissionSuccessMessage}>
+                <div className={styles.successIcon}>✓</div>
+                <h3>Investigation Submitted!</h3>
+                <p>Processing your results...</p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

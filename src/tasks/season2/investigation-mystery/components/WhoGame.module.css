@@ -306,7 +306,7 @@
   }
 
   .connectionsControls {
-    flex-direction: column;
+    flex-direction: column-reverse;
     align-items: center;
     gap: 8px;
     margin-top: 12px;
