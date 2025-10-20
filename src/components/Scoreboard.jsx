@@ -96,6 +96,14 @@ const Scoreboard = () => {
           targetRoundTable = roundTables.find(
             (rt) => rt.roundNumber === highestRound
           );
+        } else if (season.isCompleted && season.finalRoundNumber) {
+          console.log(
+            "🏁 Season marked as completed - showing final round table"
+          );
+          // Season is marked as completed, show the final round table
+          targetRoundTable = roundTables.find(
+            (rt) => rt.roundNumber === season.finalRoundNumber
+          );
         } else {
           // For active seasons, show the previous round (which should have results)
           const currentActiveRound = season.currentRound || roundNumber;
