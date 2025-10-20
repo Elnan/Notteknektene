@@ -149,7 +149,13 @@ export const releaseNextGame = async () => {
           .sort((a, b) => b.roundNumber - a.roundNumber);
         if (completed.length > 0) {
           const candidateRound = completed[0].roundNumber + 1;
-          nextGame = games.find((g) => g.roundNumber === candidateRound);
+          // Only activate next round if it exists and is not round 1 (to prevent cycling back to start)
+          const candidateGame = games.find(
+            (g) => g.roundNumber === candidateRound
+          );
+          if (candidateGame && candidateRound > 1) {
+            nextGame = candidateGame;
+          }
         }
       }
     }

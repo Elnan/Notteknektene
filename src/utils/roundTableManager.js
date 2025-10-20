@@ -112,11 +112,17 @@ export const checkForExpiredGames = async () => {
         const games = await getSeasonGamesList(season.id);
         const hasActive = games.some((g) => g.isActive === true);
         const hasUpcoming = games.some((g) => g.status === "upcoming");
+        const allCompleted = games.every((g) => g.status === "completed");
+
         if (!hasActive && hasUpcoming) {
           console.log(
             "🛠️ No active game detected. Releasing the next upcoming game..."
           );
           await releaseNextGame();
+        } else if (!hasActive && allCompleted) {
+          console.log(
+            "🏁 All games completed - season finished. No new game to activate."
+          );
         }
       }
     } catch (e) {

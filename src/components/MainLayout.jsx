@@ -108,6 +108,47 @@ const MainLayout = () => {
     loadGamesFromDatabase();
   }, [location.pathname]);
 
+  // Listen for round table updates to refresh games list
+  useEffect(() => {
+    const handleRoundTablesUpdated = async () => {
+      console.log("🔄 Games list updated due to round table changes");
+      // Reload games from database to reflect status changes
+      const seasonGames = await getSeasonGames();
+      if (seasonGames.length > 0) {
+        const updatedGames = seasonGames.map((seasonGame) => {
+          const baseGameId = seasonGame.gameId.replace(/\d+$/, "");
+          const gameInfo = defaultGames.find((g) => g.id === baseGameId);
+          if (gameInfo) {
+            return {
+              ...gameInfo,
+              status: seasonGame.status || gameInfo.status,
+              isActive: seasonGame.isActive || false,
+              roundNumber: seasonGame.roundNumber,
+            };
+          }
+          return {
+            id: baseGameId,
+            name: seasonGame.gameId,
+            component: null,
+            status: seasonGame.status || "upcoming",
+            isActive: seasonGame.isActive || false,
+            roundNumber: seasonGame.roundNumber,
+          };
+        });
+        setGamesList(updatedGames);
+      }
+    };
+
+    window.addEventListener("roundTablesUpdated", handleRoundTablesUpdated);
+
+    return () => {
+      window.removeEventListener(
+        "roundTablesUpdated",
+        handleRoundTablesUpdated
+      );
+    };
+  }, []);
+
   const handleGameSelection = (gameIndex) => {
     const gameNumber = gameIndex + 1;
     navigate(`/games/${gameNumber}`);

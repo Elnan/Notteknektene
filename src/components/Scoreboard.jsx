@@ -81,28 +81,45 @@ const Scoreboard = () => {
           }
         }
       } else {
-        // For active seasons, show the previous round (which should have results)
-        const currentActiveRound = season.currentRound || roundNumber;
-        const previousRoundNumber = currentActiveRound - 1;
+        // Check if all games are completed (season finished but not marked as completed)
+        const allGamesCompleted =
+          roundTables.length > 0 &&
+          roundTables.every((rt) => rt.roundNumber <= 10) &&
+          roundTables.length >= 10;
 
-        if (previousRoundNumber > 0) {
-          // First, try to get the existing round table for the previous round
-          targetRoundTable = roundTables.find(
-            (rt) => rt.roundNumber === previousRoundNumber
+        if (allGamesCompleted) {
+          console.log("🏁 All rounds completed - showing final round table");
+          // Show the highest round table (round 10)
+          const highestRound = Math.max(
+            ...roundTables.map((rt) => rt.roundNumber)
           );
+          targetRoundTable = roundTables.find(
+            (rt) => rt.roundNumber === highestRound
+          );
+        } else {
+          // For active seasons, show the previous round (which should have results)
+          const currentActiveRound = season.currentRound || roundNumber;
+          const previousRoundNumber = currentActiveRound - 1;
 
-          // If round table doesn't exist, try to create it
-          if (!targetRoundTable) {
-            try {
-              targetRoundTable = await createRoundTable(
-                season.id,
-                previousRoundNumber
-              );
-            } catch (error) {
-              // In a real season, this shouldn't happen, but for testing we can fallback
-              // to the most recent round table that exists
-              if (roundTables.length > 0) {
-                targetRoundTable = roundTables[0];
+          if (previousRoundNumber > 0) {
+            // First, try to get the existing round table for the previous round
+            targetRoundTable = roundTables.find(
+              (rt) => rt.roundNumber === previousRoundNumber
+            );
+
+            // If round table doesn't exist, try to create it
+            if (!targetRoundTable) {
+              try {
+                targetRoundTable = await createRoundTable(
+                  season.id,
+                  previousRoundNumber
+                );
+              } catch (error) {
+                // In a real season, this shouldn't happen, but for testing we can fallback
+                // to the most recent round table that exists
+                if (roundTables.length > 0) {
+                  targetRoundTable = roundTables[0];
+                }
               }
             }
           }
@@ -227,6 +244,25 @@ const Scoreboard = () => {
 
     return () => clearInterval(interval);
   }, [roundNumber]);
+
+  // Listen for round table updates from automatic game completion
+  useEffect(() => {
+    const handleRoundTablesUpdated = async (event) => {
+      console.log("🔄 Round tables updated event received:", event.detail);
+      // Refresh the current round table and total scores
+      await fetchCurrentRoundTable();
+      await fetchTotalScores();
+    };
+
+    window.addEventListener("roundTablesUpdated", handleRoundTablesUpdated);
+
+    return () => {
+      window.removeEventListener(
+        "roundTablesUpdated",
+        handleRoundTablesUpdated
+      );
+    };
+  }, []);
 
   // Transform new round table data to use the actual game-specific fields
   const transformedRoundTable =

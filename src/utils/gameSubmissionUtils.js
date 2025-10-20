@@ -143,7 +143,8 @@ export const validateSubmissionData = (gameId, submissionData) => {
   }
 
   // Check game-specific schema if it exists
-  const gameSchema = GAME_SUBMISSION_SCHEMAS[gameId];
+  const baseGameId = (gameId || "").toString().replace(/\d+$/, "");
+  const gameSchema = GAME_SUBMISSION_SCHEMAS[baseGameId];
   if (gameSchema) {
     for (const [field, defaultValue] of Object.entries(gameSchema)) {
       if (submissionData[field] === undefined) {
@@ -187,7 +188,14 @@ export const prepareSubmissionData = (
     // Scoring and performance
     score: gameData.score || gameData.points || 0,
     time: gameData.time || formatTime(timeSpent),
-    hintsUsed: gameData.hintsUsed || gameData.hintUsed ? 1 : 0,
+    // Preserve numeric hint counts (do not coerce to boolean)
+    hintsUsed: Number(
+      gameData.hintsUsed !== undefined
+        ? gameData.hintsUsed
+        : gameData.hintUsed !== undefined
+          ? gameData.hintUsed
+          : 0
+    ),
     instructionsUsed: gameData.instructionsUsed ? 1 : 0,
 
     // Optional common fields
@@ -195,7 +203,8 @@ export const prepareSubmissionData = (
   };
 
   // Add game-specific data
-  const gameSchema = GAME_SUBMISSION_SCHEMAS[gameId];
+  const baseGameId = (gameId || "").toString().replace(/\d+$/, "");
+  const gameSchema = GAME_SUBMISSION_SCHEMAS[baseGameId];
   if (gameSchema) {
     for (const [field, defaultValue] of Object.entries(gameSchema)) {
       if (gameData[field] !== undefined) {
