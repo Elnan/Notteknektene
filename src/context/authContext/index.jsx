@@ -33,19 +33,46 @@ export function AuthProvider({ children }) {
   };
 
   useEffect(() => {
+    let roundTableManagerCleanup = null;
+
     const unsubscribe = onAuthStateChanged(notteknekteneAuth, async (user) => {
       if (user) {
         await createUserProfileDocument(user);
         await refreshUserData(user);
         setUserLoggedIn(true);
+
+        // Initialize round table manager for automatic game updates
+        try {
+          const { initializeRoundTableManager } = await import(
+            "../../utils/roundTableManager.js"
+          );
+          roundTableManagerCleanup = initializeRoundTableManager();
+          console.log(
+            "✅ Round Table Manager initialized for automatic game updates"
+          );
+        } catch (error) {
+          console.error("❌ Failed to initialize Round Table Manager:", error);
+        }
       } else {
         setCurrentUser(null);
         setUserLoggedIn(false);
         setIsAdmin(false);
+
+        // Clean up round table manager when user logs out
+        if (roundTableManagerCleanup) {
+          roundTableManagerCleanup();
+          roundTableManagerCleanup = null;
+        }
       }
       setLoading(false);
     });
-    return unsubscribe;
+
+    return () => {
+      unsubscribe();
+      if (roundTableManagerCleanup) {
+        roundTableManagerCleanup();
+      }
+    };
   }, []);
 
   async function logout() {

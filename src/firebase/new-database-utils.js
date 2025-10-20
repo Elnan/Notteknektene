@@ -1273,14 +1273,23 @@ export const checkAndCompleteExpiredGames = async (seasonName) => {
     const completedGames = [];
 
     for (const game of games) {
-      if (game.status === "current" && game.deadline) {
-        const deadline = game.deadline.toDate
-          ? game.deadline.toDate()
-          : new Date(game.deadline);
+      if (game.status === "current") {
+        let deadline = null;
+        let isTestDeadline = false;
 
-        if (now > deadline) {
+        // Check for test deadline first (for testing purposes)
+        if (game.testDeadline) {
+          const td = game.testDeadline;
+          deadline = td?.toDate ? td.toDate() : new Date(td);
+          isTestDeadline = true;
+        } else if (game.deadline) {
+          const dl = game.deadline;
+          deadline = dl?.toDate ? dl.toDate() : new Date(dl);
+        }
+
+        if (deadline && !isNaN(deadline) && now > deadline) {
           console.log(
-            `⏰ Game ${game.gameId} (round ${game.roundNumber}) deadline has expired`
+            `⏰ Game ${game.gameId} (round ${game.roundNumber}) ${isTestDeadline ? "test " : ""}deadline has expired`
           );
 
           try {
@@ -1436,9 +1445,9 @@ export const archiveSeason = async (seasonName) => {
     // Helper function to remove undefined values
     const removeUndefinedValues = (obj) => {
       if (obj === null || obj === undefined) return null;
-      if (typeof obj !== 'object') return obj;
+      if (typeof obj !== "object") return obj;
       if (Array.isArray(obj)) {
-        return obj.map(removeUndefinedValues).filter(item => item !== null);
+        return obj.map(removeUndefinedValues).filter((item) => item !== null);
       }
       const cleaned = {};
       for (const [key, value] of Object.entries(obj)) {
@@ -1462,10 +1471,10 @@ export const archiveSeason = async (seasonName) => {
         ),
       },
       games: games.map((game) => ({
-        id: game.id || '',
-        gameId: game.gameId || '',
+        id: game.id || "",
+        gameId: game.gameId || "",
         roundNumber: game.roundNumber || 0,
-        status: game.status || 'unknown',
+        status: game.status || "unknown",
         isActive: game.isActive || false,
         createdAt: game.createdAt || null,
         releasedAt: game.releasedAt || null,
@@ -1473,9 +1482,9 @@ export const archiveSeason = async (seasonName) => {
         config: game.config || {},
       })),
       participants: participants.map((participant) => ({
-        userId: participant.userId || '',
-        userName: participant.userName || '',
-        userEmail: participant.userEmail || '',
+        userId: participant.userId || "",
+        userName: participant.userName || "",
+        userEmail: participant.userEmail || "",
         participating: participant.participating || false,
         joinedAt: participant.joinedAt || null,
         totalScore: participant.totalScore || 0,
@@ -1484,15 +1493,15 @@ export const archiveSeason = async (seasonName) => {
       })),
       roundTables: roundTables.map((table) => ({
         roundNumber: table.roundNumber || 0,
-        gameId: table.gameId || '',
-        gameName: table.gameName || '',
+        gameId: table.gameId || "",
+        gameName: table.gameName || "",
         startDate: table.startDate || null,
         endDate: table.endDate || null,
         participants: table.participants || [],
-        summary: table.summary || '',
+        summary: table.summary || "",
       })),
-      submissions: allSubmissions.map(submission => ({
-        gameId: submission.gameId || '',
+      submissions: allSubmissions.map((submission) => ({
+        gameId: submission.gameId || "",
         roundNumber: submission.roundNumber || 0,
         submissions: submission.submissions || [],
       })),
@@ -1542,7 +1551,7 @@ export const archiveSeason = async (seasonName) => {
     console.error("Error details:", {
       message: error.message,
       stack: error.stack,
-      name: error.name
+      name: error.name,
     });
     throw error;
   }
@@ -1787,7 +1796,7 @@ export const finishSeason = async (seasonName, forceComplete = false) => {
     console.error("Error details:", {
       message: error.message,
       stack: error.stack,
-      name: error.name
+      name: error.name,
     });
     throw error;
   }

@@ -80,12 +80,47 @@ export const checkForExpiredGames = async () => {
         `✅ Completed ${completedGames.length} expired games and created round tables`
       );
 
+      // After completing expired games, release the next game
+      try {
+        const { releaseNextGame } = await import("./seasonManager.js");
+        await releaseNextGame();
+        console.log("🎮 Released next game after completing expired games");
+      } catch (error) {
+        console.error(
+          "Error releasing next game after completing expired games:",
+          error
+        );
+      }
+
       // Optionally trigger UI updates or notifications
       window.dispatchEvent(
         new CustomEvent("roundTablesUpdated", {
           detail: { completedGames },
         })
       );
+    }
+
+    // Safeguard: if no game is currently active but there are upcoming games, release the next one
+    try {
+      const { getCurrentSeason, getSeasonGamesList } = await import(
+        "../firebase/new-database-utils.js"
+      );
+      const { releaseNextGame } = await import("./seasonManager.js");
+
+      const season = await getCurrentSeason();
+      if (season) {
+        const games = await getSeasonGamesList(season.id);
+        const hasActive = games.some((g) => g.isActive === true);
+        const hasUpcoming = games.some((g) => g.status === "upcoming");
+        if (!hasActive && hasUpcoming) {
+          console.log(
+            "🛠️ No active game detected. Releasing the next upcoming game..."
+          );
+          await releaseNextGame();
+        }
+      }
+    } catch (e) {
+      console.error("Error ensuring next game is active:", e);
     }
   } catch (error) {
     console.error("Error checking for expired games:", error);

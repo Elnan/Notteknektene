@@ -8,6 +8,8 @@ import App from "./App.jsx";
 // Load global clear functions for easy access (development only)
 if (import.meta.env.DEV) {
   import("./utils/globalClearFunctions.js");
+  // Load test deadline utilities for testing automatic game updates
+  import("./utils/testDeadlineUtils.js");
 }
 
 // Initialize round table manager for automatic deadline checking
@@ -18,7 +20,7 @@ const initializeApp = async () => {
     const { initializeRoundTableManager } = await import(
       "./utils/roundTableManager.js"
     );
-    
+
     // Don't initialize immediately - let the auth context handle this
     // The round table manager will be initialized when needed
     if (import.meta.env.DEV) {

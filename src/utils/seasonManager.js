@@ -8,6 +8,7 @@ import {
   updateGame,
 } from "../firebase/new-database-utils.js";
 import { games as defaultGames } from "./gamesConfig.js";
+import { getCurrentWeekDeadline } from "./deadlineUtils.js";
 
 /**
  * Get current season information
@@ -126,28 +127,56 @@ export const releaseNextGame = async () => {
     }
 
     const games = await getSeasonGamesList(season.id);
-    const currentGame = games.find((g) => g.isActive);
+    const currentGame = games.find((g) => g.isActive === true);
 
-    if (!currentGame) {
-      console.error("No current active game found");
-      return;
+    let nextGame = null;
+    if (currentGame) {
+      // Normal path: find game with roundNumber + 1
+      nextGame = games.find(
+        (g) => g.roundNumber === currentGame.roundNumber + 1
+      );
+    } else {
+      // Recovery path: no active game (e.g., just auto-completed). Pick the next upcoming by round.
+      const upcoming = games
+        .filter((g) => g.status === "upcoming" && g.isActive !== true)
+        .sort((a, b) => a.roundNumber - b.roundNumber);
+      if (upcoming.length > 0) {
+        nextGame = upcoming[0];
+      } else {
+        // Fallback: find highest completed and take next round
+        const completed = games
+          .filter((g) => g.status === "completed")
+          .sort((a, b) => b.roundNumber - a.roundNumber);
+        if (completed.length > 0) {
+          const candidateRound = completed[0].roundNumber + 1;
+          nextGame = games.find((g) => g.roundNumber === candidateRound);
+        }
+      }
     }
 
-    const nextGame = games.find(
-      (g) => g.roundNumber === currentGame.roundNumber + 1
-    );
     if (!nextGame) {
-      console.log("No more games to release");
+      console.log("No more games to release or could not determine next game");
       return;
     }
 
-    // Release the next game
     await releaseGame(season.id, nextGame.id);
 
-    // Update season current round
     await updateSeason(season.id, {
       currentRound: nextGame.roundNumber,
     });
+
+    // Set deadline for the newly released game to the upcoming Sunday 23:59
+    try {
+      const deadlineDate = getCurrentWeekDeadline();
+      await updateGame(season.id, nextGame.id, {
+        deadline: deadlineDate,
+      });
+      console.log(
+        `Set deadline for ${nextGame.gameId} (round ${nextGame.roundNumber}) to ${deadlineDate}`
+      );
+    } catch (e) {
+      console.error("Failed to set deadline for newly released game:", e);
+    }
 
     console.log(`Released game: ${nextGame.id}`);
   } catch (error) {
