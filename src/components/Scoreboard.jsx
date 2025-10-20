@@ -44,13 +44,11 @@ const Scoreboard = () => {
     try {
       setLoading(true);
 
-      // Get current season (or most recent if none active)
-      let season = await getCurrentSeason();
+      // Only get the active season - no fallback to most recent
+      const season = await getCurrentSeason();
       if (!season) {
-        season = await getMostRecentSeason();
-      }
-      if (!season) {
-        console.log("No season found");
+        console.log("No active season found");
+        setCurrentRoundTable(null);
         setLoading(false);
         return;
       }
@@ -145,11 +143,10 @@ const Scoreboard = () => {
   // Move fetchTotalScores outside useEffect so it can be accessed by manual refresh
   const fetchTotalScores = async () => {
     try {
-      let currentSeason = await getCurrentSeason();
+      // Only get the active season - no fallback to most recent
+      const currentSeason = await getCurrentSeason();
       if (!currentSeason) {
-        currentSeason = await getMostRecentSeason();
-      }
-      if (!currentSeason) {
+        console.log("No active season found for total scores");
         setTotalScores([]);
         return;
       }
@@ -165,11 +162,10 @@ const Scoreboard = () => {
   // Load season games to check which rounds need round tables
   const fetchSeasonGames = async () => {
     try {
-      let currentSeason = await getCurrentSeason();
+      // Only get the active season - no fallback to most recent
+      const currentSeason = await getCurrentSeason();
       if (!currentSeason) {
-        currentSeason = await getMostRecentSeason();
-      }
-      if (!currentSeason) {
+        console.log("No active season found for season games");
         setSeasonGames([]);
         return;
       }
@@ -185,12 +181,10 @@ const Scoreboard = () => {
   // Manually create round table for a specific round
   const handleCreateRoundTable = async (roundNumber) => {
     try {
-      let currentSeason = await getCurrentSeason();
+      // Only get the active season - no fallback to most recent
+      const currentSeason = await getCurrentSeason();
       if (!currentSeason) {
-        currentSeason = await getMostRecentSeason();
-      }
-      if (!currentSeason) {
-        alert("No season found");
+        console.log("No active season found for creating round table");
         return;
       }
 
@@ -799,80 +793,89 @@ const Scoreboard = () => {
               </>
             ) : (
               <div className={styles.emptyState}>
-                <p>No results available for this round</p>
-                <p>Wait until a round is completed</p>
+                <p>No active season found</p>
+                <p>Please wait for an administrator to start a new season</p>
               </div>
             )}
           </>
         ) : (
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th></th>
-                <th>Name</th>
-                {Array.from({ length: NUM_ROUNDS }, (_, i) => (
-                  <th key={i}>{`R${i + 1}`}</th>
-                ))}
-                <th>Sum</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sortedTotalScores.map((row, idx) => (
-                <tr key={row.id}>
-                  <td className={getRankClass(idx + 1)}>{idx + 1}</td>
-                  <td className={styles.avatarCell}>
-                    <img
-                      src={
-                        userAvatars[row.name]
-                          ? `/avatars/${userAvatars[row.name]}`
-                          : "/defaultAvatar.webp"
-                      }
-                      alt={`${row.name}'s avatar`}
-                      className={styles.tableAvatar}
-                    />
-                  </td>
-                  <td>{row.name}</td>
-                  {Array.from({ length: NUM_ROUNDS }, (_, i) => {
-                    const roundNumber = i + 1;
+          <>
+            {totalScores.length > 0 ? (
+              <table className={styles.table}>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th></th>
+                    <th>Name</th>
+                    {Array.from({ length: NUM_ROUNDS }, (_, i) => (
+                      <th key={i}>{`R${i + 1}`}</th>
+                    ))}
+                    <th>Sum</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sortedTotalScores.map((row, idx) => (
+                    <tr key={row.id}>
+                      <td className={getRankClass(idx + 1)}>{idx + 1}</td>
+                      <td className={styles.avatarCell}>
+                        <img
+                          src={
+                            userAvatars[row.name]
+                              ? `/avatars/${userAvatars[row.name]}`
+                              : "/defaultAvatar.webp"
+                          }
+                          alt={`${row.name}'s avatar`}
+                          className={styles.tableAvatar}
+                        />
+                      </td>
+                      <td>{row.name}</td>
+                      {Array.from({ length: NUM_ROUNDS }, (_, i) => {
+                        const roundNumber = i + 1;
 
-                    // Check if this round has been completed (status is 'completed', not 'current')
-                    const isRoundCompleted = seasonGames.some(
-                      (game) =>
-                        game.roundNumber === roundNumber &&
-                        game.status === "completed"
-                    );
+                        // Check if this round has been completed (status is 'completed', not 'current')
+                        const isRoundCompleted = seasonGames.some(
+                          (game) =>
+                            game.roundNumber === roundNumber &&
+                            game.status === "completed"
+                        );
 
-                    // Check if this round is currently active
-                    const isCurrentRound = seasonGames.some(
-                      (game) =>
-                        game.roundNumber === roundNumber &&
-                        game.status === "current"
-                    );
+                        // Check if this round is currently active
+                        const isCurrentRound = seasonGames.some(
+                          (game) =>
+                            game.roundNumber === roundNumber &&
+                            game.status === "current"
+                        );
 
-                    // Determine what to display
-                    let displayValue = "";
-                    if (row.scores[i] !== undefined) {
-                      // Player has a score for this round
-                      displayValue = row.scores[i];
-                    } else if (isRoundCompleted) {
-                      // Round is completed, but player didn't submit
-                      displayValue = 0;
-                    } else {
-                      // Round is current or hasn't been played yet - show empty
-                      displayValue = "";
-                    }
+                        // Determine what to display
+                        let displayValue = "";
+                        if (row.scores[i] !== undefined) {
+                          // Player has a score for this round
+                          displayValue = row.scores[i];
+                        } else if (isRoundCompleted) {
+                          // Round is completed, but player didn't submit
+                          displayValue = 0;
+                        } else {
+                          // Round is current or hasn't been played yet - show empty
+                          displayValue = "";
+                        }
 
-                    return <td key={i}>{displayValue}</td>;
-                  })}
-                  <td>
-                    {row.sum ||
-                      row.scores.reduce((acc, score) => acc + score, 0)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                        return <td key={i}>{displayValue}</td>;
+                      })}
+                      <td>
+                        {row.sum ||
+                          row.scores.reduce((acc, score) => acc + score, 0)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <div className={styles.emptyState}>
+                <p>No active season found</p>
+                <p>Please wait for an administrator to start a new season</p>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

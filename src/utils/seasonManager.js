@@ -28,22 +28,12 @@ export const getCurrentSeasonInfo = async () => {
  */
 export const getSeasonGames = async () => {
   try {
-    // First try to get the active season
-    let season = await getCurrentSeason();
-
-    // If no active season, get the most recent season (could be completed)
-    if (!season) {
-      season = await getMostRecentSeason();
-    }
+    // Only get the active season - no fallback to most recent
+    const season = await getCurrentSeason();
 
     if (!season) {
-      console.warn("No season found, returning default games");
-      return defaultGames.map((game, index) => ({
-        ...game,
-        roundNumber: index + 1,
-        status: index === 0 ? "current" : "upcoming",
-        isActive: index === 0,
-      }));
+      console.warn("No active season found, returning empty games list");
+      return [];
     }
 
     const games = await getSeasonGamesList(season.id);
@@ -63,12 +53,7 @@ export const getSeasonGames = async () => {
     return games;
   } catch (error) {
     console.error("Error getting season games:", error);
-    return defaultGames.map((game, index) => ({
-      ...game,
-      roundNumber: index + 1,
-      status: index === 0 ? "current" : "upcoming",
-      isActive: index === 0,
-    }));
+    return [];
   }
 };
 

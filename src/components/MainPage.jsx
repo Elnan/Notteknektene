@@ -48,8 +48,8 @@ const MainPage = () => {
           });
           setGamesList(updatedGames);
         } else {
-          // Fallback to default games if no season games found
-          setGamesList(defaultGames);
+          // No active season - show empty games list
+          setGamesList([]);
         }
 
         // Handle URL parameter for game selection
@@ -68,8 +68,8 @@ const MainPage = () => {
         }
       } catch (error) {
         console.error("Error loading games:", error);
-        // Fallback to default games on error
-        setGamesList(defaultGames);
+        // No active season or error - show empty games list
+        setGamesList([]);
       } finally {
         setLoading(false);
       }
@@ -85,6 +85,19 @@ const MainPage = () => {
       <div className={styles.loading}>
         <div className={styles.spinner}></div>
         <p>Loading game...</p>
+      </div>
+    );
+  }
+
+  // Check if there are no games (no active season)
+  if (gamesList.length === 0) {
+    return (
+      <div className={styles.error}>
+        <h2>No Active Season</h2>
+        <p>
+          There is currently no active season. Please wait for an administrator
+          to start a new season.
+        </p>
       </div>
     );
   }
