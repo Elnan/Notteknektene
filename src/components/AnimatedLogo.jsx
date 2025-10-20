@@ -7,57 +7,85 @@ const AnimatedLogo = ({ className }) => {
     const svg = svgRef.current;
     if (!svg) return;
 
-    // Get all path elements and circle
-    const paths = svg.querySelectorAll(".logo-path");
-    const circle = svg.querySelector(".logo-circle");
+    // Wait until the SVG is rendered/visible to avoid getTotalLength errors
+    const runAnimation = () => {
+      const rect = svg.getBoundingClientRect();
+      const style = window.getComputedStyle(svg);
+      const isHidden =
+        rect.width === 0 ||
+        rect.height === 0 ||
+        style.display === "none" ||
+        style.visibility === "hidden";
 
-    // Animate letters first
-    paths.forEach((path, index) => {
-      // Calculate the total length of each path
-      const pathLength = path.getTotalLength();
-
-      // Set up the dash array and offset
-      path.style.strokeDasharray = `${pathLength}`;
-      path.style.strokeDashoffset = `${pathLength}`;
-
-      // Animate each path with a slight delay for sequential drawing
-      setTimeout(() => {
-        path.style.transition = "stroke-dashoffset 1.5s ease-in-out";
-        path.style.strokeDashoffset = "0";
-      }, index * 200); // 200ms delay between each path
-    });
-
-    // After letters finish drawing, start circle animation
-    const totalLetterTime = paths.length * 200 + 1500; // 200ms delay + 1.5s animation per letter
-
-    setTimeout(() => {
-      if (circle) {
-        // Make circle visible and set up the dotted animation
-        circle.style.opacity = "1";
-        const circleLength = circle.getTotalLength();
-        // Set up for drawing animation (like letters)
-        // Use a single long dash that covers the entire circle
-        circle.style.strokeDasharray = `${circleLength}`;
-        circle.style.strokeDashoffset = `${circleLength}`;
-        circle.style.transition = "stroke-dashoffset 4s ease-in-out";
-        circle.style.strokeDashoffset = "0";
-
-        // After drawing completes, transition to dotted pattern
-        setTimeout(() => {
-          circle.style.transition = "stroke-dasharray 0.5s ease-in-out";
-          circle.style.strokeDasharray = "3, 2";
-          circle.style.strokeDashoffset = "0";
-        }, 4000); // 4s for the drawing animation
+      if (isHidden) {
+        // Try again shortly until visible
+        setTimeout(runAnimation, 50);
+        return;
       }
-    }, totalLetterTime);
 
-    // After circle finishes, fill the letters
-    setTimeout(() => {
-      paths.forEach((path) => {
-        path.style.fill = "var(--color-green-bg)";
-        path.style.stroke = "none";
+      // Get all path elements and circle
+      const paths = svg.querySelectorAll(".logo-path");
+      const circle = svg.querySelector(".logo-circle");
+
+      // Animate letters first
+      paths.forEach((path, index) => {
+        try {
+          const hasGetTotalLength = typeof path.getTotalLength === "function";
+          if (!hasGetTotalLength) return;
+
+          const pathLength = path.getTotalLength();
+          if (!isFinite(pathLength)) return;
+
+          path.style.strokeDasharray = `${pathLength}`;
+          path.style.strokeDashoffset = `${pathLength}`;
+
+          setTimeout(() => {
+            path.style.transition = "stroke-dashoffset 1.5s ease-in-out";
+            path.style.strokeDashoffset = "0";
+          }, index * 200);
+        } catch (_) {
+          // Skip non-rendered or unsupported elements
+        }
       });
-    }, totalLetterTime + 2000); // 2s for circle animation
+
+      const totalLetterTime = paths.length * 200 + 1500;
+
+      setTimeout(() => {
+        if (circle) {
+          try {
+            circle.style.opacity = "1";
+            const hasGetTotalLength =
+              typeof circle.getTotalLength === "function";
+            if (!hasGetTotalLength) return;
+            const circleLength = circle.getTotalLength();
+            if (!isFinite(circleLength)) return;
+
+            circle.style.strokeDasharray = `${circleLength}`;
+            circle.style.strokeDashoffset = `${circleLength}`;
+            circle.style.transition = "stroke-dashoffset 4s ease-in-out";
+            circle.style.strokeDashoffset = "0";
+
+            setTimeout(() => {
+              circle.style.transition = "stroke-dasharray 0.5s ease-in-out";
+              circle.style.strokeDasharray = "3, 2";
+              circle.style.strokeDashoffset = "0";
+            }, 4000);
+          } catch (_) {
+            // Ignore if circle is not renderable
+          }
+        }
+      }, totalLetterTime);
+
+      setTimeout(() => {
+        paths.forEach((path) => {
+          path.style.fill = "var(--color-green-bg)";
+          path.style.stroke = "none";
+        });
+      }, totalLetterTime + 2000);
+    };
+
+    // Defer to next frame for safety
+    requestAnimationFrame(runAnimation);
   }, []);
 
   return (

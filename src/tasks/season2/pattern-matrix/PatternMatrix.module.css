@@ -434,6 +434,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain; /* prevent scroll chaining to background */
 }
 
 .pauseOverlayCard {
@@ -447,6 +450,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-height: 90vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 600px) {
+  .pauseOverlayCard {
+    max-height: calc(100vh - 88px); /* keep above bottom navbar */
+    padding-bottom: 3.5rem; /* breathing room above navbar */
+  }
 }
 
 .pauseTitle {

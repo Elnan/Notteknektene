@@ -83,6 +83,10 @@ const PatternMatrix = ({ onComplete, currentGameId }) => {
             input: Array.isArray(savedState.input)
               ? savedState.input
               : [0, 0, 0, 0, 0, 0, 0, 0],
+            // Never resume straight into a feedback overlay on load
+            showPracticeFeedback: false,
+            practiceFeedback: null,
+            showPauseOverlay: false,
           };
 
           setGameState(validatedState);
@@ -302,6 +306,37 @@ const PatternMatrix = ({ onComplete, currentGameId }) => {
   } = gameState;
 
   const timerRef = useRef();
+
+  // Lock body scroll when practice feedback overlay is open
+  useEffect(() => {
+    if (showPracticeFeedback && practiceFeedback) {
+      const html = document.documentElement;
+      const body = document.body;
+      const previous = {
+        htmlOverflow: html.style.overflow,
+        bodyOverflow: body.style.overflow,
+        bodyPosition: body.style.position,
+        bodyTop: body.style.top,
+        bodyWidth: body.style.width,
+      };
+      const scrollY = window.scrollY || window.pageYOffset;
+      // Lock the page
+      html.style.overflow = "hidden";
+      body.style.overflow = "hidden";
+      body.style.position = "fixed";
+      body.style.top = `-${scrollY}px`;
+      body.style.width = "100%";
+      return () => {
+        // Restore
+        html.style.overflow = previous.htmlOverflow;
+        body.style.overflow = previous.bodyOverflow;
+        body.style.position = previous.bodyPosition;
+        body.style.top = previous.bodyTop;
+        body.style.width = previous.bodyWidth;
+        window.scrollTo(0, scrollY);
+      };
+    }
+  }, [showPracticeFeedback, practiceFeedback]);
 
   // Track game start time for submission
   useEffect(() => {
@@ -688,7 +723,7 @@ const PatternMatrix = ({ onComplete, currentGameId }) => {
       // When resuming from a timer expiration pause, advance to next round
       ...(prev.pausedDueToTimer && {
         mainRound: prev.mainRound + 1,
-        input: "",
+        input: [0, 0, 0, 0, 0, 0, 0, 0],
         timer: ROUND_TIME,
         pausedDueToTimer: false,
       }),
@@ -719,7 +754,13 @@ const PatternMatrix = ({ onComplete, currentGameId }) => {
   // Practice feedback overlay
   if (showPracticeFeedback && practiceFeedback) {
     return (
-      <div className={styles.pauseOverlayBg}>
+      <div
+        className={styles.pauseOverlayBg}
+        onTouchMove={(e) => {
+          // Prevent background scroll on iOS while allowing internal scroll
+          e.stopPropagation();
+        }}
+      >
         <div className={styles.pauseOverlayCard}>
           <div className={styles.pauseTitle}>
             {practiceFeedback.isCorrect ? "Correct!" : "Incorrect"}
@@ -740,23 +781,28 @@ const PatternMatrix = ({ onComplete, currentGameId }) => {
 
           {/* Show the grid with correct answer */}
           <div className={styles.feedbackGrid}>
-            {practiceFeedback.grid.map((row, rowIdx) => (
-              <div key={rowIdx} className={styles.feedbackGridRow}>
-                {row.map((fig, colIdx) => {
-                  const isMissing =
-                    rowIdx === practiceFeedback.missingIndex[0] &&
-                    colIdx === practiceFeedback.missingIndex[1];
-                  return (
-                    <div key={colIdx} className={styles.feedbackGridCell}>
-                      <PatternFigure
-                        value={isMissing ? practiceFeedback.correctAnswer : fig}
-                        size={40}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            ))}
+            {Array.isArray(practiceFeedback.grid) &&
+              practiceFeedback.grid.map((row, rowIdx) => (
+                <div key={rowIdx} className={styles.feedbackGridRow}>
+                  {Array.isArray(row)
+                    ? row.map((fig, colIdx) => {
+                        const isMissing =
+                          rowIdx === practiceFeedback.missingIndex[0] &&
+                          colIdx === practiceFeedback.missingIndex[1];
+                        return (
+                          <div key={colIdx} className={styles.feedbackGridCell}>
+                            <PatternFigure
+                              value={
+                                isMissing ? practiceFeedback.correctAnswer : fig
+                              }
+                              size={40}
+                            />
+                          </div>
+                        );
+                      })
+                    : null}
+                </div>
+              ))}
           </div>
 
           <button
