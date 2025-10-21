@@ -124,6 +124,21 @@
   border-bottom: 1px solid #f0f0f0;
 }
 
+.userNameContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.userAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e0e0e0;
+  flex-shrink: 0;
+}
+
 .userHeader h3 {
   color: var(--color-green);
   margin: 0;

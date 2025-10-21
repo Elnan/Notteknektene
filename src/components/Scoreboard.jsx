@@ -210,7 +210,8 @@ const Scoreboard = () => {
         usersSnapshot.docs.forEach((doc) => {
           const userData = doc.data();
           if (userData.displayName && userData.avatar) {
-            avatarsMap[userData.displayName] = userData.avatar;
+            // Use userId as key to avoid conflicts with duplicate displayNames
+            avatarsMap[doc.id] = userData.avatar;
           }
         });
         setUserAvatars(avatarsMap);
@@ -326,9 +327,13 @@ const Scoreboard = () => {
   // Sort totalScores by scores
   const sortedTotalScores = [...totalScores].sort((a, b) => {
     const totalPointsA =
-      a.sum || a.scores.reduce((acc, score) => acc + score, 0);
+      a.sum ||
+      (a.scores && a.scores.reduce((acc, score) => acc + (score || 0), 0)) ||
+      0;
     const totalPointsB =
-      b.sum || b.scores.reduce((acc, score) => acc + score, 0);
+      b.sum ||
+      (b.scores && b.scores.reduce((acc, score) => acc + (score || 0), 0)) ||
+      0;
     return totalPointsB - totalPointsA;
   });
 
@@ -820,8 +825,8 @@ const Scoreboard = () => {
                       <td className={styles.avatarCell}>
                         <img
                           src={
-                            userAvatars[row.name]
-                              ? `/avatars/${userAvatars[row.name]}`
+                            userAvatars[row.userId]
+                              ? `/avatars/${userAvatars[row.userId]}`
                               : "/defaultAvatar.webp"
                           }
                           alt={`${row.name}'s avatar`}
@@ -833,22 +838,32 @@ const Scoreboard = () => {
                         const roundNumber = i + 1;
 
                         // Check if this round has been completed (status is 'completed', not 'current')
-                        const isRoundCompleted = seasonGames.some(
-                          (game) =>
-                            game.roundNumber === roundNumber &&
-                            game.status === "completed"
-                        );
+                        const isRoundCompleted =
+                          seasonGames &&
+                          seasonGames.some(
+                            (game) =>
+                              game &&
+                              game.roundNumber === roundNumber &&
+                              game.status === "completed"
+                          );
 
                         // Check if this round is currently active
-                        const isCurrentRound = seasonGames.some(
-                          (game) =>
-                            game.roundNumber === roundNumber &&
-                            game.status === "current"
-                        );
+                        const isCurrentRound =
+                          seasonGames &&
+                          seasonGames.some(
+                            (game) =>
+                              game &&
+                              game.roundNumber === roundNumber &&
+                              game.status === "current"
+                          );
 
                         // Determine what to display
                         let displayValue = "";
-                        if (row.scores[i] !== undefined) {
+                        if (
+                          row.scores &&
+                          row.scores[i] !== null &&
+                          row.scores[i] !== undefined
+                        ) {
                           // Player has a score for this round
                           displayValue = row.scores[i];
                         } else if (isRoundCompleted) {
@@ -863,7 +878,12 @@ const Scoreboard = () => {
                       })}
                       <td>
                         {row.sum ||
-                          row.scores.reduce((acc, score) => acc + score, 0)}
+                          (row.scores &&
+                            row.scores.reduce(
+                              (acc, score) => acc + (score || 0),
+                              0
+                            )) ||
+                          0}
                       </td>
                     </tr>
                   ))}

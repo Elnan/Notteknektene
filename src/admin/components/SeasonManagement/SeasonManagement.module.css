@@ -954,3 +954,122 @@
 .modalActions .cancelButton:hover {
   background: #5a6268;
 }
+
+/* User Selection Modal Styles */
+.userSelectionGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  max-height: 400px;
+  overflow-y: auto;
+  margin: 1rem 0;
+  padding: 0.5rem;
+}
+
+.userSelectionCard {
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: white;
+}
+
+.userSelectionCard:hover {
+  border-color: var(--color-green);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.userSelectionCard.selected {
+  border-color: var(--color-green);
+  background: #f0f9f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.userSelectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.userSelectionAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e0e0e0;
+  flex-shrink: 0;
+}
+
+.userSelectionInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.userSelectionInfo h4 {
+  margin: 0 0 0.25rem 0;
+  color: var(--color-green);
+  font-size: 1rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.userSelectionInfo p {
+  margin: 0 0 0.5rem 0;
+  color: #666;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.userSelectionCheckbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.userSelectionCheckbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.activateButton {
+  background: var(--color-green);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.activateButton:hover {
+  background: #2d5a2d;
+}
+
+.participationStatus {
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.participationStatus.participating {
+  background: #d4edda;
+  color: #155724;
+}
+
+.participationStatus.notParticipating {
+  background: #f8f9fa;
+  color: #6c757d;
+}

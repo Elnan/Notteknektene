@@ -840,8 +840,17 @@ export const createRoundTable = async (seasonName, roundNumber) => {
     // Get all submissions for this game
     const submissions = await getGameSubmissions(seasonName, game.gameId);
 
-    // Transform submissions into participant data
+    // Get season participants for defensive filtering
+    const seasonParticipants = await getSeasonParticipantsList(seasonName);
+    const participantUserIds = new Set(seasonParticipants.map((p) => p.userId));
+
+    // Transform submissions into participant data, filtering out non-participants
     const participants = submissions
+      .filter((submission) => {
+        // Only include submissions from users who are season participants
+        const userId = submission.userId || submission.id;
+        return participantUserIds.has(userId);
+      })
       .map((submission) => {
         // Get the base game ID to determine the correct hints field
         const baseGameId = game.gameId?.replace(/\d+$/, "") || "";
@@ -2165,4 +2174,77 @@ const calculateAverageTime = (times) => {
   if (hours > 0) return `${hours}h ${minutes}m ${seconds}s`;
   if (minutes > 0) return `${minutes}m ${seconds}s`;
   return `${seconds}s`;
+};
+
+/**
+ * Initialize totalScores for all participants in a season
+ * This pre-populates the scoreboard with all participants at 0 points
+ */
+export const initializeSeasonTotalScores = async (seasonName, participants) => {
+  try {
+    console.log(
+      `Initializing total scores for ${participants.length} participants in season ${seasonName}`
+    );
+
+    // First, clean up any existing totalScores entries for this season
+    const totalScoresRef = collection(
+      notteknekteneDb,
+      "seasons",
+      seasonName,
+      "totalScores"
+    );
+    const existingSnapshot = await getDocs(totalScoresRef);
+
+    console.log(
+      `🧹 Cleaning up ${existingSnapshot.docs.length} existing totalScores entries`
+    );
+
+    // Delete all existing totalScores entries (only if there are any)
+    if (existingSnapshot.docs.length > 0) {
+      const deleteBatch = writeBatch(notteknekteneDb);
+      existingSnapshot.docs.forEach((doc) => {
+        deleteBatch.delete(doc.ref);
+      });
+      await deleteBatch.commit();
+      console.log(
+        `✅ Deleted ${existingSnapshot.docs.length} existing totalScores entries`
+      );
+    }
+
+    // Now create new totalScores entries only for the selected participants
+    const batch = writeBatch(notteknekteneDb);
+
+    for (const participant of participants) {
+      const totalScoreRef = doc(
+        notteknekteneDb,
+        "seasons",
+        seasonName,
+        "totalScores",
+        participant.userId
+      );
+
+      const totalScoreData = {
+        userId: participant.userId,
+        name: participant.displayName || participant.userName,
+        userName: participant.displayName || participant.userName,
+        userEmail: participant.email,
+        avatar: participant.avatar || "male_avatar_portrait_man.png",
+        scores: [null, null, null, null, null, null, null, null, null, null], // Array of 10 null scores for R1-R10 (empty cells)
+        sum: 0,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      };
+
+      batch.set(totalScoreRef, totalScoreData);
+    }
+
+    await batch.commit();
+    console.log(
+      `✅ Initialized total scores for ${participants.length} participants`
+    );
+  } catch (error) {
+    console.error("Error initializing season total scores:", error);
+    console.error("Error details:", error.message, error.stack);
+    throw error;
+  }
 };

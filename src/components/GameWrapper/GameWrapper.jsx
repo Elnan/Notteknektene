@@ -211,6 +211,23 @@ const GameWrapper = ({
     } catch (error) {
       console.error("❌ CRITICAL: Error recording game completion:", error);
 
+      // Check if it's a non-participating user error
+      const isNonParticipatingError = error.message.includes(
+        "not participating in the current season"
+      );
+
+      if (isNonParticipatingError) {
+        // Show friendly message to non-participating user but still allow them to see their result
+        console.log(
+          "ℹ️ User is not participating in the current season - showing result but not saving"
+        );
+        alert(
+          "You are not participating in the current season. Your result has been calculated but will not be saved to the database."
+        );
+        // Continue to victory screen to show their result
+        return;
+      }
+
       // Check if it's a network error (common on mobile)
       const isNetworkError =
         error.code === "unavailable" ||

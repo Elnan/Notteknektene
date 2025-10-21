@@ -24,6 +24,11 @@ const SeasonManagement = () => {
   const [showFinishConfirm, setShowFinishConfirm] = useState(false);
   const [seasonToFinish, setSeasonToFinish] = useState(null);
   const [finishingSeason, setFinishingSeason] = useState(false);
+  const [showUserSelectionModal, setShowUserSelectionModal] = useState(false);
+  const [seasonToActivate, setSeasonToActivate] = useState(null);
+  const [allUsers, setAllUsers] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [userAvatars, setUserAvatars] = useState({});
   const [formData, setFormData] = useState({
     name: "",
     startDate: "",
@@ -194,35 +199,70 @@ const SeasonManagement = () => {
   };
 
   const handleActivateSeason = async (seasonId) => {
+    // Show user selection modal instead of directly activating
+    try {
+      const { getAllUsers } = await import(
+        "../../../firebase/admin-firebase-utils.js"
+      );
+
+      const users = await getAllUsers();
+      setAllUsers(users);
+
+      // Pre-select users with Participating: true
+      const preSelectedUsers = users
+        .filter((user) => user.Participating === true)
+        .map((user) => user.id);
+      setSelectedUsers(preSelectedUsers);
+
+      // Load user avatars
+      const avatarsMap = {};
+      users.forEach((user) => {
+        if (user.displayName && user.avatar) {
+          // Use userId as key to avoid conflicts with duplicate displayNames
+          avatarsMap[user.id] = user.avatar;
+        }
+      });
+      setUserAvatars(avatarsMap);
+
+      setSeasonToActivate(seasonId);
+      setShowUserSelectionModal(true);
+    } catch (error) {
+      console.error("Error loading users for season activation:", error);
+      alert("Error loading users");
+    }
+  };
+
+  const handleUserSelection = (userId) => {
+    setSelectedUsers((prev) =>
+      prev.includes(userId)
+        ? prev.filter((id) => id !== userId)
+        : [...prev, userId]
+    );
+  };
+
+  const handleConfirmSeasonActivation = async () => {
+    if (!seasonToActivate) return;
+
     try {
       // Deactivate all other seasons first
       const batch = seasons.map((season) =>
         updateSeason(season.id, {
           ...season,
-          isActive: season.id === seasonId,
+          isActive: season.id === seasonToActivate,
         })
       );
       await Promise.all(batch);
 
-      // Get all users who are marked as participating
-      const { getAllUsers } = await import(
-        "../../../firebase/admin-firebase-utils.js"
-      );
-      const { addSeasonParticipant } = await import(
-        "../../../firebase/new-database-utils.js"
-      );
+      const { addSeasonParticipant, initializeSeasonTotalScores } =
+        await import("../../../firebase/new-database-utils.js");
 
-      const allUsers = await getAllUsers();
-      const participatingUsers = allUsers.filter(
-        (user) => user.Participating === true
+      // Add selected users to the season
+      const selectedUsersData = allUsers.filter((user) =>
+        selectedUsers.includes(user.id)
       );
+      const participantDataList = [];
 
-      console.log(
-        `Found ${participatingUsers.length} participating users to add to season`
-      );
-
-      // Add all participating users to the season
-      for (const user of participatingUsers) {
+      for (const user of selectedUsersData) {
         try {
           const participantData = {
             userId: user.id,
@@ -232,25 +272,50 @@ const SeasonManagement = () => {
               user.email?.split("@")[0] ||
               "Unknown User",
             email: user.email,
+            avatar: user.avatar || "male_avatar_portrait_man.png",
             joinedAt: new Date(),
             isActive: true,
           };
 
-          await addSeasonParticipant(seasonId, participantData);
+          await addSeasonParticipant(seasonToActivate, participantData);
+          participantDataList.push(participantData);
           console.log(`Added user ${user.displayName || user.email} to season`);
         } catch (error) {
           console.error(`Error adding user ${user.id} to season:`, error);
         }
       }
 
+      // Initialize totalScores for all participants
+      if (participantDataList.length > 0) {
+        await initializeSeasonTotalScores(
+          seasonToActivate,
+          participantDataList
+        );
+      }
+
+      // Close modal and reset state
+      setShowUserSelectionModal(false);
+      setSeasonToActivate(null);
+      setSelectedUsers([]);
+      setAllUsers([]);
+      setUserAvatars({});
+
       await loadData();
       alert(
-        `Season activated successfully! Added ${participatingUsers.length} participating users to the season.`
+        `Season activated successfully! Added ${selectedUsersData.length} users to the season.`
       );
     } catch (error) {
       console.error("Error activating season:", error);
       alert("Error activating season");
     }
+  };
+
+  const handleCancelSeasonActivation = () => {
+    setShowUserSelectionModal(false);
+    setSeasonToActivate(null);
+    setSelectedUsers([]);
+    setAllUsers([]);
+    setUserAvatars({});
   };
 
   const handleAddGameToSeason = async (gameId) => {
@@ -1081,6 +1146,94 @@ const SeasonManagement = () => {
                     className={styles.cancelButton}
                     onClick={() => setShowFinishConfirm(false)}
                     disabled={finishingSeason}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* User Selection Modal for Season Activation */}
+        {showUserSelectionModal && (
+          <div
+            className={styles.modalOverlay}
+            onClick={handleCancelSeasonActivation}
+          >
+            <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+              <div className={styles.modalHeader}>
+                <h2>Select Users for Season</h2>
+                <button
+                  className={styles.closeButton}
+                  onClick={handleCancelSeasonActivation}
+                >
+                  ×
+                </button>
+              </div>
+              <div className={styles.modalBody}>
+                <p>Select which users should participate in this season:</p>
+                <div className={styles.userSelectionGrid}>
+                  {allUsers.map((user) => (
+                    <div
+                      key={user.id}
+                      className={`${styles.userSelectionCard} ${
+                        selectedUsers.includes(user.id) ? styles.selected : ""
+                      }`}
+                      onClick={() => handleUserSelection(user.id)}
+                    >
+                      <div className={styles.userSelectionHeader}>
+                        <img
+                          src={
+                            userAvatars[user.id]
+                              ? `/avatars/${userAvatars[user.id]}`
+                              : "/defaultAvatar.webp"
+                          }
+                          alt={`${user.displayName || user.name}'s avatar`}
+                          className={styles.userSelectionAvatar}
+                        />
+                        <div className={styles.userSelectionInfo}>
+                          <h4>
+                            {user.displayName ||
+                              user.name ||
+                              user.email?.split("@")[0] ||
+                              "Unknown User"}
+                          </h4>
+                          <p>{user.email}</p>
+                          <span
+                            className={`${styles.participationStatus} ${
+                              user.Participating
+                                ? styles.participating
+                                : styles.notParticipating
+                            }`}
+                          >
+                            {user.Participating
+                              ? "🟢 Participating"
+                              : "⚪ Not Participating"}
+                          </span>
+                        </div>
+                        <div className={styles.userSelectionCheckbox}>
+                          <input
+                            type="checkbox"
+                            checked={selectedUsers.includes(user.id)}
+                            onChange={() => handleUserSelection(user.id)}
+                            onClick={(e) => e.stopPropagation()}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className={styles.modalActions}>
+                  <button
+                    className={styles.activateButton}
+                    onClick={handleConfirmSeasonActivation}
+                  >
+                    Activate Season ({selectedUsers.length} users selected)
+                  </button>
+                  <button
+                    className={styles.cancelButton}
+                    onClick={handleCancelSeasonActivation}
                   >
                     Cancel
                   </button>

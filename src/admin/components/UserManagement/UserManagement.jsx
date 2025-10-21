@@ -17,6 +17,7 @@ const UserManagement = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [editingUser, setEditingUser] = useState(null);
   const [showAddUserModal, setShowAddUserModal] = useState(false);
+  const [userAvatars, setUserAvatars] = useState({});
 
   useEffect(() => {
     loadUserData();
@@ -39,6 +40,16 @@ const UserManagement = () => {
         const participants = await getSeasonParticipantsList(season.id);
         setSeasonParticipants(participants);
       }
+
+      // Load user avatars
+      const avatarsMap = {};
+      allUsers.forEach((user) => {
+        if (user.displayName && user.avatar) {
+          // Use userId as key to avoid conflicts with duplicate displayNames
+          avatarsMap[user.id] = user.avatar;
+        }
+      });
+      setUserAvatars(avatarsMap);
     } catch (error) {
       console.error("Error loading user data:", error);
     } finally {
@@ -54,9 +65,40 @@ const UserManagement = () => {
       );
 
       if (isParticipating) {
-        // Remove from season
+        // Show confirmation dialog for removal
+        const confirmMessage = `Remove ${user.displayName || user.name || user.email} from the season?\n\nThis will:\n• Remove them from the season participants\n• Remove them from the scoreboard\n• Their submissions will remain in round tables\n\nContinue?`;
+
+        if (!window.confirm(confirmMessage)) {
+          return;
+        }
+
+        // Remove from season participants
         await deleteSeasonParticipant(currentSeason.id, userId);
-        alert("User removed from season");
+
+        // Also remove from totalScores if it exists
+        try {
+          const { deleteDoc, doc } = await import("firebase/firestore");
+          const { notteknekteneDb } = await import(
+            "../../../firebase/firebase-config-notteknektene.js"
+          );
+          const totalScoreRef = doc(
+            notteknekteneDb,
+            "seasons",
+            currentSeason.id,
+            "totalScores",
+            userId
+          );
+          await deleteDoc(totalScoreRef);
+          console.log(`Removed user ${userId} from totalScores`);
+        } catch (error) {
+          console.warn(
+            `Could not remove user ${userId} from totalScores:`,
+            error
+          );
+          // Don't fail the whole operation if totalScores deletion fails
+        }
+
+        alert("User removed from season and scoreboard");
       } else {
         // Add to season
         await addSeasonParticipant(currentSeason.id, {
@@ -67,6 +109,7 @@ const UserManagement = () => {
             user.email?.split("@")[0] ||
             "Unknown User",
           email: user.email,
+          avatar: user.avatar || "male_avatar_portrait_man.png",
           joinedAt: new Date(),
           isActive: true,
         });
@@ -181,12 +224,23 @@ const UserManagement = () => {
           {filteredUsers.map((user) => (
             <div key={user.id} className={styles.userCard}>
               <div className={styles.userHeader}>
-                <h3>
-                  {user.displayName ||
-                    user.name ||
-                    user.email?.split("@")[0] ||
-                    "Unknown User"}
-                </h3>
+                <div className={styles.userNameContainer}>
+                  <img
+                    src={
+                      userAvatars[user.id]
+                        ? `/avatars/${userAvatars[user.id]}`
+                        : "/defaultAvatar.webp"
+                    }
+                    alt={`${user.displayName || user.name}'s avatar`}
+                    className={styles.userAvatar}
+                  />
+                  <h3>
+                    {user.displayName ||
+                      user.name ||
+                      user.email?.split("@")[0] ||
+                      "Unknown User"}
+                  </h3>
+                </div>
                 <span
                   className={`${styles.participationStatus} ${
                     isParticipating(user.id)

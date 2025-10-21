@@ -227,6 +227,25 @@ export const prepareSubmissionData = (
 };
 
 /**
+ * Validate if a user is participating in the active season
+ * @param {string} seasonId - The season identifier
+ * @param {string} userId - The user identifier
+ * @returns {Promise<boolean>} - True if user is participating, false otherwise
+ */
+export const validateUserSeasonParticipation = async (seasonId, userId) => {
+  try {
+    const { getSeasonParticipantsList } = await import(
+      "../firebase/new-database-utils.js"
+    );
+    const participants = await getSeasonParticipantsList(seasonId);
+    return participants.some((participant) => participant.userId === userId);
+  } catch (error) {
+    console.error("Error validating user season participation:", error);
+    return false;
+  }
+};
+
+/**
  * Save a game submission to the database
  * @param {string} seasonId - The season identifier
  * @param {string} gameId - The game identifier
@@ -245,6 +264,17 @@ export const saveGameSubmission = async (
   options = {}
 ) => {
   try {
+    // Validate user is participating in the active season
+    const isParticipating = await validateUserSeasonParticipation(
+      seasonId,
+      userId
+    );
+    if (!isParticipating) {
+      throw new Error(
+        "You are not participating in the current season. Your submission will not be saved to the database."
+      );
+    }
+
     // Prepare the submission data
     const submissionData = prepareSubmissionData(
       gameId,
