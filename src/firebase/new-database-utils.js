@@ -844,6 +844,16 @@ export const createRoundTable = async (seasonName, roundNumber) => {
     const seasonParticipants = await getSeasonParticipantsList(seasonName);
     const participantUserIds = new Set(seasonParticipants.map((p) => p.userId));
 
+    // Get user avatars for round table participants
+    const { getAllUsers } = await import("./admin-firebase-utils.js");
+    const allUsers = await getAllUsers();
+    const userAvatars = {};
+    allUsers.forEach((user) => {
+      if (user.avatar) {
+        userAvatars[user.id] = user.avatar;
+      }
+    });
+
     // Transform submissions into participant data, filtering out non-participants
     const participants = submissions
       .filter((submission) => {
@@ -861,10 +871,12 @@ export const createRoundTable = async (seasonName, roundNumber) => {
           hintsUsed = submission.totalHintsUsed || submission.hintsUsed || 0;
         }
 
+        const userId = submission.userId || submission.id;
         return {
-          userId: submission.userId || submission.id, // Fix: use id as fallback
+          userId: userId, // Fix: use id as fallback
           userName: submission.userName,
           userEmail: submission.userEmail,
+          avatar: userAvatars[userId] || "male_avatar_portrait_man.png",
           score: submission.score || 0, // This will be updated after ranking
           time: submission.time || "N/A",
           hintsUsed: hintsUsed,
@@ -937,6 +949,10 @@ export const createRoundTable = async (seasonName, roundNumber) => {
 
     console.log(
       `✅ Round table created for round ${roundNumber} with ${participants.length} participants`
+    );
+    console.log(
+      `📸 Sample participant avatars:`,
+      participants.map((p) => ({ name: p.userName, avatar: p.avatar }))
     );
 
     // Update total scores for all participants
