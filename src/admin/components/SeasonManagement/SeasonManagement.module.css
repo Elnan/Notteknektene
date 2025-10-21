@@ -4,6 +4,7 @@
   width: 100%;
   max-width: none;
   margin: 0;
+  color-scheme: light;
 }
 
 .header {
@@ -162,6 +163,8 @@
   border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.2s ease;
+  background-color: white;
+  color: #333;
 }
 
 .formGroup input:focus,
