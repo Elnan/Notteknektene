@@ -849,7 +849,7 @@ export const createRoundTable = async (seasonName, roundNumber) => {
     const allUsers = await getAllUsers();
     const userAvatars = {};
     allUsers.forEach((user) => {
-      if (user.avatar) {
+      if (user.displayName && user.avatar) {
         userAvatars[user.id] = user.avatar;
       }
     });
@@ -872,11 +872,13 @@ export const createRoundTable = async (seasonName, roundNumber) => {
         }
 
         const userId = submission.userId || submission.id;
+        const assignedAvatar =
+          userAvatars[userId] || "male_avatar_portrait_man.png";
         return {
           userId: userId, // Fix: use id as fallback
           userName: submission.userName,
           userEmail: submission.userEmail,
-          avatar: userAvatars[userId] || "male_avatar_portrait_man.png",
+          avatar: assignedAvatar,
           score: submission.score || 0, // This will be updated after ranking
           time: submission.time || "N/A",
           hintsUsed: hintsUsed,
@@ -949,10 +951,6 @@ export const createRoundTable = async (seasonName, roundNumber) => {
 
     console.log(
       `✅ Round table created for round ${roundNumber} with ${participants.length} participants`
-    );
-    console.log(
-      `📸 Sample participant avatars:`,
-      participants.map((p) => ({ name: p.userName, avatar: p.avatar }))
     );
 
     // Update total scores for all participants
