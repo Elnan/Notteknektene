@@ -273,6 +273,7 @@ const Scoreboard = () => {
       return {
         id: participant.userId || participant.id,
         name: participant.userName || participant.name,
+        avatar: participant.avatar, // Include avatar field
         score: Math.round(participant.score || 0), // Round to whole number
         // Include all game-specific data with proper fallbacks
         hintsUsed: Boolean(participant.hintsUsed || participant.hintUsed || 0), // Convert to boolean
@@ -623,8 +624,8 @@ const Scoreboard = () => {
                         <td className={styles.avatarCell}>
                           <img
                             src={
-                              userAvatars[row.name]
-                                ? `/avatars/${userAvatars[row.name]}`
+                              row.avatar
+                                ? `/avatars/${row.avatar}`
                                 : "/defaultAvatar.webp"
                             }
                             alt={`${row.name}'s avatar`}
@@ -748,6 +749,9 @@ const Scoreboard = () => {
                               <tr key={participant.userId || participant.id}>
                                 <td>{index + 1}</td>
                                 <td>
+                                  {console.log(
+                                    `🔍 Scoreboard displaying ${participant.userName}: avatar=${participant.avatar}`
+                                  )}
                                   <img
                                     src={
                                       participant.avatar

@@ -826,7 +826,7 @@ export const initializeSeason = async (seasonData, games) => {
 export const createRoundTable = async (seasonName, roundNumber) => {
   try {
     console.log(
-      `Creating round table for round ${roundNumber} in season ${seasonName}`
+      `🚀🚀🚀 CREATING ROUND TABLE FOR ROUND ${roundNumber} IN SEASON ${seasonName} 🚀🚀🚀`
     );
 
     // Get the game for this round
@@ -952,6 +952,10 @@ export const createRoundTable = async (seasonName, roundNumber) => {
     console.log(
       `✅ Round table created for round ${roundNumber} with ${participants.length} participants`
     );
+    console.log(
+      `📸📸📸 FINAL PARTICIPANT AVATARS 📸📸📸:`,
+      participants.map((p) => ({ name: p.userName, avatar: p.avatar }))
+    );
 
     // Update total scores for all participants
     await updateTotalScores(seasonName, roundNumber, participants);
@@ -995,6 +999,14 @@ export const updateTotalScores = async (
       `🔧 Submitted participants:`,
       Array.from(submittedParticipants.entries())
     );
+    console.log(
+      `🔧 Participant details:`,
+      participants.map((p) => ({
+        userId: p.userId,
+        userName: p.userName,
+        score: p.score,
+      }))
+    );
 
     // Update scores for ALL season participants
     console.log(
@@ -1016,6 +1028,9 @@ export const updateTotalScores = async (
       // Get the score for this participant (0 if they didn't submit)
       const roundScore =
         submittedParticipants.get(seasonParticipant.userId) || 0;
+      console.log(
+        `🔧 Looking up score for ${seasonParticipant.userId}: found ${roundScore}`
+      );
 
       // Get or create total scores document for this participant
       const totalScoresRef = doc(
@@ -1062,8 +1077,10 @@ export const updateTotalScores = async (
       }
 
       // Additional safety check: ensure we don't overwrite existing scores
+      // Only skip if there's a non-null, non-zero score (null means no score yet)
       if (
         scores[roundNumber - 1] !== undefined &&
+        scores[roundNumber - 1] !== null &&
         scores[roundNumber - 1] !== 0
       ) {
         console.warn(
