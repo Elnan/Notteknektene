@@ -991,7 +991,7 @@ export const updateTotalScores = async (
     // Create a map of participants who actually submitted for quick lookup
     const submittedParticipants = new Map();
     participants.forEach((participant) => {
-      submittedParticipants.set(participant.userName, participant.score);
+      submittedParticipants.set(participant.userId, participant.score);
     });
     console.log(
       `🔧 Submitted participants:`,
@@ -1011,10 +1011,13 @@ export const updateTotalScores = async (
         console.log(`🔧 Skipping participant with no name:`, seasonParticipant);
         continue;
       }
-      console.log(`🔧 Processing participant: ${participantName}`);
+      console.log(
+        `🔧 Processing participant: ${participantName} (${seasonParticipant.userId})`
+      );
 
       // Get the score for this participant (0 if they didn't submit)
-      const roundScore = submittedParticipants.get(participantName) || 0;
+      const roundScore =
+        submittedParticipants.get(seasonParticipant.userId) || 0;
 
       // Get or create total scores document for this participant
       const totalScoresRef = doc(
@@ -1022,7 +1025,7 @@ export const updateTotalScores = async (
         "seasons",
         seasonName,
         "totalScores",
-        participantName
+        seasonParticipant.userId
       );
 
       const totalScoresDoc = await getDoc(totalScoresRef);
@@ -1033,10 +1036,10 @@ export const updateTotalScores = async (
       }
 
       console.log(
-        `🔧 ${participantName}: Before extension - Array length: ${scores.length}, Round: ${roundNumber}`
+        `🔧 ${seasonParticipant.userId}: Before extension - Array length: ${scores.length}, Round: ${roundNumber}`
       );
       console.log(
-        `🔧 ${participantName}: Current scores: [${scores.join(", ")}]`
+        `🔧 ${seasonParticipant.userId}: Current scores: [${scores.join(", ")}]`
       );
 
       // Ensure the scores array is long enough for the current round
@@ -1049,14 +1052,14 @@ export const updateTotalScores = async (
 
       if (scores.length > originalLength) {
         console.log(
-          `🔧 ${participantName}: Extended array from ${originalLength} to ${scores.length} elements for round ${roundNumber}`
+          `🔧 ${seasonParticipant.userId}: Extended array from ${originalLength} to ${scores.length} elements for round ${roundNumber}`
         );
         console.log(
-          `🔧 ${participantName}: Extended scores: [${scores.join(", ")}]`
+          `🔧 ${seasonParticipant.userId}: Extended scores: [${scores.join(", ")}]`
         );
       } else {
         console.log(
-          `🔧 ${participantName}: No extension needed - array already has ${scores.length} elements`
+          `🔧 ${seasonParticipant.userId}: No extension needed - array already has ${scores.length} elements`
         );
       }
 
@@ -1066,7 +1069,7 @@ export const updateTotalScores = async (
         scores[roundNumber - 1] !== 0
       ) {
         console.warn(
-          `⚠️ Round ${roundNumber} already has a score (${scores[roundNumber - 1]}) for ${participantName}. Skipping update to prevent overwrite.`
+          `⚠️ Round ${roundNumber} already has a score (${scores[roundNumber - 1]}) for ${seasonParticipant.userId}. Skipping update to prevent overwrite.`
         );
         continue; // Skip this participant to avoid overwriting existing data
       }
@@ -1075,10 +1078,10 @@ export const updateTotalScores = async (
       scores[roundNumber - 1] = roundScore;
 
       console.log(
-        `🔧 ${participantName}: After setting score - Array length: ${scores.length}, Round ${roundNumber} score: ${scores[roundNumber - 1]}`
+        `🔧 ${seasonParticipant.userId}: After setting score - Array length: ${scores.length}, Round ${roundNumber} score: ${scores[roundNumber - 1]}`
       );
       console.log(
-        `🔧 ${participantName}: Final scores: [${scores.join(", ")}]`
+        `🔧 ${seasonParticipant.userId}: Final scores: [${scores.join(", ")}]`
       );
 
       // Calculate the total sum
@@ -1087,6 +1090,7 @@ export const updateTotalScores = async (
       // Update or create the total scores document
       batch.set(totalScoresRef, {
         name: participantName,
+        userId: seasonParticipant.userId,
         scores: scores,
         sum: totalSum,
         updatedAt: serverTimestamp(),
@@ -1113,7 +1117,7 @@ export const updateTotalScores = async (
       );
 
       console.log(
-        `📈 Updated ${participantName}: Round ${roundNumber} = ${roundScore}, Total = ${totalSum}`
+        `📈 Updated ${seasonParticipant.userId}: Round ${roundNumber} = ${roundScore}, Total = ${totalSum}`
       );
     }
 
@@ -2199,10 +2203,10 @@ const calculateAverageTime = (times) => {
 export const initializeSeasonTotalScores = async (seasonName, participants) => {
   try {
     console.log(
-      `Initializing total scores for ${participants.length} participants in season ${seasonName}`
+      `🚀 Initializing total scores for ${participants.length} participants in season ${seasonName}`
     );
 
-    // First, clean up any existing totalScores entries for this season
+    // Prevent duplicate calls by checking if totalScores already exist
     const totalScoresRef = collection(
       notteknekteneDb,
       "seasons",
@@ -2211,24 +2215,27 @@ export const initializeSeasonTotalScores = async (seasonName, participants) => {
     );
     const existingSnapshot = await getDocs(totalScoresRef);
 
-    console.log(
-      `🧹 Cleaning up ${existingSnapshot.docs.length} existing totalScores entries`
-    );
-
-    // Delete all existing totalScores entries (only if there are any)
     if (existingSnapshot.docs.length > 0) {
-      const deleteBatch = writeBatch(notteknekteneDb);
-      existingSnapshot.docs.forEach((doc) => {
-        deleteBatch.delete(doc.ref);
-      });
-      await deleteBatch.commit();
       console.log(
-        `✅ Deleted ${existingSnapshot.docs.length} existing totalScores entries`
+        `⚠️ TotalScores already exist for season ${seasonName}. Skipping initialization.`
       );
+      return;
     }
+
+    console.log(
+      `✅ No existing totalScores found. Proceeding with initialization.`
+    );
 
     // Now create new totalScores entries only for the selected participants
     const batch = writeBatch(notteknekteneDb);
+
+    console.log(
+      `👥 Creating totalScores for ${participants.length} participants:`,
+      participants.map((p) => ({
+        userId: p.userId,
+        name: p.displayName || p.userName,
+      }))
+    );
 
     for (const participant of participants) {
       const totalScoreRef = doc(

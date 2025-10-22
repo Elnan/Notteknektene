@@ -750,8 +750,8 @@ const Scoreboard = () => {
                                 <td>
                                   <img
                                     src={
-                                      userAvatars[participant.userId]
-                                        ? `/avatars/${userAvatars[participant.userId]}`
+                                      participant.avatar
+                                        ? `/avatars/${participant.avatar}`
                                         : "/defaultAvatar.webp"
                                     }
                                     alt={`${participant.userName || participant.name}'s avatar`}
