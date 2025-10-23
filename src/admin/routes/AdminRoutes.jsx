@@ -48,7 +48,14 @@ const AdminLoadingSpinner = () => (
 const AdminRoutes = () => {
   const location = useLocation();
   const [refreshFunction, setRefreshFunction] = useState(null);
-  const { currentUser, isAdmin } = useAuth();
+  const auth = useAuth();
+
+  // Handle case where auth context is not yet loaded
+  if (!auth) {
+    return <div>Loading...</div>;
+  }
+
+  const { currentUser, isAdmin } = auth;
 
   // Check if user is authenticated and is admin
   if (!currentUser) {

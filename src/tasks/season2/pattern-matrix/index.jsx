@@ -499,7 +499,19 @@ const PatternMatrix = ({ onComplete, currentGameId }) => {
 
       // Use currentGameId if available, otherwise fall back to base game ID
       const gameId = currentGameId || "pattern-matrix";
-      onComplete(gameId, submissionData);
+
+      // Import and use the submission pipeline
+      import("../../../utils/gameSubmissionUtils.js").then(
+        ({ prepareSubmissionData }) => {
+          const processedSubmissionData = prepareSubmissionData(
+            gameId,
+            submissionData,
+            { userName: "Vidar", userEmail: "vidar@test.com" }, // This should come from context
+            { timeSpent }
+          );
+          onComplete(gameId, processedSubmissionData);
+        }
+      );
     }
   }, [phase, practiceAnswers, mainAnswers, onComplete]);
 
