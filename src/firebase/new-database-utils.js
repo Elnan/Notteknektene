@@ -1997,14 +1997,18 @@ const getGameRankingComparator = (gameId) => {
       };
 
     case "the-keeper":
-      // score, hintsUsed, instructionsUsed, attempts, moves, submittedAt
+      // For The Keeper, rank by attempts first, then moves, then hints/instructions, then submission time
       return (a, b) => {
-        if (a.score !== b.score) return b.score - a.score;
+        // Primary: Fewer attempts is better
+        if (a.attempts !== b.attempts) return a.attempts - b.attempts;
+        // Secondary: Fewer moves is better
+        if (a.moves !== b.moves) return a.moves - b.moves;
+        // Tertiary: Fewer hints is better
         if (a.hintsUsed !== b.hintsUsed) return a.hintsUsed - b.hintsUsed;
+        // Quaternary: Fewer instructions is better
         if (a.instructionsUsed !== b.instructionsUsed)
           return a.instructionsUsed - b.instructionsUsed;
-        if (a.attempts !== b.attempts) return a.attempts - b.attempts;
-        if (a.moves !== b.moves) return a.moves - b.moves;
+        // Final tiebreaker: Earlier submission
         if (a.submittedAt && b.submittedAt)
           return a.submittedAt.toDate() - b.submittedAt.toDate();
         return 0;
