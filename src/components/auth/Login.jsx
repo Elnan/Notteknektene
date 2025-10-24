@@ -9,6 +9,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
 } from "firebase/auth";
+import { doPasswordReset } from "../../firebase/auth.js";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import { useAuth } from "../../context/authContext";
@@ -20,6 +21,10 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [error, setError] = useState(null);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
+  const [forgotPasswordMessage, setForgotPasswordMessage] = useState("");
+  const [isSendingReset, setIsSendingReset] = useState(false);
   const { currentUser } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -94,6 +99,26 @@ const Login = () => {
     }
   };
 
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    setIsSendingReset(true);
+    setForgotPasswordMessage("");
+
+    try {
+      await doPasswordReset(forgotPasswordEmail);
+      setForgotPasswordMessage(
+        "Tilbakestillingslenke sendt! Sjekk din e-post."
+      );
+      setForgotPasswordEmail("");
+    } catch (error) {
+      setForgotPasswordMessage(
+        "Feil ved sending av tilbakestillingslenke. Prøv igjen."
+      );
+    } finally {
+      setIsSendingReset(false);
+    }
+  };
+
   if (currentUser) {
     return <Navigate to={redirectTo} />;
   }
@@ -155,15 +180,25 @@ const Login = () => {
           </div>
           {error && <div className={styles.errorMessage}>{error}</div>}
           <Button
-            onClick={() => setState({ showSubmitConfirm: true })}
+            type="submit"
             variant="primary"
             size="large"
+            disabled={isSigningIn}
           >
-            Logg inn
+            {isSigningIn ? "Logger inn..." : "Logg inn"}
           </Button>
         </form>
 
         <div className={styles.textCenter}>
+          <p>
+            <button
+              type="button"
+              onClick={() => setShowForgotPassword(true)}
+              className={styles.forgotPasswordLink}
+            >
+              Glemt passord?
+            </button>
+          </p>
           <p>
             Har du ikke bruker?{" "}
             <Link to="/auth/register" className={styles.registerLink}>
@@ -172,6 +207,59 @@ const Login = () => {
             .
           </p>
         </div>
+
+        {/* Forgot Password Modal */}
+        {showForgotPassword && (
+          <div className={styles.modalOverlay}>
+            <div className={styles.modalContent}>
+              <h3 className={styles.modalTitle}>Glemt passord?</h3>
+              <p className={styles.modalDescription}>
+                Skriv inn din e-postadresse så sender vi deg en lenke for å
+                tilbakestille passordet.
+              </p>
+              <form onSubmit={handleForgotPassword}>
+                <div className={styles.formGroup}>
+                  <input
+                    type="email"
+                    className={styles.formInput}
+                    value={forgotPasswordEmail}
+                    onChange={(e) => setForgotPasswordEmail(e.target.value)}
+                    required
+                    placeholder=""
+                  />
+                  <label className={styles.formLabel}>Epost</label>
+                </div>
+                {forgotPasswordMessage && (
+                  <div className={styles.forgotPasswordMessage}>
+                    {forgotPasswordMessage}
+                  </div>
+                )}
+                <div className={styles.modalButtons}>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="medium"
+                    onClick={() => {
+                      setShowForgotPassword(false);
+                      setForgotPasswordMessage("");
+                      setForgotPasswordEmail("");
+                    }}
+                  >
+                    Avbryt
+                  </Button>
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    size="medium"
+                    disabled={isSendingReset}
+                  >
+                    {isSendingReset ? "Sender..." : "Send lenke"}
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
