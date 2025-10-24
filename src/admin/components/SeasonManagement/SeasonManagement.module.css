@@ -752,6 +752,24 @@
   box-shadow: none;
 }
 
+.generateRoundTableButton {
+  background: #0891b2;
+  color: white;
+}
+
+.generateRoundTableButton:hover {
+  background: #0e7490;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3);
+}
+
+.generateRoundTableButton:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
 .submitButton {
   background: var(--color-green);
   color: white;

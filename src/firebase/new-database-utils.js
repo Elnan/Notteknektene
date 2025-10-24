@@ -968,6 +968,42 @@ export const createRoundTable = async (seasonName, roundNumber) => {
 };
 
 /**
+ * Generate round table for a specific round without ending the season
+ * This is useful for generating the final round table before ending the season
+ */
+export const generateRoundTableForRound = async (seasonName, roundNumber) => {
+  try {
+    console.log(
+      `📊 Generating round table for round ${roundNumber} in season ${seasonName}`
+    );
+
+    // Check if round table already exists
+    const existingRoundTable = await getRoundTable(seasonName, roundNumber);
+    if (existingRoundTable) {
+      console.log(`Round table for round ${roundNumber} already exists`);
+      return {
+        success: true,
+        message: `Round table for round ${roundNumber} already exists`,
+        roundTable: existingRoundTable,
+      };
+    }
+
+    // Create the round table
+    const roundTableData = await createRoundTable(seasonName, roundNumber);
+
+    console.log(`✅ Round table generated for round ${roundNumber}`);
+    return {
+      success: true,
+      message: `Round table for round ${roundNumber} generated successfully`,
+      roundTable: roundTableData,
+    };
+  } catch (error) {
+    console.error("Error generating round table:", error);
+    throw error;
+  }
+};
+
+/**
  * Update total scores for all participants when a round is completed
  * This function maintains the cumulative score table ("Sammenlagt")
  */
@@ -1803,19 +1839,6 @@ export const finishSeason = async (seasonName, forceComplete = false) => {
 
     // Get the last game
     const lastGame = games[games.length - 1];
-
-    // Check if final round table already exists
-    const finalRoundTable = await getRoundTable(
-      seasonName,
-      lastGame.roundNumber
-    );
-
-    if (!finalRoundTable) {
-      console.log(
-        `📊 Creating final round table for round ${lastGame.roundNumber}`
-      );
-      await createRoundTable(seasonName, lastGame.roundNumber);
-    }
 
     // Archive the season before marking as completed
     console.log(`📦 Archiving season data for ${seasonName}...`);

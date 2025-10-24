@@ -7,6 +7,7 @@ import {
   deleteSeason,
   areAllSeasonGamesCompleted,
   finishSeason,
+  generateRoundTableForRound,
 } from "../../../firebase/new-database-utils.js";
 import { getAllGames } from "../../../firebase/admin-firebase-utils";
 import styles from "./SeasonManagement.module.css";
@@ -24,6 +25,11 @@ const SeasonManagement = () => {
   const [showFinishConfirm, setShowFinishConfirm] = useState(false);
   const [seasonToFinish, setSeasonToFinish] = useState(null);
   const [finishingSeason, setFinishingSeason] = useState(false);
+  const [showGenerateRoundTableConfirm, setShowGenerateRoundTableConfirm] =
+    useState(false);
+  const [seasonToGenerateRoundTable, setSeasonToGenerateRoundTable] =
+    useState(null);
+  const [generatingRoundTable, setGeneratingRoundTable] = useState(false);
   const [showUserSelectionModal, setShowUserSelectionModal] = useState(false);
   const [seasonToActivate, setSeasonToActivate] = useState(null);
   const [allUsers, setAllUsers] = useState([]);
@@ -195,6 +201,49 @@ const SeasonManagement = () => {
       }
     } finally {
       setFinishingSeason(false);
+    }
+  };
+
+  const handleGenerateRoundTable = async (seasonId) => {
+    try {
+      setSeasonToGenerateRoundTable(seasonId);
+      setShowGenerateRoundTableConfirm(true);
+    } catch (error) {
+      console.error("Error preparing to generate round table:", error);
+      alert("Error preparing to generate round table");
+    }
+  };
+
+  const confirmGenerateRoundTable = async () => {
+    if (!seasonToGenerateRoundTable) return;
+
+    try {
+      setGeneratingRoundTable(true);
+
+      // Get the season to find the last round number
+      const season = seasons.find((s) => s.id === seasonToGenerateRoundTable);
+      if (!season || !season.games || season.games.length === 0) {
+        throw new Error("Season not found or has no games");
+      }
+
+      // Get the last round number (round 10)
+      const lastRound = season.games[season.games.length - 1].roundNumber;
+
+      const result = await generateRoundTableForRound(
+        seasonToGenerateRoundTable,
+        lastRound
+      );
+
+      setShowGenerateRoundTableConfirm(false);
+      setSeasonToGenerateRoundTable(null);
+      await loadData();
+
+      alert(result.message);
+    } catch (error) {
+      console.error("Error generating round table:", error);
+      alert(`Error generating round table: ${error.message}`);
+    } finally {
+      setGeneratingRoundTable(false);
     }
   };
 
@@ -1034,13 +1083,22 @@ const SeasonManagement = () => {
                         </button>
                       )}
                       {season.isActive && !season.isCompleted && (
-                        <button
-                          className={styles.finishButton}
-                          onClick={() => handleFinishSeason(season.id)}
-                          title="Finish season and generate final round table"
-                        >
-                          🏁 Finish Season
-                        </button>
+                        <>
+                          <button
+                            className={styles.generateRoundTableButton}
+                            onClick={() => handleGenerateRoundTable(season.id)}
+                            title="Generate round table for round 10 without ending the season"
+                          >
+                            📊 Generate Round Table
+                          </button>
+                          <button
+                            className={styles.finishButton}
+                            onClick={() => handleFinishSeason(season.id)}
+                            title="Finish season (end the season)"
+                          >
+                            🏁 Finish Season
+                          </button>
+                        </>
                       )}
                       <button
                         className={styles.deleteButton}
@@ -1128,8 +1186,8 @@ const SeasonManagement = () => {
                 <p>Are you sure you want to finish this season? This will:</p>
                 <ul>
                   <li>Mark the season as completed</li>
-                  <li>Generate the final round table</li>
                   <li>Deactivate the season</li>
+                  <li>Archive the season data</li>
                 </ul>
                 <p>
                   <strong>This action cannot be undone.</strong>
@@ -1146,6 +1204,58 @@ const SeasonManagement = () => {
                     className={styles.cancelButton}
                     onClick={() => setShowFinishConfirm(false)}
                     disabled={finishingSeason}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Generate Round Table Confirmation Modal */}
+        {showGenerateRoundTableConfirm && (
+          <div
+            className={styles.modalOverlay}
+            onClick={() => setShowGenerateRoundTableConfirm(false)}
+          >
+            <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+              <div className={styles.modalHeader}>
+                <h2>Generate Round Table</h2>
+                <button
+                  className={styles.closeButton}
+                  onClick={() => setShowGenerateRoundTableConfirm(false)}
+                >
+                  ×
+                </button>
+              </div>
+              <div className={styles.modalBody}>
+                <p>
+                  Are you sure you want to generate the round table for round
+                  10? This will:
+                </p>
+                <ul>
+                  <li>Generate the round table for the final round</li>
+                  <li>Calculate scores and rankings</li>
+                  <li>Make the round table visible to users</li>
+                </ul>
+                <p>
+                  <strong>Note: This will NOT end the season.</strong>
+                </p>
+                <div className={styles.modalActions}>
+                  <button
+                    className={styles.generateRoundTableButton}
+                    onClick={confirmGenerateRoundTable}
+                    disabled={generatingRoundTable}
+                  >
+                    {generatingRoundTable
+                      ? "Generating..."
+                      : "📊 Generate Round Table"}
+                  </button>
+                  <button
+                    className={styles.cancelButton}
+                    onClick={() => setShowGenerateRoundTableConfirm(false)}
+                    disabled={generatingRoundTable}
                   >
                     Cancel
                   </button>
