@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Notteknektene - Interactive puzzle game platform with multiple challenging games",
   "author": "Notteknektene Team",
-  "homepage": "https://notteknektene.com",
+  "homepage": "https://notteknektene.no",
   "type": "module",
   "scripts": {
     "dev": "vite",
