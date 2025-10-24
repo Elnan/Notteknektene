@@ -61,7 +61,7 @@ const Footer = () => {
                 />
                 <p className={styles.authorName}>Olav Elnan</p>
               </div>
-              <p className={styles.authorTitle}>Der Nussführer</p>
+              <p className={styles.authorTitle}>Nøttegeneral</p>
             </div>
           </div>
         </div>

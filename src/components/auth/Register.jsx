@@ -95,7 +95,7 @@ const Register = () => {
   return (
     <div className={styles.registerWrapper}>
       <div className={styles.registerContainer}>
-        <h2 className={styles.registerTitle}>Registrer deg</h2>
+        <h2 className={styles.registerTitle}>Register</h2>
         <form className={styles.registerForm} onSubmit={handleSubmit}>
           <div className={styles.formGroup}>
             <input
@@ -108,7 +108,7 @@ const Register = () => {
               placeholder=""
             />
             <label className={styles.formLabel} htmlFor="username">
-              Navn
+              Name
             </label>
           </div>
           <div className={styles.formGroup}>
@@ -122,7 +122,7 @@ const Register = () => {
               placeholder=""
             />
             <label className={styles.formLabel} htmlFor="email">
-              Epost
+              Email
             </label>
           </div>
           <div className={styles.formGroup}>
@@ -134,7 +134,7 @@ const Register = () => {
               className={styles.formInput}
               placeholder=""
             />
-            <label className={styles.formLabel}>Passord</label>
+            <label className={styles.formLabel}>Password</label>
           </div>
           <div className={styles.formGroup}>
             <input
@@ -145,7 +145,7 @@ const Register = () => {
               className={styles.formInput}
               placeholder=""
             />
-            <label className={styles.formLabel}>Bekreft Passord</label>
+            <label className={styles.formLabel}>Confirm Password</label>
           </div>
           {error && <div className={styles.errorMessage}>{error}</div>}
           <Button
@@ -154,13 +154,13 @@ const Register = () => {
             variant="primary"
             size="large"
           >
-            Registrer
+            Register
           </Button>
         </form>
         <p>
-          Har du allerede bruker?{" "}
+          Don't have an account?{" "}
           <Link to="/auth/login" className={styles.loginLink}>
-            Logg inn her
+            Log in here
           </Link>
           .
         </p>

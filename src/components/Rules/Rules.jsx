@@ -95,20 +95,6 @@ const Rules = () => {
           en fast poengsum, mens andre vil gi poeng basert på hvor mange poeng
           du har scoret i oppgaven relativt til andre. I oppgaver med flere
           runder, vil man få poeng for hver runde man løser.
-          <ul>
-            <li>
-              <strong>Instruksjoner</strong>: I de aller fleste oppgaver vil man
-              kunne bruke en "Instructions"-knapp. Dette vil koste{" "}
-              <strong>1 poeng</strong>, men gi verdifull instrukser for
-              oppgaven.
-            </li>
-            <li>
-              <strong>Hint</strong>: Hint vil også være tilgjengelig for alle
-              oppgaver, men det vil koste <strong>1 poeng</strong>. I oppgaver
-              med flere hint tilgjenglig, vil det koste{" "}
-              <strong>1 poeng per hint.</strong>{" "}
-            </li>
-          </ul>
         </li>
         <li>
           Ingen oppgaver gir poeng på raskeste svar, så det er bare å bruke den

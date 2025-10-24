@@ -106,14 +106,10 @@ const Login = () => {
 
     try {
       await doPasswordReset(forgotPasswordEmail);
-      setForgotPasswordMessage(
-        "Tilbakestillingslenke sendt! Sjekk din e-post."
-      );
+      setForgotPasswordMessage("Reset link sent! Check your email.");
       setForgotPasswordEmail("");
     } catch (error) {
-      setForgotPasswordMessage(
-        "Feil ved sending av tilbakestillingslenke. Prøv igjen."
-      );
+      setForgotPasswordMessage("Error sending reset link. Please try again.");
     } finally {
       setIsSendingReset(false);
     }
@@ -129,7 +125,7 @@ const Login = () => {
         <h1 className={styles.logo}>NØTTEKNEKTENE</h1>
       </div>
       <div className={styles.loginContainer}>
-        <h2 className={styles.loginTitle}>Logg inn</h2>
+        <h2 className={styles.loginTitle}>Log in</h2>
 
         {/* Google Sign In Button */}
         <button
@@ -142,12 +138,12 @@ const Login = () => {
             alt="Google"
             className={styles.googleIcon}
           />
-          {isSigningIn ? "Logger inn..." : "Fortsett med Google"}
+          {isSigningIn ? "Logging in..." : "Continue with Google"}
         </button>
 
         <div className={styles.separator}>
           <div className={styles.separatorLine}></div>
-          <span className={styles.separatorText}>eller</span>
+          <span className={styles.separatorText}>OR</span>
           <div className={styles.separatorLine}></div>
         </div>
 
@@ -164,7 +160,7 @@ const Login = () => {
               placeholder=""
             />
             <label className={styles.formLabel} htmlFor="email">
-              Epost
+              Email
             </label>
           </div>
           <div className={styles.formGroup}>
@@ -176,7 +172,7 @@ const Login = () => {
               className={styles.formInput}
               placeholder=""
             />
-            <label className={styles.formLabel}>Passord</label>
+            <label className={styles.formLabel}>Password</label>
           </div>
           {error && <div className={styles.errorMessage}>{error}</div>}
           <Button
@@ -185,7 +181,7 @@ const Login = () => {
             size="large"
             disabled={isSigningIn}
           >
-            {isSigningIn ? "Logger inn..." : "Logg inn"}
+            {isSigningIn ? "Logging in..." : "Log in"}
           </Button>
         </form>
 
@@ -196,13 +192,13 @@ const Login = () => {
               onClick={() => setShowForgotPassword(true)}
               className={styles.forgotPasswordLink}
             >
-              Glemt passord?
+              Forgot password?
             </button>
           </p>
           <p>
-            Har du ikke bruker?{" "}
+            Don't have an account?{" "}
             <Link to="/auth/register" className={styles.registerLink}>
-              Registrer deg her
+              Register here
             </Link>
             .
           </p>
@@ -212,10 +208,10 @@ const Login = () => {
         {showForgotPassword && (
           <div className={styles.modalOverlay}>
             <div className={styles.modalContent}>
-              <h3 className={styles.modalTitle}>Glemt passord?</h3>
+              <h3 className={styles.modalTitle}>Forgot password?</h3>
               <p className={styles.modalDescription}>
-                Skriv inn din e-postadresse så sender vi deg en lenke for å
-                tilbakestille passordet.
+                Enter your email address and we will send you a link to reset
+                your password.
               </p>
               <form onSubmit={handleForgotPassword}>
                 <div className={styles.formGroup}>
@@ -227,7 +223,7 @@ const Login = () => {
                     required
                     placeholder=""
                   />
-                  <label className={styles.formLabel}>Epost</label>
+                  <label className={styles.formLabel}>Email</label>
                 </div>
                 {forgotPasswordMessage && (
                   <div className={styles.forgotPasswordMessage}>
@@ -245,7 +241,7 @@ const Login = () => {
                       setForgotPasswordEmail("");
                     }}
                   >
-                    Avbryt
+                    Cancel
                   </Button>
                   <Button
                     type="submit"
@@ -253,7 +249,7 @@ const Login = () => {
                     size="medium"
                     disabled={isSendingReset}
                   >
-                    {isSendingReset ? "Sender..." : "Send lenke"}
+                    {isSendingReset ? "Sending..." : "Send reset link"}
                   </Button>
                 </div>
               </form>
