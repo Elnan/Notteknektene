@@ -1,0 +1,130 @@
+.container {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.pill {
+  display: flex;
+  align-items: center;
+  height: 60px; /* Should be equal to SuccessLogo SVG height */
+  background: white;
+  border-radius: 25px 30px 30px 25px; /* Pill radius should be equal to SVG circle */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  pointer-events: auto;
+  transition:
+    max-width 0.4s linear,
+    box-shadow 0.3s ease;
+  width: auto;
+  min-width: 60px;
+  max-width: 300px;
+}
+
+.pill:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.pill.collapsed {
+  max-width: 60px; /* Exactly SVG width when collapsed */
+}
+
+.logoContainer {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+.logo {
+  width: 60px;
+  height: 60px;
+}
+
+.message {
+  padding: 0 20px 0 10px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-green-bg);
+  white-space: nowrap;
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity 0.3s linear 0.1s,
+    transform 0.4s linear;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+.messageCollapsed {
+  opacity: 0;
+  transform: translateX(-100%);
+  transition:
+    opacity 0.25s linear,
+    transform 0.4s linear;
+}
+
+/* Position variants */
+.top-right {
+  top: 20px;
+  right: 20px;
+}
+
+.bottom-right {
+  bottom: 20px;
+  right: 20px;
+}
+
+.top-left {
+  top: 20px;
+  left: 20px;
+}
+
+.bottom-left {
+  bottom: 20px;
+  left: 20px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .pill {
+    height: 56px;
+    min-width: 56px;
+  }
+
+  .logoContainer {
+    width: 56px;
+    height: 56px;
+  }
+
+  .logo {
+    width: 56px;
+    height: 56px;
+  }
+
+  .pill.collapsed {
+    width: 56px;
+  }
+
+  .message {
+    font-size: 0.85rem;
+    padding: 0 16px 0 8px;
+  }
+
+  .top-right,
+  .bottom-right,
+  .top-left,
+  .bottom-left {
+    top: 16px;
+    right: 16px;
+    bottom: 16px;
+    left: 16px;
+  }
+}

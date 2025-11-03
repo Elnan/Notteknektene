@@ -3,6 +3,8 @@ import { useAuth } from "../../context/authContext";
 import { useTaskOpener } from "../../hooks/useTaskOpener";
 import TaskOpener from "../TaskOpener/TaskOpener";
 import { saveGameSubmission } from "../../utils/gameSubmissionUtils";
+import { useSubmissionStatus } from "../../hooks/useSubmissionStatus";
+import SubmissionConfirmation from "../SubmissionConfirmation/SubmissionConfirmation";
 
 const GameWrapper = ({
   taskId,
@@ -14,6 +16,10 @@ const GameWrapper = ({
   const { isOpened, loading, handleTaskOpen } = useTaskOpener(taskId);
   const { currentUser } = useAuth();
   const [currentGameId, setCurrentGameId] = useState(null);
+  const [submissionKey, setSubmissionKey] = useState(0); // Force re-check after submission
+
+  // Check submission status - re-check when gameId changes or after submission
+  const { hasSubmitted, isChecking } = useSubmissionStatus(currentGameId, taskId, submissionKey);
 
   // Determine the current game ID based on the taskId and current season
   useEffect(() => {
@@ -207,6 +213,9 @@ const GameWrapper = ({
         }
 
         console.log(`✅ Game submission verified and recorded for ${gameId}`);
+        
+        // Trigger re-check of submission status to show confirmation
+        setSubmissionKey((prev) => prev + 1);
       }
     } catch (error) {
       console.error("❌ CRITICAL: Error recording game completion:", error);
@@ -275,19 +284,29 @@ const GameWrapper = ({
   };
 
   return (
-    <TaskOpener
-      taskName={taskName}
-      taskDescription={taskDescription}
-      onTaskOpen={handleTaskOpen}
-      isOpened={isOpened}
-      loading={loading}
-    >
-      <GameComponent
-        {...gameProps}
-        onComplete={handleGameComplete}
-        currentGameId={currentGameId}
-      />
-    </TaskOpener>
+    <>
+      <TaskOpener
+        taskName={taskName}
+        taskDescription={taskDescription}
+        onTaskOpen={handleTaskOpen}
+        isOpened={isOpened}
+        loading={loading}
+      >
+        <GameComponent
+          {...gameProps}
+          onComplete={handleGameComplete}
+          currentGameId={currentGameId}
+        />
+      </TaskOpener>
+      {/* Show submission confirmation if user has submitted */}
+      {!isChecking && hasSubmitted && isOpened && (
+        <SubmissionConfirmation 
+          message="Answer submitted"
+          position="bottom-right"
+          key={submissionKey}
+        />
+      )}
+    </>
   );
 };
 
