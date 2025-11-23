@@ -5,7 +5,7 @@ export const GAME_CONFIG = {
   // Game metadata
   title: "Legends Extraction",
   description:
-    "Sensetive information is out, and we need to bring our legendary agents back to safety. Use the clues to determine who is where and what they are doing.",
+    "Sensitive information is out, and we need to bring our legendary agents back to safety. Use the clues to determine who is where and what they are doing.",
 
   // Game settings
   maxHints: 3,
@@ -50,7 +50,7 @@ export const GAME_CONFIG = {
     "Håkon is not the person codenamed Osprey, whose mission is Surveillance.",
     "The person with the mission Sabotage is in Germany and uses the codename Falcon.",
     "Astrid - Codename Sparrow - chose Italy. Her mission is not Raid.",
-    "None of the ladies is in England. None of the gentlemen has the codename Eagle.",
+    "None of the ladies are in England. None of the gentlemen have the codename Eagle.",
     "Spain is the country where the lady with mission Assasination is. This is not Elise.",
     "Hawk is the codename of Bjørn.",
   ],

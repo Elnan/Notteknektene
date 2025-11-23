@@ -270,13 +270,26 @@ const Scoreboard = () => {
   // Transform new round table data to use the actual game-specific fields
   const transformedRoundTable =
     currentRoundTable?.participants?.map((participant) => {
+      // Check if this is a multi-hint game (games that can have multiple hints)
+      const baseGameId = currentRoundTable?.gameId?.replace(/\d+$/, "") || "";
+      const isMultiHintGame = [
+        "pattern-solver",
+        "investigation-mystery",
+        "logic-grid",
+        "triads",
+      ].includes(baseGameId);
+
       return {
         id: participant.userId || participant.id,
         name: participant.userName || participant.name,
         avatar: participant.avatar, // Include avatar field
+        rank: participant.rank || 0, // Include rank field
         score: Math.round(participant.score || 0), // Round to whole number
         // Include all game-specific data with proper fallbacks
-        hintsUsed: Boolean(participant.hintsUsed || participant.hintUsed || 0), // Convert to boolean
+        // For multi-hint games, preserve numeric value; for single-hint games, convert to boolean
+        hintsUsed: isMultiHintGame
+          ? Math.round(participant.hintsUsed || participant.hintUsed || 0)
+          : Boolean(participant.hintsUsed || participant.hintUsed || 0),
         instructionsUsed: Boolean(
           participant.instructionsUsed || participant.instructionUsed || 0
         ), // Convert to boolean
@@ -318,8 +331,13 @@ const Scoreboard = () => {
       };
     }) || [];
 
-  // Sort roundTable by score (descending)
+  // Sort roundTable by rank (ascending) to respect database order
+  // If rank is not available, fall back to score sorting
   const sortedRoundTable = [...transformedRoundTable].sort((a, b) => {
+    if (a.rank && b.rank) {
+      return a.rank - b.rank;
+    }
+    // Fallback to score sorting if rank is not available
     if (a.score === 0 && b.score !== 0) return 1;
     if (b.score === 0 && a.score !== 0) return -1;
     return b.score - a.score;
