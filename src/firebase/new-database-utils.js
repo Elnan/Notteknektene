@@ -429,6 +429,7 @@ export const releaseGame = async (seasonName, gameId) => {
 
     const batch = [];
     gamesSnapshot.docs.forEach((gameDoc) => {
+      const gameData = gameDoc.data();
       const gameRef = doc(
         notteknekteneDb,
         "seasons",
@@ -436,7 +437,16 @@ export const releaseGame = async (seasonName, gameId) => {
         "games",
         gameDoc.id
       );
-      batch.push(updateDoc(gameRef, { isActive: false }));
+      
+      // If this is not the game being released, deactivate it
+      if (gameDoc.id !== gameId) {
+        const updates = { isActive: false };
+        // If the game was previously "current", mark it as "completed"
+        if (gameData.status === "current") {
+          updates.status = "completed";
+        }
+        batch.push(updateDoc(gameRef, updates));
+      }
     });
 
     // Then activate the specified game
@@ -892,7 +902,9 @@ export const createRoundTable = async (seasonName, roundNumber) => {
       })
       .sort((a, b) => {
         // Sort by game-specific ranking criteria
-        return getGameRankingComparator(game.gameId)(a, b);
+        // Extract base game ID (e.g., "the-keeper5" -> "the-keeper")
+        const baseGameId = game.gameId?.replace(/\d+$/, "") || game.gameId;
+        return getGameRankingComparator(baseGameId)(a, b);
       })
       .map((participant, index) => {
         // Calculate score based on game type
@@ -2015,15 +2027,10 @@ const getGameRankingComparator = (gameId) => {
       };
 
     case "sos":
-      // score, hintsUsed, instructionsUsed, playerWins, totalPlayerScore, totalAiScore, submittedAt
+      // playerWins, score, totalAiScore (lower is better), submittedAt
       return (a, b) => {
-        if (a.score !== b.score) return b.score - a.score;
-        if (a.hintsUsed !== b.hintsUsed) return a.hintsUsed - b.hintsUsed;
-        if (a.instructionsUsed !== b.instructionsUsed)
-          return a.instructionsUsed - b.instructionsUsed;
         if (a.playerWins !== b.playerWins) return b.playerWins - a.playerWins;
-        if (a.totalPlayerScore !== b.totalPlayerScore)
-          return b.totalPlayerScore - a.totalPlayerScore;
+        if (a.score !== b.score) return b.score - a.score;
         if (a.totalAiScore !== b.totalAiScore)
           return a.totalAiScore - b.totalAiScore;
         if (a.submittedAt && b.submittedAt)
