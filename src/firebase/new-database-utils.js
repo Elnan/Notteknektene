@@ -14,6 +14,7 @@ import {
   writeBatch,
 } from "firebase/firestore";
 import { notteknekteneDb } from "./firebase-config-notteknektene.js";
+import { generatePattern, checkSolution } from "../tasks/season2/pattern-matrix/pattern-matrix-logic.js";
 
 // ============================================================================
 // SEASON MANAGEMENT
@@ -2129,15 +2130,127 @@ const getGameSpecificData = (gameId, submission) => {
       };
       break;
     case "pattern-matrix":
-      gameData = {
-        hintsUsed: submission.hintsUsed || 0,
-        accuracy: submission.accuracy || 0,
-        mainCorrect: submission.mainCorrect || 0,
-        averageTimePerRound: submission.averageTimePerRound || 0,
-        practiceCorrect: submission.practiceCorrect || 0,
-        practiceRounds: submission.practiceRounds || [],
-        mainRounds: submission.mainRounds || [],
-      };
+      // Check if calculated fields exist, if not calculate from gameState
+      // Also check if fields are null or if accuracy/mainCorrect are 0 but we have gameState data
+      const hasCalculatedFields =
+        submission.mainCorrect !== undefined &&
+        submission.mainCorrect !== null &&
+        submission.accuracy !== undefined &&
+        submission.accuracy !== null;
+      
+      if (!hasCalculatedFields && submission.gameState?.mainAnswers) {
+        // Calculate fields from gameState.mainAnswers
+        const mainAnswers = submission.gameState.mainAnswers || [];
+        const practiceAnswers = submission.gameState.practiceAnswers || [];
+        const timeSpent = submission.timeSpent || submission.gameState.timeSpent || 0;
+
+        // Process main rounds
+        const mainRounds = [];
+        let mainCorrect = 0;
+
+        for (let i = 0; i < mainAnswers.length; i++) {
+          const userAnswer = mainAnswers[i];
+          if (userAnswer) {
+            // Convert object answers to arrays if needed
+            const normalizedAnswer = Array.isArray(userAnswer)
+              ? userAnswer
+              : userAnswer && typeof userAnswer === "object"
+                ? Object.values(userAnswer)
+                : null;
+
+            if (normalizedAnswer && normalizedAnswer.length === 8) {
+              try {
+                const mainPattern = generatePattern(i, false);
+                const isCorrect = checkSolution(
+                  normalizedAnswer,
+                  mainPattern.missing
+                );
+
+                mainRounds.push({
+                  round: i + 1,
+                  userAnswer: normalizedAnswer.join(","),
+                  correctAnswer: mainPattern.missing.join(","),
+                  isCorrect: isCorrect,
+                });
+
+                if (isCorrect) mainCorrect++;
+              } catch (error) {
+                console.warn(`Error processing round ${i + 1}:`, error);
+              }
+            }
+          }
+        }
+
+        // Process practice rounds
+        const practiceRounds = [];
+        let practiceCorrect = 0;
+
+        for (let i = 0; i < practiceAnswers.length; i++) {
+          const userAnswer = practiceAnswers[i];
+          if (userAnswer) {
+            const normalizedAnswer = Array.isArray(userAnswer)
+              ? userAnswer
+              : userAnswer && typeof userAnswer === "object"
+                ? Object.values(userAnswer)
+                : null;
+
+            if (normalizedAnswer && normalizedAnswer.length === 8) {
+              try {
+                const practicePattern = generatePattern(i, true);
+                const isCorrect = checkSolution(
+                  normalizedAnswer,
+                  practicePattern.missing
+                );
+
+                practiceRounds.push({
+                  round: i + 1,
+                  userAnswer: normalizedAnswer.join(","),
+                  correctAnswer: practicePattern.missing.join(","),
+                  isCorrect: isCorrect,
+                });
+
+                if (isCorrect) practiceCorrect++;
+              } catch (error) {
+                console.warn(`Error processing practice round ${i + 1}:`, error);
+              }
+            }
+          }
+        }
+
+        // Calculate totals
+        const totalCorrect = practiceCorrect + mainCorrect;
+        const totalRounds = practiceRounds.length + mainRounds.length;
+        const accuracy = totalRounds > 0 ? (totalCorrect / totalRounds) * 100 : 0;
+        const averageTimePerRound =
+          totalRounds > 0 ? timeSpent / totalRounds : 0;
+
+        gameData = {
+          hintsUsed: submission.hintsUsed || 0,
+          accuracy: Math.round(accuracy * 100) / 100,
+          mainCorrect: mainCorrect,
+          averageTimePerRound: Math.round(averageTimePerRound),
+          practiceCorrect: practiceCorrect,
+          practiceRounds: practiceRounds,
+          mainRounds: mainRounds,
+        };
+      } else {
+        // Use existing calculated fields
+        gameData = {
+          hintsUsed: submission.hintsUsed || 0,
+          accuracy: submission.accuracy || 0,
+          mainCorrect: submission.mainCorrect || 0,
+          averageTimePerRound: submission.averageTimePerRound || 0,
+          practiceCorrect: submission.practiceCorrect || 0,
+          practiceRounds:
+            typeof submission.practiceRounds === "string"
+              ? JSON.parse(submission.practiceRounds)
+              : submission.practiceRounds || [],
+          mainRounds:
+            typeof submission.mainRounds === "string"
+              ? JSON.parse(submission.mainRounds)
+              : submission.mainRounds || [],
+        };
+      }
       break;
     case "the-keeper":
       gameData = {
