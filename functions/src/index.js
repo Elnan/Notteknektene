@@ -362,25 +362,34 @@ function getGameSpecificData(gameId, submission) {
         const totalCorrect = practiceCorrect + mainCorrect;
         const totalRounds = practiceRounds.length + mainRounds.length;
         const accuracy = totalRounds > 0 ? (totalCorrect / totalRounds) * 100 : 0;
-        const averageTimePerRound =
+        // Convert milliseconds to seconds for averageTimePerRound
+        const averageTimePerRoundMs =
           totalRounds > 0 ? timeSpent / totalRounds : 0;
+        const averageTimePerRoundSeconds = Math.round(averageTimePerRoundMs / 1000);
 
         gameData = {
           hintsUsed: submission.hintsUsed || 0,
           accuracy: Math.round(accuracy * 100) / 100,
           mainCorrect: mainCorrect,
-          averageTimePerRound: Math.round(averageTimePerRound),
+          averageTimePerRound: averageTimePerRoundSeconds,
           practiceCorrect: practiceCorrect,
           practiceRounds: practiceRounds,
           mainRounds: mainRounds,
         };
       } else {
         // Use existing calculated fields
+        // Convert averageTimePerRound from milliseconds to seconds if needed
+        // (values > 1000 are likely milliseconds, normal round times are < 1000 seconds)
+        let averageTimePerRound = submission.averageTimePerRound || 0;
+        if (averageTimePerRound > 1000) {
+          averageTimePerRound = Math.round(averageTimePerRound / 1000);
+        }
+        
         gameData = {
           hintsUsed: submission.hintsUsed || 0,
           accuracy: submission.accuracy || 0,
           mainCorrect: submission.mainCorrect || 0,
-          averageTimePerRound: submission.averageTimePerRound || 0,
+          averageTimePerRound: averageTimePerRound,
           practiceCorrect: submission.practiceCorrect || 0,
           practiceRounds:
             typeof submission.practiceRounds === "string"

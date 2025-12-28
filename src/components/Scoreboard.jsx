@@ -699,6 +699,9 @@ const Scoreboard = () => {
                           } else if (column === "accuracy") {
                             // Display accuracy as percentage with % symbol
                             displayValue = `${Math.round(row[column] || 0)}%`;
+                          } else if (column === "averageTimePerRound") {
+                            // Display average time per round as seconds with "s" suffix
+                            displayValue = `${Math.round(row[column] || 0)}s`;
                           } else {
                             // Display as whole number for numeric values (wins, losses, mistakes, etc.)
                             displayValue = Math.round(row[column] || 0);
