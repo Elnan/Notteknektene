@@ -1885,6 +1885,109 @@ export const finishSeason = async (seasonName, forceComplete = false) => {
   }
 };
 
+/**
+ * Fix a season that was accidentally finished before completing the last round
+ * This function will:
+ * 1. Revert the season completion status
+ * 2. Find the last round that doesn't have a round table
+ * 3. Create the round table for that round
+ * 4. Optionally re-finish the season
+ */
+export const fixSeasonMissingLastRound = async (
+  seasonName,
+  reFinishSeason = false
+) => {
+  try {
+    console.log(`🔧 Fixing season ${seasonName} - restoring last round...`);
+
+    // Get season data
+    const season = await getSeason(seasonName);
+    if (!season) {
+      throw new Error(`Season ${seasonName} not found`);
+    }
+
+    // Get all games
+    const games = await getSeasonGamesList(seasonName);
+    if (games.length === 0) {
+      throw new Error("Cannot fix season: no games found");
+    }
+
+    // Get all existing round tables
+    const existingRoundTables = await getSeasonRoundTables(seasonName);
+    const existingRoundNumbers = new Set(
+      existingRoundTables.map((rt) => rt.roundNumber)
+    );
+
+    // Find the last round that doesn't have a round table
+    const sortedGames = [...games].sort((a, b) => b.roundNumber - a.roundNumber);
+    let lastRoundWithoutTable = null;
+
+    for (const game of sortedGames) {
+      if (!existingRoundNumbers.has(game.roundNumber)) {
+        lastRoundWithoutTable = game.roundNumber;
+        break;
+      }
+    }
+
+    if (!lastRoundWithoutTable) {
+      return {
+        success: true,
+        message: "All rounds already have round tables. No fix needed.",
+        roundsFixed: [],
+      };
+    }
+
+    console.log(
+      `📊 Found missing round table for round ${lastRoundWithoutTable}`
+    );
+
+    // Revert season completion status if needed
+    if (season.isCompleted) {
+      console.log(`🔄 Reverting season completion status...`);
+      await updateSeason(seasonName, {
+        isCompleted: false,
+        isActive: true,
+        completedAt: null,
+      });
+    }
+
+    // Check if round table already exists (shouldn't, but check to be safe)
+    const existingRoundTable = await getRoundTable(seasonName, lastRoundWithoutTable);
+    let roundTable;
+    
+    if (existingRoundTable) {
+      console.log(`Round table for round ${lastRoundWithoutTable} already exists`);
+      roundTable = existingRoundTable;
+    } else {
+      // Create the round table for the missing round
+      console.log(
+        `📊 Creating round table for round ${lastRoundWithoutTable}...`
+      );
+      roundTable = await createRoundTable(seasonName, lastRoundWithoutTable);
+    }
+
+    const result = {
+      success: true,
+      message: `Successfully created round table for round ${lastRoundWithoutTable}`,
+      roundsFixed: [lastRoundWithoutTable],
+      roundTable: roundTable,
+    };
+
+    // Optionally re-finish the season
+    if (reFinishSeason) {
+      console.log(`🏁 Re-finishing season...`);
+      await finishSeason(seasonName, true);
+      result.message += " and re-finished the season";
+    }
+
+    console.log(`✅ Season fix completed successfully`);
+    return result;
+  } catch (error) {
+    console.error("Error fixing season:", error);
+    throw error;
+  }
+};
+
 // Helper functions
 const getGameDisplayName = (gameId) => {
   const gameNames = {
@@ -2142,6 +2245,8 @@ const getGameSpecificData = (gameId, submission) => {
         // Calculate fields from gameState.mainAnswers
         const mainAnswers = submission.gameState.mainAnswers || [];
         const practiceAnswers = submission.gameState.practiceAnswers || [];
+        const mainRoundTimes = submission.gameState.mainRoundTimes || [];
+        const practiceRoundTimes = submission.gameState.practiceRoundTimes || [];
         const timeSpent = submission.timeSpent || submission.gameState.timeSpent || 0;
 
         // Process main rounds
@@ -2166,11 +2271,16 @@ const getGameSpecificData = (gameId, submission) => {
                   mainPattern.missing
                 );
 
+                // Get round time (convert from ms to seconds if stored in ms)
+                const roundTimeMs = mainRoundTimes[i] || 0;
+                const roundTime = roundTimeMs > 1000 ? Math.round(roundTimeMs / 1000) : roundTimeMs;
+
                 mainRounds.push({
                   round: i + 1,
                   userAnswer: normalizedAnswer.join(","),
                   correctAnswer: mainPattern.missing.join(","),
                   isCorrect: isCorrect,
+                  roundTime: roundTime,
                 });
 
                 if (isCorrect) mainCorrect++;
@@ -2202,11 +2312,16 @@ const getGameSpecificData = (gameId, submission) => {
                   practicePattern.missing
                 );
 
+                // Get round time (convert from ms to seconds if stored in ms)
+                const roundTimeMs = practiceRoundTimes[i] || 0;
+                const roundTime = roundTimeMs > 1000 ? Math.round(roundTimeMs / 1000) : roundTimeMs;
+
                 practiceRounds.push({
                   round: i + 1,
                   userAnswer: normalizedAnswer.join(","),
                   correctAnswer: practicePattern.missing.join(","),
                   isCorrect: isCorrect,
+                  roundTime: roundTime,
                 });
 
                 if (isCorrect) practiceCorrect++;
@@ -2221,10 +2336,15 @@ const getGameSpecificData = (gameId, submission) => {
         const totalCorrect = practiceCorrect + mainCorrect;
         const totalRounds = practiceRounds.length + mainRounds.length;
         const accuracy = totalRounds > 0 ? (totalCorrect / totalRounds) * 100 : 0;
-        // Convert milliseconds to seconds for averageTimePerRound
-        const averageTimePerRoundMs =
-          totalRounds > 0 ? timeSpent / totalRounds : 0;
-        const averageTimePerRoundSeconds = Math.round(averageTimePerRoundMs / 1000);
+        
+        // Calculate average time per round from individual round times
+        const allRoundTimes = [
+          ...practiceRounds.map(r => r.roundTime || 0),
+          ...mainRounds.map(r => r.roundTime || 0)
+        ].filter(t => t > 0); // Only count rounds with time data
+        const averageTimePerRoundSeconds = allRoundTimes.length > 0
+          ? Math.round(allRoundTimes.reduce((a, b) => a + b, 0) / allRoundTimes.length)
+          : 0;
 
         gameData = {
           hintsUsed: submission.hintsUsed || 0,

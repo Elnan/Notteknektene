@@ -770,6 +770,24 @@
   box-shadow: none;
 }
 
+.fixButton {
+  background: #f59e0b;
+  color: white;
+}
+
+.fixButton:hover {
+  background: #d97706;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.fixButton:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
 .submitButton {
   background: var(--color-green);
   color: white;

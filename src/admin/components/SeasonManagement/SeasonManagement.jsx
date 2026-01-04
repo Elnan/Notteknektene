@@ -8,6 +8,7 @@ import {
   areAllSeasonGamesCompleted,
   finishSeason,
   generateRoundTableForRound,
+  fixSeasonMissingLastRound,
 } from "../../../firebase/new-database-utils.js";
 import { getAllGames } from "../../../firebase/admin-firebase-utils";
 import styles from "./SeasonManagement.module.css";
@@ -244,6 +245,39 @@ const SeasonManagement = () => {
       alert(`Error generating round table: ${error.message}`);
     } finally {
       setGeneratingRoundTable(false);
+    }
+  };
+
+  const handleFixSeason = async (seasonId) => {
+    try {
+      setSeasonToFix(seasonId);
+      setShowFixSeasonModal(true);
+    } catch (error) {
+      console.error("Error preparing to fix season:", error);
+      alert("Error preparing to fix season");
+    }
+  };
+
+  const confirmFixSeason = async (reFinishSeason = false) => {
+    if (!seasonToFix) return;
+
+    try {
+      setFixingSeason(true);
+      const result = await fixSeasonMissingLastRound(
+        seasonToFix,
+        reFinishSeason
+      );
+
+      setShowFixSeasonModal(false);
+      setSeasonToFix(null);
+      await loadData();
+
+      alert(result.message);
+    } catch (error) {
+      console.error("Error fixing season:", error);
+      alert(`Error fixing season: ${error.message}`);
+    } finally {
+      setFixingSeason(false);
     }
   };
 
@@ -1100,6 +1134,15 @@ const SeasonManagement = () => {
                           </button>
                         </>
                       )}
+                      {season.isCompleted && (
+                        <button
+                          className={styles.fixButton}
+                          onClick={() => handleFixSeason(season.id)}
+                          title="Fix season - restore missing last round table"
+                        >
+                          🔧 Fix Last Round
+                        </button>
+                      )}
                       <button
                         className={styles.deleteButton}
                         onClick={() => handleDeleteSeason(season.id)}
@@ -1204,6 +1247,69 @@ const SeasonManagement = () => {
                     className={styles.cancelButton}
                     onClick={() => setShowFinishConfirm(false)}
                     disabled={finishingSeason}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Fix Season Modal */}
+        {showFixSeasonModal && (
+          <div
+            className={styles.modalOverlay}
+            onClick={() => setShowFixSeasonModal(false)}
+          >
+            <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+              <div className={styles.modalHeader}>
+                <h2>Fix Season - Restore Last Round</h2>
+                <button
+                  className={styles.closeButton}
+                  onClick={() => setShowFixSeasonModal(false)}
+                >
+                  ×
+                </button>
+              </div>
+              <div className={styles.modalBody}>
+                <p>
+                  This will fix a season that was accidentally finished before
+                  completing the last round. It will:
+                </p>
+                <ul>
+                  <li>Revert the season completion status</li>
+                  <li>Find the last round that doesn't have a round table</li>
+                  <li>Create the round table for that round</li>
+                  <li>Optionally re-finish the season</li>
+                </ul>
+                <p>
+                  <strong>
+                    This will restore the missing round table and update the
+                    total scores.
+                  </strong>
+                </p>
+                <div className={styles.modalActions}>
+                  <button
+                    className={styles.fixButton}
+                    onClick={() => confirmFixSeason(false)}
+                    disabled={fixingSeason}
+                  >
+                    {fixingSeason ? "Fixing..." : "🔧 Fix Only"}
+                  </button>
+                  <button
+                    className={styles.finishButton}
+                    onClick={() => confirmFixSeason(true)}
+                    disabled={fixingSeason}
+                  >
+                    {fixingSeason
+                      ? "Fixing & Finishing..."
+                      : "🔧 Fix & Re-finish Season"}
+                  </button>
+                  <button
+                    className={styles.cancelButton}
+                    onClick={() => setShowFixSeasonModal(false)}
+                    disabled={fixingSeason}
                   >
                     Cancel
                   </button>
