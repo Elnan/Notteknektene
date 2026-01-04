@@ -31,6 +31,9 @@ const SeasonManagement = () => {
   const [seasonToGenerateRoundTable, setSeasonToGenerateRoundTable] =
     useState(null);
   const [generatingRoundTable, setGeneratingRoundTable] = useState(false);
+  const [showFixSeasonModal, setShowFixSeasonModal] = useState(false);
+  const [seasonToFix, setSeasonToFix] = useState(null);
+  const [fixingSeason, setFixingSeason] = useState(false);
   const [showUserSelectionModal, setShowUserSelectionModal] = useState(false);
   const [seasonToActivate, setSeasonToActivate] = useState(null);
   const [allUsers, setAllUsers] = useState([]);
