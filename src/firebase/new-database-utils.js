@@ -1920,6 +1920,7 @@ export const fixSeasonMissingLastRound = async (
 
     // Find the last round that doesn't have a round table
     const sortedGames = [...games].sort((a, b) => b.roundNumber - a.roundNumber);
+    const lastRound = sortedGames[0]?.roundNumber;
     let lastRoundWithoutTable = null;
 
     for (const game of sortedGames) {
@@ -1929,55 +1930,67 @@ export const fixSeasonMissingLastRound = async (
       }
     }
 
-    if (!lastRoundWithoutTable) {
+    // Check if the last round (round 10) has a round table
+    const lastRoundTable = lastRound ? await getRoundTable(seasonName, lastRound) : null;
+    const needsRoundTable = !lastRoundTable && lastRound;
+
+    // If all rounds have tables but season is inactive, we still need to reactivate it
+    const needsActivation = !season.isActive;
+
+    if (!needsRoundTable && !needsActivation) {
       return {
         success: true,
-        message: "All rounds already have round tables. No fix needed.",
+        message: "All rounds already have round tables and season is active. No fix needed.",
         roundsFixed: [],
       };
     }
 
-    console.log(
-      `📊 Found missing round table for round ${lastRoundWithoutTable}`
-    );
+    const roundsFixed = [];
+    let roundTable = null;
 
-    // Revert season completion status if needed
-    if (season.isCompleted) {
-      console.log(`🔄 Reverting season completion status...`);
+    // Create round table for last round if missing
+    if (needsRoundTable && lastRound) {
+      console.log(
+        `📊 Creating missing round table for round ${lastRound}...`
+      );
+      roundTable = await createRoundTable(seasonName, lastRound);
+      roundsFixed.push(lastRound);
+    } else if (lastRoundTable) {
+      roundTable = lastRoundTable;
+    }
+
+    // Reactivate the season so players can see it (keep it as completed)
+    if (needsActivation) {
+      console.log(`🔄 Reactivating season so players can view tables...`);
       await updateSeason(seasonName, {
-        isCompleted: false,
         isActive: true,
-        completedAt: null,
+        // Keep isCompleted as true so scoreboard shows final round correctly
+        // Don't change isCompleted status
       });
     }
 
-    // Check if round table already exists (shouldn't, but check to be safe)
-    const existingRoundTable = await getRoundTable(seasonName, lastRoundWithoutTable);
-    let roundTable;
-    
-    if (existingRoundTable) {
-      console.log(`Round table for round ${lastRoundWithoutTable} already exists`);
-      roundTable = existingRoundTable;
-    } else {
-      // Create the round table for the missing round
-      console.log(
-        `📊 Creating round table for round ${lastRoundWithoutTable}...`
-      );
-      roundTable = await createRoundTable(seasonName, lastRoundWithoutTable);
+    let message = "";
+    if (roundsFixed.length > 0) {
+      message = `Successfully created round table${roundsFixed.length > 1 ? 's' : ''} for round${roundsFixed.length > 1 ? 's' : ''} ${roundsFixed.join(', ')}`;
+    }
+    if (needsActivation) {
+      message += (message ? " and " : "") + "reactivated the season";
     }
 
     const result = {
       success: true,
-      message: `Successfully created round table for round ${lastRoundWithoutTable}`,
-      roundsFixed: [lastRoundWithoutTable],
+      message: message || "Season reactivated successfully",
+      roundsFixed: roundsFixed,
       roundTable: roundTable,
+      seasonReactivated: needsActivation,
     };
 
-    // Optionally re-finish the season
+    // Optionally re-finish the season (this will deactivate it again)
     if (reFinishSeason) {
       console.log(`🏁 Re-finishing season...`);
       await finishSeason(seasonName, true);
       result.message += " and re-finished the season";
+      result.seasonReactivated = false; // Will be inactive again after re-finishing
     }
 
     console.log(`✅ Season fix completed successfully`);

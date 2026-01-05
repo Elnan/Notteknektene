@@ -1281,15 +1281,16 @@ const SeasonManagement = () => {
                   completing the last round. It will:
                 </p>
                 <ul>
-                  <li>Revert the season completion status</li>
-                  <li>Find the last round that doesn't have a round table</li>
-                  <li>Create the round table for that round</li>
-                  <li>Optionally re-finish the season</li>
+                  <li>Check if the last round (round 10) has a round table</li>
+                  <li>Create the missing round table if needed</li>
+                  <li>Reactivate the season so players can view the tables</li>
+                  <li>Keep the season marked as completed</li>
+                  <li>Optionally re-finish the season (will deactivate it again)</li>
                 </ul>
                 <p>
                   <strong>
-                    This will restore the missing round table and update the
-                    total scores.
+                    This will restore the missing round table, update the
+                    total scores, and make the season visible to players again.
                   </strong>
                 </p>
                 <div className={styles.modalActions}>
